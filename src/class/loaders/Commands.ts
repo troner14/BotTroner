@@ -98,14 +98,16 @@ export class CommandsLoader extends BaseLoader {
                 if (this.isValidCommand(file, command)) {                
                     this.#commands.set(command.name, command);
                     this.#cacheCommands.set(command.name, file);
-                    guildsCommands.forEach(guild => {
-                        if (guild.commands?.has(command.name)) {
-                            if (!this.#guildCommands.has(guild.guildId)) {
-                                this.#guildCommands.set(guild.guildId, new Set());
+                    if (guildsCommands.length > 0) {
+                        guildsCommands.forEach(guild => {
+                            if (guild.commands?.has(command.name)) {
+                                if (!this.#guildCommands.has(guild.guildId)) {
+                                    this.#guildCommands.set(guild.guildId, new Set());
+                                }
+                                this.#guildCommands.get(guild.guildId)?.add(command.name);
                             }
-                            this.#guildCommands.get(guild.guildId)?.add(command.name);
-                        }
-                    });
+                        });
+                    }
                 }
                 this.logger.debug(`commando cargat: ${command.name}`);
             } catch (err) {
