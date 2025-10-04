@@ -50,12 +50,12 @@ export class GracefulShutdown {
     private static setupProcessHandlers() {
         // Handle uncaught exceptions and rejections
         process.on("uncaughtException", async (error) => {
-            this.logger.fatal({ error }, "Uncaught Exception");
+            this.logger.fatal(error, "Uncaught Exception");
             await this.shutdown("UNCAUGHT_EXCEPTION");
         });
 
         process.on("unhandledRejection", async (reason, promise) => {
-            this.logger.fatal({ reason, promise }, "Unhandled Rejection");
+            this.logger.fatal(reason, "Unhandled Rejection");
             await this.shutdown("UNHANDLED_REJECTION");
         });
 
@@ -98,7 +98,7 @@ export class GracefulShutdown {
                 });
             }
         } catch (error) {
-            this.logger.warn({ error }, "Could not set up Windows-specific handlers");
+            this.logger.warn(error, "Could not set up Windows-specific handlers");
         }
 
         // Windows specific signals (if available)
