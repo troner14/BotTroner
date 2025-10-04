@@ -58,7 +58,7 @@ export class CommandsLoader extends BaseLoader {
         return true;
     }
 
-    private async RegisterCommands(guildId: string): Promise<void> {
+    public async RegisterCommands(guildId: string): Promise<void> {
         const guild = await this.#client.guilds.fetch(guildId).catch(() => null);
         if (!guild) {
             this.logger.error(`Guild with ID ${guildId} not found.`);
@@ -78,7 +78,6 @@ export class CommandsLoader extends BaseLoader {
         const start = performance.now();
         const files = getFiles("commands");
         
-        // Use Prisma's standard query methods instead of raw SQL for better compatibility
         const guildsCommandsRaw = await this.#client.prisma.guilds_commandos.findMany({
             where: {
                 enabled: true
@@ -89,7 +88,7 @@ export class CommandsLoader extends BaseLoader {
             }
         });
 
-        // Group commands by guild manually (database-agnostic approach)
+
         const guildsCommandsMap = new Map<string, string[]>();
         guildsCommandsRaw.forEach(record => {
             if (!guildsCommandsMap.has(record.guildId)) {
@@ -123,8 +122,8 @@ export class CommandsLoader extends BaseLoader {
                 }
                 const command: CommandBuilder = commandImport.default;
                 if (this.isValidCommand(file, command)) {                
-                    this.#commands.set(command.name, command);
-                    this.#cacheCommands.set(command.name, file);
+                    if (!this.#commands.has(command.name)) this.#commands.set(command.name, command);
+                    if (!this.#cacheCommands.has(command.name)) this.#cacheCommands.set(command.name, file);
                     if (guildsCommands.length > 0) {
                         guildsCommands.forEach(guild => {
                             if (guild.commands?.has(command.name)) {
@@ -141,12 +140,6 @@ export class CommandsLoader extends BaseLoader {
                 this.logger.error(err, `Error al importar fitxer:  ${file}:`);
             }
         }
-
-        await Promise.all(
-            this.#client.guilds.cache.map(guild => {
-                return this.RegisterCommands(guild.id);
-            })
-        );
         
         const end = performance.now();
         this.logger.info(`Loaded ${files.length} commands in ${(end - start).toFixed(2)}ms`);
