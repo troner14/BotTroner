@@ -2,7 +2,7 @@ import { test, expect, describe, beforeEach, mock } from "bun:test";
 import { CommandsLoader } from "../../src/class/loaders/Commands";
 import { MockClient } from "../mocks/discord.mock";
 import { mockPrisma } from "../mocks/prisma.mock";
-import { CommandBuilder } from "../../src/class/CommandBuilder";
+import { CommandBuilder } from "../../src/class/builders/CommandBuilder";
 
 // Create proper guilds mock
 const mockGuilds = {

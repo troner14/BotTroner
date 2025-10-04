@@ -1,7 +1,7 @@
 import { test, expect, describe, beforeEach, mock } from "bun:test";
 import { CommandHandler } from "../../src/handlers/core/CommandHandler";
 import { MockInteraction } from "../mocks/discord.mock";
-import { CommandBuilder } from "../../src/class/CommandBuilder";
+import { CommandBuilder } from "../../src/class/builders/CommandBuilder";
 
 describe("CommandHandler", () => {
     let commandHandler: CommandHandler;

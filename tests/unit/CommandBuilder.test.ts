@@ -1,5 +1,5 @@
 import { test, expect, describe, beforeEach } from "bun:test";
-import { CommandBuilder } from "../../src/class/CommandBuilder";
+import { CommandBuilder } from "../../src/class/builders/CommandBuilder";
 import type { ChatInputCommandInteraction, AutocompleteInteraction } from "discord.js";
 
 describe("CommandBuilder", () => {

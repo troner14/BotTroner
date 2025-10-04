@@ -1,5 +1,5 @@
 import { test, expect, describe, beforeEach, mock } from "bun:test";
-import { CommandBuilder } from "../../src/class/CommandBuilder";
+import { CommandBuilder } from "../../src/class/builders/CommandBuilder";
 import { CommandHandler } from "../../src/handlers/core/CommandHandler";
 import { MockInteraction } from "../mocks/discord.mock";
 
