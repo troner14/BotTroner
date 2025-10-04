@@ -119,7 +119,7 @@ export abstract class BaseHandler<T extends Interaction = Interaction> {
             // Ejecutar handler principal
             await this.handle(context);
             const end = performance.now();
-            this.logger.info(`Handled interaction in ${(end - start).toFixed(2)} ms`);
+            this.logger.debug(`Handled interaction in ${(end - start).toFixed(2)} ms`);
         } catch (error) {
             await this.handleError(error as Error, context);
         }
