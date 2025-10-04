@@ -136,7 +136,7 @@ export class CommandsLoader extends BaseLoader {
                         });
                     }
                 }
-                this.logger.debug(`commando cargat: ${command.name}`);
+                this.logger.debug(`Loaded command: ${command.name}`);
             } catch (err) {
                 this.logger.error(err, `Error al importar fitxer:  ${file}:`);
             }
