@@ -1,15 +1,15 @@
 {
-  "name": "newbot",
+  "name": "bottroner",
   "version": "1.0.0",
   "description": "Discord bot with modular architecture for public use",
   "module": "src",
   "type": "module",
   "private": true,
   "license": "AGPL-3.0",
-  "author": "Tu Nombre",
+  "author": "Troner14",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tuusuario/newbot.git"
+    "url": "git+https://github.com/troner14/BotTroner.git"
   },
   "keywords": [
     "discord",
