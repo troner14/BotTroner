@@ -21,7 +21,12 @@
   "scripts": {
     "script:folder": "bun run ./scripts/generateListFolderType.ts",
     "script:translation": "bun run ./scripts/generateTranslationTypes.ts",
-    "start": "bun run ."
+    "start": "bun run .",
+    "test": "bun test",
+    "test:watch": "bun test --watch",
+    "test:coverage": "bun test --coverage",
+    "test:unit": "bun test tests/unit",
+    "test:integration": "bun test tests/integration"
   },
   "devDependencies": {
     "@types/bun": "latest",
