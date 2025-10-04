@@ -5,6 +5,7 @@ import type { DefaultArgs } from "generated/prisma/runtime/library";
 import { CommandsLoader } from "./loaders/Commands";
 import { EventsLoader } from "./loaders/events";
 import { ComponentsLoader } from "./loaders/components";
+import { VirtualizationManager } from "./virtualization/VirtualizationManager";
 
 
 export class ExtendedClient extends Client {
@@ -14,6 +15,7 @@ export class ExtendedClient extends Client {
     private commandsLoader: CommandsLoader;
     private eventsLoader: EventsLoader;
     private componentsLoader: ComponentsLoader;
+    private virtualizationManager: VirtualizationManager;
 
     constructor() {
         super({intents: 3276799});
@@ -22,6 +24,7 @@ export class ExtendedClient extends Client {
         this.commandsLoader = new CommandsLoader(this);
         this.eventsLoader = new EventsLoader(this);
         this.componentsLoader = new ComponentsLoader();
+        this.virtualizationManager = new VirtualizationManager(this.#prisma);
     }
 
     get prisma() {
@@ -41,6 +44,9 @@ export class ExtendedClient extends Client {
         this.logger.info("Shutting down...");
         
         try {
+            // Disconnect from virtualization panels
+            await this.virtualizationManager.disconnectAll();
+            this.logger.debug("Virtualization panels disconnected.");
             
             // Disconnect from Prisma
             await this.#prisma.$disconnect();
@@ -70,5 +76,9 @@ export class ExtendedClient extends Client {
 
     get commands() {
         return this.commandsLoader.info;
+    }
+
+    get virtualization() {
+        return this.virtualizationManager;
     }
 }
