@@ -1,5 +1,5 @@
 import { MessageFlags} from "discord.js";
-import { CommandBuilder } from "@class/CommandBuilder";
+import { CommandBuilder } from "@class/builders/CommandBuilder";
 import { _U } from "@src/utils/translate";
 import type { langsKey } from "@dTypes/translationTypes";
 
