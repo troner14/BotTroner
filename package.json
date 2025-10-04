@@ -1,8 +1,23 @@
 {
   "name": "newbot",
+  "version": "1.0.0",
+  "description": "Discord bot with modular architecture for public use",
   "module": "src",
   "type": "module",
   "private": true,
+  "license": "AGPL-3.0",
+  "author": "Tu Nombre",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tuusuario/newbot.git"
+  },
+  "keywords": [
+    "discord",
+    "bot",
+    "typescript",
+    "bun",
+    "prisma"
+  ],
   "scripts": {
     "script:folder": "bun run ./scripts/generateListFolderType.ts",
     "script:translation": "bun run ./scripts/generateTranslationTypes.ts",
