@@ -1,4 +1,5 @@
 import type { ExtendedClient } from "@class/extendClient";
+import { CommandsLoader } from "@src/class/loaders/Commands";
 import { Events, type Guild } from "discord.js";
 
 export const name = Events.GuildCreate;
@@ -59,6 +60,10 @@ export const run = async (guild: Guild, client: ExtendedClient) => {
 
             client.logger.debug(`Habilitados ${commandsToEnable.length} comandos para el servidor ${guild.name}`);
         }
+
+        const loader = new CommandsLoader(client);
+        await loader.load();
+        await loader.RegisterCommands(guild.id);
 
         client.logger.info(`Configuración inicial completada para el servidor: ${guild.name}`);
 
