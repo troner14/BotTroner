@@ -3,11 +3,11 @@ import { Events } from "discord.js"
 
 
 export const name = Events.ClientReady;
-export const once = true;
+export const once = false;
 export const active = true;
 
 export const run = async (client: ExtendedClient) => {
-    client.logger.info(`${client.user?.username} is Ready! ${Date.now()- (client.readyTimestamp ?? 0)} ms`)
+    client.logger.info(`${client.user?.username} is Ready! ${Date.now() - (client.readyTimestamp ?? 0)} ms`)
     
     // Sincronizar comandos nuevos con todas las guilds
     await syncNewCommandsToAllGuilds(client);
