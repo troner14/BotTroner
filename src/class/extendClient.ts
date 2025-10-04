@@ -37,6 +37,31 @@ export class ExtendedClient extends Client {
         }
     }
 
+    async shutdown() {
+        this.logger.info("Shutting down...");
+        
+        try {
+            
+            // Disconnect from Prisma
+            await this.#prisma.$disconnect();
+            this.logger.debug("Prisma disconnected.");
+            
+            // Destroy Discord client connection
+            this.destroy();
+            this.logger.debug("Client destroyed.");
+            
+            // Give some time for cleanup
+            setTimeout(() => {
+                this.logger.debug("Graceful shutdown completed.");
+                process.exit(0);
+            }, 100);
+            
+        } catch (error) {
+            this.logger.error({ error }, "Error during shutdown");
+            process.exit(1);
+        }
+    }
+
     async prepare() {
         await this.commandsLoader.load();
         await this.eventsLoader.load();
