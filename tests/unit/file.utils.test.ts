@@ -75,7 +75,7 @@ describe("File Utils", () => {
             
             fs.existsSync = mockFs.existsSync;
             fs.readdirSync = mockFs.readdirSync;
-            fs.statSync = mockFs.statSync;
+            (fs as any).statSync = mockFs.statSync;
 
             const result = getFiles("commands");
             
@@ -85,7 +85,7 @@ describe("File Utils", () => {
             // Restore
             fs.existsSync = originalExistsSync;
             fs.readdirSync = originalReaddirSync;
-            fs.statSync = originalStatSync;
+            (fs as any).statSync = originalStatSync;
         });
 
         test("should handle directories recursively", () => {
@@ -109,7 +109,7 @@ describe("File Utils", () => {
             
             fs.existsSync = mockFs.existsSync;
             fs.readdirSync = mockFs.readdirSync;
-            fs.statSync = mockFs.statSync;
+            (fs as any).statSync = mockFs.statSync;
 
             const result = getFiles("commands");
             
@@ -119,7 +119,7 @@ describe("File Utils", () => {
             // Restore
             fs.existsSync = originalExistsSync;
             fs.readdirSync = originalReaddirSync;
-            fs.statSync = originalStatSync;
+            (fs as any).statSync = originalStatSync;
         });
 
         test("should respect recursive parameter", () => {
@@ -135,7 +135,7 @@ describe("File Utils", () => {
             
             fs.existsSync = mockFs.existsSync;
             fs.readdirSync = mockFs.readdirSync;
-            fs.statSync = mockFs.statSync;
+            (fs as any).statSync = mockFs.statSync;
 
             const result = getFiles("commands", false);
             
@@ -145,7 +145,7 @@ describe("File Utils", () => {
             // Restore
             fs.existsSync = originalExistsSync;
             fs.readdirSync = originalReaddirSync;
-            fs.statSync = originalStatSync;
+            (fs as any).statSync = originalStatSync;
         });
     });
 });

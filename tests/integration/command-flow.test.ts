@@ -103,7 +103,9 @@ describe("Integration Tests", () => {
 
     describe("Command Builder Validation Integration", () => {
         test("should create complete command with all features", () => {
-            const fullCommand = new CommandBuilder()
+            const fullCommand = new CommandBuilder();
+
+            fullCommand
                 .setName("full-test")
                 .setDescription("Complete test command")
                 .addStringOption(option =>
