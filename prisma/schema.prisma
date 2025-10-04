@@ -1,0 +1,144 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model guilds {
+  id                String    @id @db.VarChar(25)
+  lang              String?   @default("es-es") @db.VarChar(10)
+  TicketChannel     String?   @db.VarChar(30)
+  TicketTranscripts String?   @db.VarChar(30)
+  TicketMsg         String?   @db.VarChar(30)
+  TicketOpinions    String?   @db.VarChar(30)
+  proxmoxLogs       String?   @db.VarChar(30)
+  image             String?   @db.VarChar(250)
+  mail              mail?
+  perfils           perfils[]
+  proxmox           proxmox[]
+}
+
+model guilds_commandos {
+  guildId String  @db.VarChar(50)
+  CommId  String  @db.VarChar(50)
+  enabled Boolean @default(false)
+
+  @@id([guildId, CommId])
+}
+
+model mail {
+  guildId   String  @id @db.VarChar(30)
+  host      String? @db.VarChar(30)
+  port      Int     @default(465)
+  secure    Int     @default(1) @db.TinyInt
+  loginType String  @db.VarChar(50)
+  loginUser String  @default("") @db.VarChar(255)
+  loginPass String  @default("") @db.VarChar(255)
+  guilds    guilds  @relation(fields: [guildId], references: [id], onUpdate: Restrict, map: "FK1_guild")
+}
+
+model perfil_permisos {
+  perfilId Int
+  permId   Int
+  perfils  perfils  @relation(fields: [perfilId], references: [id], onDelete: Cascade, map: "FK1_perfil")
+  permisos permisos @relation(fields: [permId], references: [id], onDelete: Cascade, map: "FK2_perms")
+
+  @@id([perfilId, permId])
+  @@index([permId], map: "FK2_perm")
+}
+
+model perfils {
+  id              Int               @id @default(autoincrement())
+  name            String            @db.VarChar(30)
+  guildId         String            @db.VarChar(30)
+  roleId          String            @db.VarChar(30)
+  perfil_permisos perfil_permisos[]
+  guilds          guilds            @relation(fields: [guildId], references: [id], onDelete: Cascade, map: "FK1_guilds")
+
+  @@index([guildId, name], map: "guildId")
+  @@index([guildId, roleId], map: "guildId_roleId")
+}
+
+model permisos {
+  id              Int               @default(autoincrement())
+  name            String            @db.VarChar(50)
+  Descripcion     String?           @db.VarChar(255)
+  perfil_permisos perfil_permisos[]
+
+  @@id([id])
+}
+
+model proxmox {
+  id            Int             @id @default(autoincrement()) @db.UnsignedInt
+  guildId       String          @db.VarChar(30)
+  name          String?         @db.VarChar(50)
+  url           String          @db.VarChar(50)
+  token         String          @db.VarChar(50)
+  def           Boolean         @default(false)
+  guilds        guilds          @relation(fields: [guildId], references: [id], onDelete: Cascade, map: "guilds_guildId")
+  proxmox_users proxmox_users[]
+
+  @@index([guildId, def], map: "guildId_default")
+}
+
+model proxmox_users {
+  id                  String          @db.VarChar(25)
+  guildId             String          @db.VarChar(25)
+  channelId           String          @db.VarChar(25)
+  msgId               String?         @db.VarChar(30)
+  dedicado            Int             @default(0) @db.UnsignedInt
+  node                String          @db.VarChar(25)
+  vpsid               Int
+  username            String          @db.VarChar(40)
+  usermanager         String?         @db.VarChar(40)
+  email               String?         @db.VarChar(100)
+  proxmox             proxmox         @relation(fields: [dedicado], references: [id], onDelete: Cascade, map: "FK2_dedicado_proxmox")
+
+  @@id([id, guildId, node, vpsid])
+  @@index([dedicado], map: "FK2_dedicado_proxmox")
+  @@index([id], map: "id")
+  @@index([id, dedicado, vpsid], map: "id_dedicado_vpsid")
+  @@index([usermanager], map: "usermanager")
+}
+
+model tickets {
+  id                 Int                @id @default(autoincrement())
+  guildId            String             @db.VarChar(25)
+  channelId          String             @db.VarChar(25)
+  usrId              String             @db.VarChar(25)
+  category           Int
+  transcript         String             @db.Text
+  closed             Boolean            @default(false)
+  CreatedAt          DateTime           @default(now()) @db.Timestamp(0)
+  tickets_categories tickets_categories @relation(fields: [category], references: [id], onUpdate: Restrict, map: "FK1_categorias")
+
+  @@index([category], map: "FK1_categorias")
+  @@index([channelId], map: "channelId")
+  @@index([guildId], map: "guildId")
+  @@index([usrId], map: "usrId")
+}
+
+model tickets_categories {
+  id          Int       @id @default(autoincrement())
+  guildId     String    @db.VarChar(25)
+  name        String    @db.VarChar(30)
+  description String    @db.VarChar(100)
+  CategId     String?   @db.VarChar(25)
+  tickets     tickets[]
+
+  @@index([guildId], map: "guildId")
+}
+
+model traducciones {
+  id    Int    @id @default(autoincrement())
+  lang  String @default("") @db.VarChar(5)
+  key   String @default("") @db.VarChar(255)
+  value String @db.LongText
+
+  @@unique([lang, id], map: "lang")
+  @@index([lang], map: "lang_index")
+}
