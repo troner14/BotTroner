@@ -1,5 +1,5 @@
 import {getFiles} from "@utils/file";
-import type { CommandBuilder } from "@class/CommandBuilder";
+import type { CommandBuilder } from "@class/builders/CommandBuilder";
 import type { ApplicationCommandDataResolvable } from "discord.js";
 import { BaseLoader } from "./base";
 import type { ExtendedClient } from "../extendClient";
