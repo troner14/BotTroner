@@ -11,12 +11,12 @@ export const logger = pino({
                     colorize: true,
                     translateTime: 'SYS:standard'
                 },
-                level: 'debug'
+                level: process.env.LOG_LEVEL || 'debug'
             },
             {
                 target: 'pino/file',
                 options: { destination: './logs/all-logs.log' },
-                level: 'info'
+                level: process.env.LOG_LEVEL || 'debug'
             },
             {
                 target: 'pino/file',
