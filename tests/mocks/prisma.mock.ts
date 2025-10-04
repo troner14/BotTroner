@@ -3,7 +3,11 @@ import { mock } from "bun:test";
 // Mock Prisma Client
 export class MockPrismaClient {
     public guilds_commandos = {
-        findMany: mock().mockResolvedValue([]),
+        findMany: mock().mockResolvedValue([
+            { guildId: "test-guild-1", CommId: "ping" },
+            { guildId: "test-guild-1", CommId: "help" },
+            { guildId: "test-guild-2", CommId: "test" }
+        ]),
         findUnique: mock().mockResolvedValue(null),
         create: mock().mockResolvedValue({}),
         update: mock().mockResolvedValue({}),

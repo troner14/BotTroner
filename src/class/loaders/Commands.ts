@@ -77,7 +77,34 @@ export class CommandsLoader extends BaseLoader {
     public async load(): Promise<void> {
         const start = performance.now();
         const files = getFiles("commands");
-        const guildsCommands = await this.#client.prisma.$queryRaw<commands[]>`SELECT guildId, GROUP_CONCAT(CommId) as CommId FROM guilds_commandos WHERE enabled = 1 GROUP BY guildId;`;
+        
+        // Use Prisma's standard query methods instead of raw SQL for better compatibility
+        const guildsCommandsRaw = await this.#client.prisma.guilds_commandos.findMany({
+            where: {
+                enabled: true
+            },
+            select: {
+                guildId: true,
+                CommId: true
+            }
+        });
+
+        // Group commands by guild manually (database-agnostic approach)
+        const guildsCommandsMap = new Map<string, string[]>();
+        guildsCommandsRaw.forEach(record => {
+            if (!guildsCommandsMap.has(record.guildId)) {
+                guildsCommandsMap.set(record.guildId, []);
+            }
+            guildsCommandsMap.get(record.guildId)!.push(record.CommId);
+        });
+
+        // Convert to the expected format
+        const guildsCommands: commands[] = Array.from(guildsCommandsMap.entries()).map(([guildId, commIds]) => ({
+            guildId,
+            CommId: commIds.join(","),
+            commands: undefined
+        }));
+
         guildsCommands.forEach(guild => {
             const commIdString = guild["CommId"]?.trim();
             if (!commIdString) {
