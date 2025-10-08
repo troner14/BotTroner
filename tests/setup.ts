@@ -10,29 +10,9 @@ beforeAll(() => {
     
     // Set environment variables for testing
     process.env.NODE_ENV = "test";
-    process.env.LOG_LEVEL = process.env.CI ? "error" : "silent";
+    process.env.LOG_LEVEL = "silent";
     process.env.DATABASE_URL = "file::memory:?cache=shared";
     
-    // Configuración específica para CI
-    if (process.env.CI) {
-        console.log("🔧 Running in CI environment - applying CI-specific configurations");
-        // Timeout más largo para CI
-        process.env.TEST_TIMEOUT = "60000";
-        
-        // Configuración más agresiva para CI
-        process.env.NODE_OPTIONS = "--max-old-space-size=4096";
-        
-        // Deshabilitar animaciones y colores
-        process.env.FORCE_COLOR = "0";
-        process.env.NO_COLOR = "1";
-    }
-    
-    // Configuración global para tests
-    (global as any).testConfig = {
-        timeout: process.env.CI ? 60000 : 30000,
-        ci: Boolean(process.env.CI),
-        verbose: process.env.NODE_ENV === "test"
-    };
 });
 
 afterAll(async () => {
@@ -41,19 +21,6 @@ afterAll(async () => {
             testDb.close();
         }
         
-        // Cleanup específico para CI
-        if (process.env.CI) {
-            console.log("🧹 Cleaning up CI environment");
-            // Forzar limpieza de recursos
-            await new Promise(resolve => setTimeout(resolve, 100));
-        }
-        
-        // Forzar salida si estamos en CI
-        if (process.env.CI) {
-            setTimeout(() => {
-                process.exit(0);
-            }, 1000);
-        }
     } catch (error) {
         console.error("Error during cleanup:", error);
         if (process.env.CI) {
