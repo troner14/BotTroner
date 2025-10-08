@@ -1,8 +1,6 @@
 #!/usr/bin/env bun
 // Script específico para ejecutar tests en CI de manera controlada
 
-import { spawn } from "bun";
-
 async function runCITests() {
     console.log("🚀 Starting CI test execution");
     
@@ -11,28 +9,60 @@ async function runCITests() {
     process.env.CI = "true";
     process.env.LOG_LEVEL = "error";
     
+    // Timeout global de emergencia - si pasa de 4 minutos, matar todo
+    const emergencyTimeout = setTimeout(() => {
+        console.log("🚨 Emergency timeout reached! Force killing process...");
+        process.exit(1);
+    }, 240000); // 4 minutos
+    
     try {
-        // Ejecutar tests con timeout
-        const testProcess = spawn({
-            cmd: ["bun", "test", "--coverage", "--timeout", "60000"],
+        console.log("📋 Running tests with 60 second timeout per test...");
+        
+        // Usar Bun.spawn con configuración más estricta
+        const proc = Bun.spawn([
+            "bun", "test", 
+            "--coverage", 
+            "--timeout", "60000",
+            "--bail", "1"  // Parar en el primer error
+        ], {
             env: {
                 ...process.env,
                 NODE_ENV: "test",
                 CI: "true",
-                LOG_LEVEL: "error"
+                LOG_LEVEL: "error",
+                FORCE_COLOR: "0"  // Deshabilitar colores en CI
             },
-            stdio: ["inherit", "inherit", "inherit"]
+            stdio: ["inherit", "pipe", "pipe"]
         });
         
-        // Timeout de seguridad
-        const timeoutId = setTimeout(() => {
-            console.log("⏰ Test timeout reached, terminating...");
-            testProcess.kill();
-            process.exit(1);
-        }, 300000); // 5 minutos
+        let output = "";
+        let errorOutput = "";
         
-        const exitCode = await testProcess.exited;
-        clearTimeout(timeoutId);
+        // Capturar output
+        const decoder = new TextDecoder();
+        
+        if (proc.stdout) {
+            for await (const chunk of proc.stdout) {
+                const text = decoder.decode(chunk);
+                output += text;
+                process.stdout.write(text);
+            }
+        }
+        
+        if (proc.stderr) {
+            for await (const chunk of proc.stderr) {
+                const text = decoder.decode(chunk);
+                errorOutput += text;
+                process.stderr.write(text);
+            }
+        }
+        
+        console.log("⏳ Waiting for test process to complete...");
+        const exitCode = await proc.exited;
+        
+        clearTimeout(emergencyTimeout);
+        
+        console.log(`🏁 Test process completed with exit code: ${exitCode}`);
         
         if (exitCode === 0) {
             console.log("✅ All tests passed successfully");
@@ -40,11 +70,21 @@ async function runCITests() {
             console.log(`❌ Tests failed with exit code: ${exitCode}`);
         }
         
-        process.exit(exitCode);
+        // Forzar salida inmediata
+        setTimeout(() => {
+            console.log("🔚 Force exiting...");
+            process.exit(exitCode);
+        }, 1000);
+        
+        return exitCode;
         
     } catch (error) {
+        clearTimeout(emergencyTimeout);
         console.error("💥 Error running tests:", error);
-        process.exit(1);
+        
+        setTimeout(() => {
+            process.exit(1);
+        }, 500);
     }
 }
 

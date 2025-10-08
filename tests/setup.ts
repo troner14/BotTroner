@@ -10,7 +10,7 @@ beforeAll(() => {
     
     // Set environment variables for testing
     process.env.NODE_ENV = "test";
-    process.env.LOG_LEVEL = "silent";
+    process.env.LOG_LEVEL = process.env.CI ? "error" : "silent";
     process.env.DATABASE_URL = "file::memory:?cache=shared";
     
     // Configuración específica para CI
@@ -18,6 +18,13 @@ beforeAll(() => {
         console.log("🔧 Running in CI environment - applying CI-specific configurations");
         // Timeout más largo para CI
         process.env.TEST_TIMEOUT = "60000";
+        
+        // Configuración más agresiva para CI
+        process.env.NODE_OPTIONS = "--max-old-space-size=4096";
+        
+        // Deshabilitar animaciones y colores
+        process.env.FORCE_COLOR = "0";
+        process.env.NO_COLOR = "1";
     }
     
     // Configuración global para tests

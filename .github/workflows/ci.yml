@@ -32,13 +32,21 @@ jobs:
     - name: Run type checking
       run: bunx tsc --noEmit
 
-    - name: Run tests with coverage
-      run: bun run scripts/ci-test.ts
+    - name: Run tests (basic execution)
+      run: |
+        echo "🚀 Starting basic test execution..."
+        timeout 180s bun test --timeout 30000 || {
+          echo "❌ Tests failed or timed out"
+          exit 1
+        }
+        echo "✅ Tests completed successfully"
       env:
         NODE_ENV: test
         DATABASE_URL: "file:./test.db"
-        LOG_LEVEL: "error"
+        LOG_LEVEL: "error" 
         CI: true
+        FORCE_COLOR: 0
+        NO_COLOR: 1
 
     - name: Upload coverage reports
       uses: codecov/codecov-action@v3
