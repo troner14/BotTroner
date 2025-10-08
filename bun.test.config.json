@@ -3,6 +3,7 @@
     "timeout": 60000,
     "bail": false,
     "verbose": true,
+    "forceExit": true,
     "setupFilesAfterEnv": ["./tests/setup.ts"]
   }
 }

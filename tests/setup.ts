@@ -28,9 +28,30 @@ beforeAll(() => {
     };
 });
 
-afterAll(() => {
-    if (testDb) {
-        testDb.close();
+afterAll(async () => {
+    try {
+        if (testDb) {
+            testDb.close();
+        }
+        
+        // Cleanup específico para CI
+        if (process.env.CI) {
+            console.log("🧹 Cleaning up CI environment");
+            // Forzar limpieza de recursos
+            await new Promise(resolve => setTimeout(resolve, 100));
+        }
+        
+        // Forzar salida si estamos en CI
+        if (process.env.CI) {
+            setTimeout(() => {
+                process.exit(0);
+            }, 1000);
+        }
+    } catch (error) {
+        console.error("Error during cleanup:", error);
+        if (process.env.CI) {
+            process.exit(1);
+        }
     }
 });
 

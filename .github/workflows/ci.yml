@@ -33,11 +33,12 @@ jobs:
       run: bunx tsc --noEmit
 
     - name: Run tests with coverage
-      run: bun test --coverage --timeout 60000
+      run: bun run scripts/ci-test.ts
       env:
         NODE_ENV: test
         DATABASE_URL: "file:./test.db"
         LOG_LEVEL: "error"
+        CI: true
 
     - name: Upload coverage reports
       uses: codecov/codecov-action@v3
