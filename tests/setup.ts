@@ -12,11 +12,20 @@ beforeAll(() => {
     process.env.NODE_ENV = "test";
     process.env.LOG_LEVEL = "silent";
     process.env.DATABASE_URL = "file::memory:?cache=shared";
+    
 });
 
-afterAll(() => {
-    if (testDb) {
-        testDb.close();
+afterAll(async () => {
+    try {
+        if (testDb) {
+            testDb.close();
+        }
+        
+    } catch (error) {
+        console.error("Error during cleanup:", error);
+        if (process.env.CI) {
+            process.exit(1);
+        }
     }
 });
 

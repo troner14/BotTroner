@@ -64,6 +64,11 @@ export class ExtendedClient extends Client {
 
     async prepare() {
         await this.commandsLoader.load();
+        await Promise.all(
+            this.guilds.cache.map(guild => {
+                return this.commandsLoader.RegisterCommands(guild.id);
+            })
+        );
         await this.eventsLoader.load();
         await this.componentsLoader.load();
     }

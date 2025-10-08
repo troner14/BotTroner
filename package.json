@@ -26,7 +26,8 @@
     "test:watch": "bun test --watch",
     "test:coverage": "bun test --coverage",
     "test:unit": "bun test tests/unit",
-    "test:integration": "bun test tests/integration"
+    "test:integration": "bun test tests/integration",
+    "update:db": "prisma db push"
   },
   "devDependencies": {
     "@types/bun": "latest",
