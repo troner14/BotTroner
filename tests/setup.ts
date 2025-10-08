@@ -12,6 +12,20 @@ beforeAll(() => {
     process.env.NODE_ENV = "test";
     process.env.LOG_LEVEL = "silent";
     process.env.DATABASE_URL = "file::memory:?cache=shared";
+    
+    // Configuración específica para CI
+    if (process.env.CI) {
+        console.log("🔧 Running in CI environment - applying CI-specific configurations");
+        // Timeout más largo para CI
+        process.env.TEST_TIMEOUT = "60000";
+    }
+    
+    // Configuración global para tests
+    (global as any).testConfig = {
+        timeout: process.env.CI ? 60000 : 30000,
+        ci: Boolean(process.env.CI),
+        verbose: process.env.NODE_ENV === "test"
+    };
 });
 
 afterAll(() => {

@@ -84,7 +84,8 @@ export const createMockExtendedClient = (
         })
     };
 
-    return {
+    // Mock que previene la carga real de archivos en CI
+    const mockExtendedClient = {
         logger: mockLogger,
         prisma: new MockPrismaClientForGuilds(),
         commands: mockCommands,
@@ -92,8 +93,18 @@ export const createMockExtendedClient = (
             username: "TestBot",
             id: "bot-123"
         },
-        readyTimestamp: Date.now()
+        readyTimestamp: Date.now(),
+        // Prevenir carga real de comandos en tests
+        prepare: mock().mockResolvedValue(undefined),
+        loaderManager: {
+            commands: {
+                info: mockCommands,
+                load: mock().mockResolvedValue(undefined)
+            }
+        }
     };
+
+    return mockExtendedClient;
 };
 
 export { MockPrismaClientForGuilds as mockPrismaForGuilds };

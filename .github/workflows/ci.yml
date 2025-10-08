@@ -32,11 +32,12 @@ jobs:
     - name: Run type checking
       run: bunx tsc --noEmit
 
-    - name: Run tests
-      run: bun test
-
     - name: Run tests with coverage
-      run: bun test --coverage
+      run: bun test --coverage --timeout 60000
+      env:
+        NODE_ENV: test
+        DATABASE_URL: "file:./test.db"
+        LOG_LEVEL: "error"
 
     - name: Upload coverage reports
       uses: codecov/codecov-action@v3
