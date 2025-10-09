@@ -1,4 +1,5 @@
-import type {ExtendedClient} from "@class/extendClient"
+import type { ExtendedClient } from "@class/extendClient"
+import { CommandsLoader } from "@src/class/loaders/Commands";
 import { Events } from "discord.js"
 
 
@@ -8,7 +9,7 @@ export const active = true;
 
 export const run = async (client: ExtendedClient) => {
     client.logger.info(`${client.user?.username} is Ready! ${Date.now() - (client.readyTimestamp ?? 0)} ms`)
-    
+
     // Sincronizar comandos nuevos con todas las guilds
     await syncNewCommandsToAllGuilds(client);
 }
@@ -19,86 +20,136 @@ export const run = async (client: ExtendedClient) => {
 async function syncNewCommandsToAllGuilds(client: ExtendedClient) {
     try {
         client.logger.debug("Iniciando sincronización de comandos...");
-        
+
         // 1. Obtener todos los comandos disponibles actualmente
         const availableCommands = client.commands;
         if (!availableCommands || availableCommands.size === 0) {
             client.logger.warn("No hay comandos disponibles para sincronizar");
             return;
         }
-        
+
         const availableCommandNames = Array.from(availableCommands.keys());
         client.logger.debug(`Comandos disponibles: ${availableCommandNames.join(", ")}`);
-        
-        // 2. Obtener todos los comandos únicos que ya están en la BD
-        const existingCommands = await client.prisma.guilds_commandos.findMany({
-            select: { CommId: true },
-            distinct: ['CommId']
+
+        const exisitingCommandsGuilds = await client.prisma.guilds_commandos.findMany({
+            select: {
+                guildId: true,
+                CommId: true
+            }
         });
-        
-        const existingCommandNames = existingCommands.map(cmd => cmd.CommId);
-        client.logger.debug(`Comandos existentes en BD: ${existingCommandNames.join(", ")}`);
-        
-        // 3. Identificar comandos nuevos
-        const newCommands = availableCommandNames.filter(cmdName => 
-            !existingCommandNames.includes(cmdName)
-        );
-        
-        if (newCommands.length === 0) {
-            client.logger.debug("No hay comandos nuevos para sincronizar");
-            return;
+        const commandsGuilds: { [key: string]: Set<string> } = {};
+
+        for (const entry of exisitingCommandsGuilds) {
+            if (!commandsGuilds[entry.guildId]) {
+                commandsGuilds[entry.guildId] = new Set();
+            }
+            commandsGuilds[entry.guildId]!.add(entry.CommId);
         }
+
+        const CommandsToAddDB: { guildId: string; CommId: string; enabled: boolean }[] = [];
+
+        // Obtener las guilds que actualmente están en el bot
+        const currentGuilds = client.guilds.cache.map(guild => guild.id);
         
-        client.logger.info(`Encontrados ${newCommands.length} comandos nuevos: ${newCommands.join(", ")}`);
-        
-        // 4. Obtener todas las guilds existentes
-        const allGuilds = await client.prisma.guilds.findMany({
-            select: { id: true }
-        });
-        
-        if (allGuilds.length === 0) {
-            client.logger.debug("No hay guilds en la BD para sincronizar");
-            return;
-        }
-        
-        client.logger.debug(`Sincronizando con ${allGuilds.length} guilds`);
-        
-        // 5. Crear entradas para todos los comandos nuevos en todas las guilds
-        const commandsToCreate: { guildId: string; CommId: string; enabled: boolean }[] = [];
-        
-        for (const guild of allGuilds) {
-            for (const commandName of newCommands) {
-                commandsToCreate.push({
-                    guildId: guild.id,
-                    CommId: commandName,
-                    enabled: true // Habilitar por defecto
-                });
+        // Procesar guilds existentes con comandos en DB
+        for (const guildId in commandsGuilds) {
+            if (commandsGuilds.hasOwnProperty(guildId)) {
+                // Solo procesar guilds que actualmente están en el bot
+                if (!currentGuilds.includes(guildId)) {
+                    client.logger.debug(`Saltando guild ${guildId}: no está en el bot actualmente`);
+                    continue;
+                }
+                
+                const commandSet = commandsGuilds[guildId];
+                if (commandSet && commandSet.size > 0) {
+                    availableCommandNames.forEach(cmdName => {
+                        if (!commandSet.has(cmdName)) {
+                            CommandsToAddDB.push({
+                                guildId,
+                                CommId: cmdName,
+                                enabled: true
+                            });
+                        }
+                    });
+                }
             }
         }
         
-        // 6. Insertar todos los comandos nuevos usando transacciones por lotes
-        const batchSize = 100; // Procesar en lotes para evitar timeouts
-        const batches = [];
-        
-        for (let i = 0; i < commandsToCreate.length; i += batchSize) {
-            batches.push(commandsToCreate.slice(i, i + batchSize));
+        const GuildsToCreate = currentGuilds.filter(guildId => !commandsGuilds[guildId]);
+
+        // Procesar guilds nuevas que no tienen comandos en DB
+        for (const guildId of currentGuilds) {
+            if (!commandsGuilds[guildId]) {
+                client.logger.debug(`Guild nueva encontrada: ${guildId}, agregando todos los comandos`);
+                availableCommandNames.forEach(cmdName => {
+                    CommandsToAddDB.push({
+                        guildId,
+                        CommId: cmdName,
+                        enabled: true
+                    });
+                });
+            }
         }
+
+        client.logger.debug(`Guilds nuevas a crear en DB: ${GuildsToCreate.length}`);
+        if (GuildsToCreate.length > 0) {
+            for (const guildId of GuildsToCreate) {
+                await client.prisma.guilds.upsert({
+                    where: { id: guildId },
+                    update: { lang: "es-es" },
+                    create: { id: guildId, lang: "es-es"}
+                })
+            }
+        }
+
+        client.logger.debug(`Comandos a agregar a DB: ${CommandsToAddDB.length}`);
         
-        let totalCreated = 0;
-        for (const batch of batches) {
-            await client.prisma.$transaction(
-                batch.map(cmd =>
-                    client.prisma.guilds_commandos.create({
+        if (CommandsToAddDB.length === 0) {
+            client.logger.info("No se encontraron comandos nuevos para sincronizar");
+            return;
+        }
+
+        // Insertar comandos nuevos usando createMany con skipDuplicates
+        try {
+            const result = await client.prisma.guilds_commandos.createMany({
+                data: CommandsToAddDB,
+                skipDuplicates: true
+            });
+
+            const CommandLoader = CommandsLoader.getInstance();
+
+            const uniqueGuilds = new Set(CommandsToAddDB.map(cmd => cmd.guildId));
+            for (const guildId of uniqueGuilds) {
+                await CommandLoader.refreshGuildCommands(guildId);
+                await CommandLoader.RegisterCommands(guildId);
+            }
+
+                        
+            client.logger.info(`✅ Sincronización completada: ${result.count} comandos nuevos agregados de ${CommandsToAddDB.length} intentados`);
+        } catch (error) {
+            client.logger.error({ error, totalAttempted: CommandsToAddDB.length }, "Error durante la inserción masiva de comandos");
+            
+            // Fallback: intentar inserción individual para identificar problemas específicos
+            let individualSuccesses = 0;
+            for (const cmd of CommandsToAddDB) {
+                try {
+                    await client.prisma.guilds_commandos.create({
                         data: cmd
-                    })
-                )
-            );
-            totalCreated += batch.length;
-            client.logger.debug(`Procesado lote: ${totalCreated}/${commandsToCreate.length} entradas`);
+                    });
+                    individualSuccesses++;
+                } catch (individualError: any) {
+                    if (individualError.code !== 'P2002') {
+                        client.logger.error({ error: individualError, command: cmd }, "Error insertando comando individual");
+                    }
+                    // P2002 (duplicate) se ignora silenciosamente
+                }
+            }
+            
+            if (individualSuccesses > 0) {
+                client.logger.info(`✅ Fallback completado: ${individualSuccesses} comandos insertados individualmente`);
+            }
         }
-        
-        client.logger.info(`✅ Sincronización completada: ${totalCreated} entradas de comandos creadas para ${newCommands.length} comandos nuevos en ${allGuilds.length} guilds`);
-        
+
     } catch (error) {
         client.logger.error({ error }, "Error durante la sincronización de comandos");
     }
