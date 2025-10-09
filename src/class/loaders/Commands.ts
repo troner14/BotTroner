@@ -22,6 +22,13 @@ export class CommandsLoader extends BaseLoader {
         CommandsLoader.singleTone = this;
     }
 
+    public static override getInstance(): CommandsLoader {
+        if (!this.singleTone) {
+            throw new Error("getInstance() must be implemented in the derived class.");
+        }
+        return this.singleTone;
+    };
+
     get info() {
         return this.#commands;
     }
@@ -72,6 +79,29 @@ export class CommandsLoader extends BaseLoader {
         }
         guild.commands.set(commands);
         this.logger.debug(`Registered ${commands.length} commands to guild ${guildId}`);
+    }
+
+    public async refreshGuildCommands(guildId: string): Promise<void> {
+        const guild = await this.#client.guilds.fetch(guildId).catch(() => null);
+        if (!guild) {
+            this.logger.error(`Guild with ID ${guildId} not found.`);
+            throw new Error(`Guild with ID ${guildId} not found.`, { cause: "GuildNotFound" });
+        }
+        this.#guildCommands.delete(guildId);
+        const guildsCommands = await this.#client.prisma.guilds_commandos.findMany({
+            where: {
+                enabled: true,
+                guildId: guildId
+            },
+            select: {
+                CommId: true
+            }
+        });
+
+        if (guildsCommands.length > 0) {
+            const commandSet = new Set(guildsCommands.map(cmd => cmd.CommId));
+            this.#guildCommands.set(guildId, commandSet);
+        }
     }
 
     public async load(): Promise<void> {
