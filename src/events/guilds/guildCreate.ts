@@ -61,8 +61,8 @@ export const run = async (guild: Guild, client: ExtendedClient) => {
             client.logger.debug(`Habilitados ${commandsToEnable.length} comandos para el servidor ${guild.name}`);
         }
 
-        const loader = new CommandsLoader(client);
-        await loader.load();
+        const loader = CommandsLoader.getInstance();
+        await loader.refreshGuildCommands(guild.id);
         await loader.RegisterCommands(guild.id);
 
         client.logger.info(`Configuración inicial completada para el servidor: ${guild.name}`);
