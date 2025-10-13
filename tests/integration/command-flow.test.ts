@@ -1,7 +1,8 @@
-import { test, expect, describe, beforeEach, mock } from "bun:test";
-import { CommandBuilder } from "../../src/class/builders/CommandBuilder";
-import { CommandHandler } from "../../src/handlers/core/CommandHandler";
+import { test, expect, describe } from "bun:test";
+import { CommandBuilder } from "@src/class/builders/CommandBuilder";
+import { CommandHandler } from "@src/handlers/core/CommandHandler";
 import { MockInteraction } from "../mocks/discord.mock";
+import type { ExtendedClient } from "@src/class/extendClient";
 
 describe("Integration Tests", () => {
     describe("Command Flow Integration", () => {
@@ -37,7 +38,7 @@ describe("Integration Tests", () => {
             
             await commandHandler.handle({
                 interaction: mockInteraction as any,
-                client: mockClient
+                client: mockClient as unknown as ExtendedClient
             });
 
             // Verify execution
@@ -88,15 +89,15 @@ describe("Integration Tests", () => {
             const commandHandler = new CommandHandler();
             
             // Should not throw, should handle gracefully
-            await expect(commandHandler.handle({
+            await expect(commandHandler.execute({
                 interaction: mockInteraction as any,
-                client: mockClient
+                client: mockClient as unknown as ExtendedClient
             })).resolves.toBeUndefined();
 
             // Should reply with error message
             expect(mockInteraction.reply).toHaveBeenCalledWith({
-                content: '¡Algo salió mal!',
-                ephemeral: true
+                content: '❌ Ha ocurrido un error inesperado. Por favor, intenta de nuevo más tarde.',
+                flags: 64
             });
         });
     });
@@ -143,13 +144,14 @@ describe("Integration Tests", () => {
             expect(commandData.options).toHaveLength(3);
 
             // Verify options
-            const options = commandData.options!;
-            expect(options[0].name).toBe("required-input");
-            expect(options[0].required).toBe(true);
-            expect(options[1].name).toBe("optional-number");
-            expect(options[1].required).toBe(false);
-            expect(options[2].name).toBe("flag");
-            expect(options[2].required).toBe(false);
+            const options = commandData.options;
+            expect(options).toBeDefined();
+            expect(options && options[0] && options[0].name).toBe("required-input");
+            expect(options && options[0] && options[0].required).toBe(true);
+            expect(options && options[1] && options[1].name).toBe("optional-number");
+            expect(options && options[1] && options[1].required).toBe(false);
+            expect(options && options[2] && options[2].name).toBe("flag");
+            expect(options && options[2] && options[2].required).toBe(false);
 
             // Verify functionality
             expect(fullCommand.enabled).toBe(true);

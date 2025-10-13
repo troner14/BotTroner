@@ -1,6 +1,6 @@
 import { test, expect, describe, beforeEach, afterEach, mock } from "bun:test";
 import fs from "fs";
-import { folderExist, getFiles } from "../../src/utils/file";
+import { folderExist, getFiles } from "@src/utils/file";
 
 // Mock fs module
 const mockFs = {
