@@ -16,11 +16,16 @@ command.runner = async ({client, interaction}) => {
         });
     const discordLang: langsKey = (langquery?.lang as langsKey) ?? "es-es";
     const start = interaction.createdTimestamp;
+    let msg = "";
 
-    const msg = await _U(discordLang, "pingMsg", {
-        clientPing: `${client.ws.ping}`,
-        ping: `${Date.now() - start}`
-    });
+    try {
+        msg = await _U(discordLang, "pingMsg", {
+            clientPing: `${client.ws.ping}`,
+            ping: `${Date.now() - start}`
+        });
+    } catch (err) {
+        msg = `Pong! : ${client.ws.ping}ms. Latencia: ${Date.now() - start}ms`;
+    }
     await interaction.reply({
         content: msg,
         flags: MessageFlags.Ephemeral

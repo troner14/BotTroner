@@ -4,7 +4,7 @@ import logger from "@src/utils/logger";
 export abstract class BaseLoader {
     public logger: Logger;
     #cache: Map<string, string> = new Map();
-    protected static singleTone: BaseLoader | undefined;
+    protected static singleTone: any;
 
     constructor(loaderName: string = "BaseLoader") {
         this.logger = logger.child({module: loaderName});
@@ -16,7 +16,7 @@ export abstract class BaseLoader {
             throw new Error("getInstance() must be implemented in the derived class.");
         }
         return this.singleTone;
-    }
+    };
 
     protected clearCache() {
         this.#cache.forEach((file, name) => {

@@ -1,8 +1,8 @@
 import { test, expect, describe, beforeEach, mock } from "bun:test";
-import { CommandsLoader } from "../../src/class/loaders/Commands";
+import { CommandsLoader } from "@src/class/loaders/Commands";
 import { MockClient } from "../mocks/discord.mock";
 import { mockPrisma } from "../mocks/prisma.mock";
-import { CommandBuilder } from "../../src/class/builders/CommandBuilder";
+import { CommandBuilder } from "@src/class/builders/CommandBuilder";
 
 // Create proper guilds mock
 const mockGuilds = {
@@ -47,12 +47,11 @@ describe("CommandsLoader", () => {
 
     beforeEach(() => {
         // Reset mocks
-        mockPrisma.$queryRaw.mockClear();
-        mockPrisma.$queryRaw.mockResolvedValue([
-            {
-                guildId: "test-guild-1",
-                CommId: "ping,help"
-            }
+        mockPrisma.guilds_commandos.findMany.mockClear();
+        mockPrisma.guilds_commandos.findMany.mockResolvedValue([
+            { guildId: "test-guild-1", CommId: "ping" },
+            { guildId: "test-guild-1", CommId: "help" },
+            { guildId: "test-guild-2", CommId: "test" }
         ]);
         
         mockGuilds.cache.map.mockClear();
@@ -175,22 +174,28 @@ describe("CommandsLoader", () => {
             const originalLoad = commandsLoader.load;
             commandsLoader.load = mock(async () => {
                 // Simulate the database query part
-                await mockPrisma.$queryRaw`SELECT guildId, GROUP_CONCAT(CommId) as CommId FROM guilds_commandos WHERE enabled = 1 GROUP BY guildId;`;
+                await mockPrisma.guilds_commandos.findMany({
+                    where: { enabled: true },
+                    select: { guildId: true, CommId: true }
+                });
             });
 
             await commandsLoader.load();
-            expect(mockPrisma.$queryRaw).toHaveBeenCalled();
+            expect(mockPrisma.guilds_commandos.findMany).toHaveBeenCalled();
 
             commandsLoader.load = originalLoad;
         });
 
         test("should handle empty database result", async () => {
-            mockPrisma.$queryRaw.mockResolvedValue([]);
+            mockPrisma.guilds_commandos.findMany.mockResolvedValue([]);
             
             const originalLoad = commandsLoader.load;
             commandsLoader.load = mock(async () => {
                 // Simulate empty result handling
-                await mockPrisma.$queryRaw`SELECT guildId, GROUP_CONCAT(CommId) as CommId FROM guilds_commandos WHERE enabled = 1 GROUP BY guildId;`;
+                await mockPrisma.guilds_commandos.findMany({
+                    where: { enabled: true },
+                    select: { guildId: true, CommId: true }
+                });
             });
 
             await commandsLoader.load();
@@ -224,7 +229,7 @@ describe("CommandsLoader", () => {
     describe("Integration", () => {
         test("should properly handle database queries", () => {
             // Test that mock database returns expected structure
-            mockPrisma.$queryRaw.mockResolvedValue([
+            mockPrisma.guilds_commandos.findMany.mockResolvedValue([
                 {
                     guildId: "guild-1",
                     CommId: "ping"
@@ -236,8 +241,8 @@ describe("CommandsLoader", () => {
             ]);
 
             // Verify the mock is set up correctly
-            expect(mockPrisma.$queryRaw).toBeDefined();
-            expect(typeof mockPrisma.$queryRaw).toBe('function');
+            expect(mockPrisma.guilds_commandos.findMany).toBeDefined();
+            expect(typeof mockPrisma.guilds_commandos.findMany).toBe('function');
         });
     });
 });

@@ -22,6 +22,13 @@ export class CommandsLoader extends BaseLoader {
         CommandsLoader.singleTone = this;
     }
 
+    public static override getInstance(): CommandsLoader {
+        if (!this.singleTone) {
+            throw new Error("getInstance() must be implemented in the derived class.");
+        }
+        return this.singleTone;
+    };
+
     get info() {
         return this.#commands;
     }
@@ -58,7 +65,7 @@ export class CommandsLoader extends BaseLoader {
         return true;
     }
 
-    private async RegisterCommands(guildId: string): Promise<void> {
+    public async RegisterCommands(guildId: string): Promise<void> {
         const guild = await this.#client.guilds.fetch(guildId).catch(() => null);
         if (!guild) {
             this.logger.error(`Guild with ID ${guildId} not found.`);
@@ -74,11 +81,33 @@ export class CommandsLoader extends BaseLoader {
         this.logger.debug(`Registered ${commands.length} commands to guild ${guildId}`);
     }
 
+    public async refreshGuildCommands(guildId: string): Promise<void> {
+        const guild = await this.#client.guilds.fetch(guildId).catch(() => null);
+        if (!guild) {
+            this.logger.error(`Guild with ID ${guildId} not found.`);
+            throw new Error(`Guild with ID ${guildId} not found.`, { cause: "GuildNotFound" });
+        }
+        this.#guildCommands.delete(guildId);
+        const guildsCommands = await this.#client.prisma.guilds_commandos.findMany({
+            where: {
+                enabled: true,
+                guildId: guildId
+            },
+            select: {
+                CommId: true
+            }
+        });
+
+        if (guildsCommands.length > 0) {
+            const commandSet = new Set(guildsCommands.map(cmd => cmd.CommId));
+            this.#guildCommands.set(guildId, commandSet);
+        }
+    }
+
     public async load(): Promise<void> {
         const start = performance.now();
         const files = getFiles("commands");
         
-        // Use Prisma's standard query methods instead of raw SQL for better compatibility
         const guildsCommandsRaw = await this.#client.prisma.guilds_commandos.findMany({
             where: {
                 enabled: true
@@ -89,7 +118,7 @@ export class CommandsLoader extends BaseLoader {
             }
         });
 
-        // Group commands by guild manually (database-agnostic approach)
+
         const guildsCommandsMap = new Map<string, string[]>();
         guildsCommandsRaw.forEach(record => {
             if (!guildsCommandsMap.has(record.guildId)) {
@@ -123,8 +152,8 @@ export class CommandsLoader extends BaseLoader {
                 }
                 const command: CommandBuilder = commandImport.default;
                 if (this.isValidCommand(file, command)) {                
-                    this.#commands.set(command.name, command);
-                    this.#cacheCommands.set(command.name, file);
+                    if (!this.#commands.has(command.name)) this.#commands.set(command.name, command);
+                    if (!this.#cacheCommands.has(command.name)) this.#cacheCommands.set(command.name, file);
                     if (guildsCommands.length > 0) {
                         guildsCommands.forEach(guild => {
                             if (guild.commands?.has(command.name)) {
@@ -136,17 +165,11 @@ export class CommandsLoader extends BaseLoader {
                         });
                     }
                 }
-                this.logger.debug(`commando cargat: ${command.name}`);
+                this.logger.debug(`Loaded command: ${command.name}`);
             } catch (err) {
                 this.logger.error(err, `Error al importar fitxer:  ${file}:`);
             }
         }
-
-        await Promise.all(
-            this.#client.guilds.cache.map(guild => {
-                return this.RegisterCommands(guild.id);
-            })
-        );
         
         const end = performance.now();
         this.logger.info(`Loaded ${files.length} commands in ${(end - start).toFixed(2)}ms`);
