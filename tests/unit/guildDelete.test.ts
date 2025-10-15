@@ -2,7 +2,7 @@ import { test, expect, describe, beforeEach } from "bun:test";
 import { createMockGuild, createMockExtendedClient, MockPrismaClientForGuilds } from "../mocks/guild-events.mock";
 
 // Import the actual event function
-import { run as guildDeleteRun } from "../../src/events/guilds/GuildDelete";
+import { run as guildDeleteRun } from "@src/events/guilds/guildDelete";
 
 describe("GuildDelete Event", () => {
     let mockClient: any;

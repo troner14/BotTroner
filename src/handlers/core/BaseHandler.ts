@@ -1,5 +1,5 @@
 import type { ExtendedClient } from "@class/extendClient";
-import { AutocompleteInteraction, type Interaction } from "discord.js";
+import { AutocompleteInteraction, MessageFlags, type Interaction } from "discord.js";
 import { logger } from "@utils/logger";
 import type { Logger } from "pino";
 
@@ -91,7 +91,7 @@ export abstract class BaseHandler<T extends Interaction = Interaction> {
             if (!(context.interaction instanceof AutocompleteInteraction) && !context.interaction.replied && !context.interaction.deferred) {
                 await context.interaction.reply({
                     content: "❌ Ha ocurrido un error inesperado. Por favor, intenta de nuevo más tarde.",
-                    ephemeral: true
+                    flags: MessageFlags.Ephemeral
                 });
             }
         } catch (replyError) {

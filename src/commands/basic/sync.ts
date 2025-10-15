@@ -8,8 +8,8 @@ command.setName("sync")
     .setDescription("commando que syncronitza els commands del bot con tus commandos disponibles");
 
 command.runner = async ({client, interaction}) => {
-    const loader = new CommandsLoader(client);
-    await loader.load();
+    const loader = CommandsLoader.getInstance();
+    await loader.refreshGuildCommands(interaction.guildId!);
     await loader.RegisterCommands(interaction.guildId!);
 
     await interaction.reply({

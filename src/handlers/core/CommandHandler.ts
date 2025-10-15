@@ -12,21 +12,12 @@ export class CommandHandler extends BaseHandler<ChatInputCommandInteraction> {
         const { commandName } = interaction;
         const command = commands?.get(commandName);
         if (!command) {
-            await interaction.reply({ content: "El comando no existe o tiene un error.", ephemeral: true });
-            return;
+            throw new Error(`Command ${commandName} not found`);
         }
-        try {
-            await command.runner({
-                interaction,
-                client,
-                args: (interaction as any).options as CommandInteractionOptionResolver
-            });
-        } catch (e) {
-            this.logger.warn(e);
-            await interaction.reply({
-                content: '¡Algo salió mal!',
-                ephemeral: true
-            });
-        }
+        await command.runner({
+            interaction,
+            client,
+            args: (interaction as any).options as CommandInteractionOptionResolver
+        });
     }
 }

@@ -1,7 +1,7 @@
 import { test, expect, describe, beforeEach, mock } from "bun:test";
-import { CommandHandler } from "../../src/handlers/core/CommandHandler";
+import { CommandHandler } from "@src/handlers/core/CommandHandler";
 import { MockInteraction } from "../mocks/discord.mock";
-import { CommandBuilder } from "../../src/class/builders/CommandBuilder";
+import { CommandBuilder } from "@src/class/builders/CommandBuilder";
 
 describe("CommandHandler", () => {
     let commandHandler: CommandHandler;
@@ -65,12 +65,7 @@ describe("CommandHandler", () => {
                 client: mockClient
             };
 
-            await commandHandler.handle(context);
-
-            expect(mockInteraction.reply).toHaveBeenCalledWith({
-                content: "El comando no existe o tiene un error.",
-                ephemeral: true
-            });
+            expect(commandHandler.handle(context)).rejects.toThrow(`Command ${mockInteraction.commandName} not found`);
         });
 
         test("should handle command execution errors", async () => {
@@ -84,11 +79,12 @@ describe("CommandHandler", () => {
                 client: mockClient
             };
 
-            await commandHandler.handle(context);
+            await commandHandler.execute(context)
+            // expect(commandHandler.handle(context)).rejects.toThrow("Test error");
 
             expect(mockInteraction.reply).toHaveBeenCalledWith({
-                content: '¡Algo salió mal!',
-                ephemeral: true
+                content: '❌ Ha ocurrido un error inesperado. Por favor, intenta de nuevo más tarde.',
+                flags: 64
             });
         });
 
@@ -102,12 +98,8 @@ describe("CommandHandler", () => {
                 client: clientWithoutCommands
             };
 
-            await commandHandler.handle(context);
+            expect(commandHandler.handle(context)).rejects.toThrow(`Command test-command not found`);
 
-            expect(mockInteraction.reply).toHaveBeenCalledWith({
-                content: "El comando no existe o tiene un error.",
-                ephemeral: true
-            });
         });
 
         test("should pass correct arguments to command runner", async () => {

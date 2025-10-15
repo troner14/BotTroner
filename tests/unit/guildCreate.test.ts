@@ -2,7 +2,7 @@ import { test, expect, describe, beforeEach, afterEach } from "bun:test";
 import { createMockGuild, createMockExtendedClient, MockPrismaClientForGuilds } from "../mocks/guild-events.mock";
 
 // Import the actual event functions
-import { run as guildCreateRun } from "../../src/events/guilds/guildCreate";
+import { run as guildCreateRun } from "@src/events/guilds/guildCreate";
 
 describe("GuildCreate Event", () => {
     let mockClient: any;
