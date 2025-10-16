@@ -56,9 +56,7 @@ export class ProxmoxProvider extends BaseVirtualizationProvider {
                 throw new Error("No credentials provided");
             }
 
-            // Proxmox utiliza autenticación por token API o usuario/contraseña
             if (this.credentials.type === 'token') {
-                // Para tokens API de Proxmox, no necesitamos hacer login
                 return await this.testTokenAuth();
             } else if (this.credentials.type === 'userpass') {
                 return await this.performLogin();
@@ -77,7 +75,8 @@ export class ProxmoxProvider extends BaseVirtualizationProvider {
             this.logger.info(`Connected to Proxmox ${response.data.version}`);
             return true;
         } catch (error) {
-            this.logger.error({ error }, "Token authentication failed");
+            console.log(error);
+            this.logger.error(error, "Token authentication failed");
             return false;
         }
     }
@@ -131,7 +130,7 @@ export class ProxmoxProvider extends BaseVirtualizationProvider {
 
         if (this.credentials?.type === 'token') {
             const { token } = this.credentials.data;
-            headers['Authorization'] = `PVEAPIToken=${token}`;
+            headers["Authorization"] = `PVEAPIToken=${token}`;
         } else if (this.credentials?.type === 'userpass' && this.ticket) {
             // Verificar si el ticket ha expirado
             if (Date.now() > this.ticketExpiry) {
