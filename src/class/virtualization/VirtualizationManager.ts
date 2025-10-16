@@ -1,4 +1,4 @@
-import type { PrismaClient } from "@prismaClient";
+import type { Prisma, PrismaClient } from "@prismaClient";
 import type { Logger } from "pino";
 import logger from "@utils/logger";
 import type { 
@@ -42,15 +42,15 @@ export class VirtualizationManager {
      */
     async getPanelsByGuild(guildId: string): Promise<ManagerResult<PanelDBConfig[]>> {
         try {
-            const panels = await this.prisma.proxmox.findMany({
-                where: { guildId, def: true }, // Temporal: usar tabla existente
+            const panels = await this.prisma.virtualization_panels.findMany({
+                where: { guildId },
                 select: {
                     id: true,
                     guildId: true,
                     name: true,
-                    url: true,
-                    token: true,
-                    def: true
+                    apiUrl: true,
+                    credentials: true,
+                    isDefault: true
                 }
             });
 
@@ -60,13 +60,10 @@ export class VirtualizationManager {
                 guildId: panel.guildId,
                 name: panel.name || `Proxmox-${panel.id}`,
                 type: 'proxmox',
-                apiUrl: panel.url,
-                credentials: {
-                    type: 'token',
-                    data: { token: panel.token }
-                },
+                apiUrl: panel.apiUrl,
+                credentials: panel.credentials as unknown as PanelCredentials,
                 active: true,
-                isDefault: panel.def
+                isDefault: panel.isDefault
             }));
 
             return {
@@ -83,11 +80,112 @@ export class VirtualizationManager {
     }
 
     /**
+     * Agrega un nuevo panel de virtualización
+     * @param guildId ID del guild
+     * @param name Nombre del panel
+     * @param type Tipo de proveedor (e.g., proxmox)
+     * @param apiUrl URL del API del panel
+     * @param credentials Credenciales para autenticación
+     * @param setAsDefault Si se debe marcar como predeterminado
+     * @returns Resultado con el panel creado o error
+     */
+    async addPanel(
+        guildId: string, 
+        name: string,
+        type: string,
+        apiUrl: string,
+        credentials: PanelCredentials,
+        setAsDefault: boolean = false
+    ): Promise<ManagerResult<PanelDBConfig>> {
+        try {
+            // Validar que el tipo de proveedor es soportado
+            if (!this.providers.has(type)) {
+                return {
+                    success: false,
+                    error: `Unsupported provider type: ${type}`
+                };
+            }
+            // Validar credenciales antes de guardar
+            const validation = await this.validatePanelCredentials(type, apiUrl, credentials);
+            if (!validation.success || !validation.data) {
+                return {
+                    success: false,
+                    error: `Invalid credentials or unable to connect to panel: ${validation.error}`
+                };
+            }
+            // Si se marca como predeterminado, limpiar otros predeterminados
+            if (setAsDefault) {
+                await this.prisma.virtualization_panels.updateMany({
+                    where: { guildId, isDefault: true },
+                    data: { isDefault: false }
+                });
+            }
+            // Guardar en la base de datos
+            const newPanel = await this.prisma.virtualization_panels.create({
+                data: {
+                    guildId,
+                    name,
+                    type,
+                    apiUrl,
+                    credentials: credentials as unknown as Prisma.JsonObject,
+                    isDefault: setAsDefault
+                }
+            });
+            this.logger.info({ guildId, name, type, apiUrl }, "Added new virtualization panel");
+
+            //add to cache and connect
+            await this.connectToPanel(newPanel.id);
+
+            return {
+                success: true,
+                data: {
+                    id: newPanel.id,
+                    guildId: newPanel.guildId,
+                    name: newPanel.name || `Proxmox-${newPanel.id}`,
+                    type: newPanel.type,
+                    apiUrl: newPanel.apiUrl,
+                    credentials: newPanel.credentials as unknown as PanelCredentials,
+                    active: true,
+                    isDefault: newPanel.isDefault
+                }
+            };
+        } catch (error) {
+            this.logger.error({ error, guildId, name, type, apiUrl }, "Failed to add panel");
+            return {
+                success: false,
+                error: (error as Error).message
+            };
+        }
+    }
+
+    /**
+     * Elimina un panel de virtualización
+     *
+     */
+    async removePanel(panelId: number): Promise<ManagerResult<boolean>> {
+        try {
+            await this.disconnectPanel(panelId);
+
+            await this.prisma.virtualization_panels.delete({
+                where: { id: panelId }
+            });
+            this.logger.info({ panelId }, "Removed virtualization panel");
+            return { success: true, data: true };
+        } catch (error) {
+            this.logger.error({ error, panelId }, "Failed to remove panel");
+            return {
+                success: false,
+                error: (error as Error).message
+            };
+        }
+    }
+
+    /**
      * Obtiene un panel específico por ID
      */
     async getPanel(panelId: number): Promise<ManagerResult<PanelDBConfig>> {
         try {
-            const panel = await this.prisma.proxmox.findUnique({
+            const panel = await this.prisma.virtualization_panels.findUnique({
                 where: { id: panelId },
                 include: { guilds: true }
             });
@@ -104,13 +202,10 @@ export class VirtualizationManager {
                 guildId: panel.guildId,
                 name: panel.name || `Proxmox-${panel.id}`,
                 type: 'proxmox',
-                apiUrl: panel.url,
-                credentials: {
-                    type: 'token',
-                    data: { token: panel.token }
-                },
+                apiUrl: panel.apiUrl,
+                credentials: panel.credentials as unknown as PanelCredentials,
                 active: true,
-                isDefault: panel.def
+                isDefault: panel.isDefault
             };
 
             return {
