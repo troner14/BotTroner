@@ -94,10 +94,7 @@ command.setName("vm")
                 .setName("provider")
                 .setDescription("Proveedor de virtualización")
                 .setRequired(true)
-                .addChoices(
-                    { name: "Proxmox", value: "proxmox" },
-                    { name: "Otro (próximamente)", value: "other" }
-                )
+                .setAutocomplete(true)
             )
         )
         .addSubcommand(subcommand => subcommand
@@ -107,11 +104,17 @@ command.setName("vm")
                 .setName("panel-id")
                 .setDescription("ID del panel a eliminar")
                 .setRequired(true)
+                .setAutocomplete(true)
             )
         )
     );
 
 command.runner = async ({ client, interaction, args }) => {
+    await virtualizationHandler(client, interaction);
+};
+
+
+command.autocomplete = async ({ client, interaction, args }) => {
     await virtualizationHandler(client, interaction);
 };
 
