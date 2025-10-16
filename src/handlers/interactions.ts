@@ -1,8 +1,8 @@
 import type { Interaction } from "discord.js";
 import type { ExtendedClient } from "@class/extendClient";
-import { CommandHandler } from "@handlers/core/CommandHandler";
-import { AutocompleteHandler } from "@handlers/core/AutocompleteHandler";
-import { ComponentHandler } from "./core/ComponentHandler";
+import { CommandHandler } from "@handlers/interactions/CommandHandler";
+import { AutocompleteHandler } from "@handlers/interactions/AutocompleteHandler";
+import { ComponentHandler } from "@handlers/interactions/ComponentHandler";
 import { activityLogMiddleware } from "./middlewares/logger";
 
 
