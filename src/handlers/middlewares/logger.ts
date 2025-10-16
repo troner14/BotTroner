@@ -35,6 +35,7 @@ export class ActivityLogMiddleware implements IMiddleware {
             action: 'commandName' in interaction ? interaction.commandName : 
                     'customId' in interaction ? interaction.customId : 
                     (interaction as any).type,
+            arguments: 'options' in interaction ? interaction.options.data : undefined,
             guild: interaction.guildId || 'DM',
             timestamp: new Date().toISOString(),
             id: interaction.id,
