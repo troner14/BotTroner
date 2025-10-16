@@ -1,4 +1,4 @@
-import type { ApplicationCommandDataResolvable, AutocompleteInteraction, CommandInteraction, CommandInteractionOptionResolver, SlashCommandBuilder } from "discord.js"
+import type { ApplicationCommandDataResolvable, AutocompleteInteraction, ChatInputCommandInteraction, CommandInteraction, CommandInteractionOptionResolver, SlashCommandBuilder } from "discord.js"
 import {ExtendedClient} from "@class/extendClient"
 
 
@@ -9,7 +9,7 @@ export interface RegisterCommandsOptions {
 
 export interface RunOptions {
     client: ExtendedClient;
-    interaction: CommandInteraction;
+    interaction: ChatInputCommandInteraction;
     args: CommandInteractionOptionResolver;
 }
 
