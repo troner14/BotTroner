@@ -23,7 +23,7 @@ export class PanelHandler extends BaseHandler<ChatInputCommandInteraction> {
                     return;
                 }
                 if (success && data) {
-                    const panelList = data.map(panel => `**${panel.name}** (ID: ${panel.id}) - ${panel.apiUrl} ${panel.isDefault ? '[Predeterminado]' : ''}`).join("\n");
+                    const panelList = data.map(panel => `**${panel.name}** (${panel.type}) - ${panel.apiUrl} ${panel.isDefault ? '[Predeterminado]' : ''}`).join("\n");
                     await interaction.reply({
                         content: `🖥️ **Paneles de Virtualización:**\n${panelList}`,
                         flags: MessageFlags.Ephemeral
