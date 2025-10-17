@@ -17,6 +17,7 @@ export interface VMSpecs {
 
 export interface VMStatus {
     id: string;
+    node: string;
     name: string;
     status: 'running' | 'stopped' | 'paused' | 'suspended' | 'unknown';
     uptime?: number; // segundos
@@ -26,6 +27,7 @@ export interface VMStatus {
         rx_bytes: number;
         tx_bytes: number;
     };
+    type?: 'kvm' | 'lxc' | 'other';
 }
 
 export interface VMAction {

@@ -147,11 +147,10 @@ export class ProxmoxProvider extends BaseVirtualizationProvider {
         this.validateConnection();
 
         try {
-            // Obtener todos los nodos
             const nodesResponse = await this.makeRequest<{ data: ProxmoxNode[] }>('GET', '/api2/json/nodes');
             const vms: VMStatus[] = [];
 
-            // Para cada nodo, obtener las VMs
+
             for (const node of nodesResponse.data) {
                 try {
                     const nodeVMs = await this.makeRequest<{ data: ProxmoxVM[] }>(
@@ -159,10 +158,16 @@ export class ProxmoxProvider extends BaseVirtualizationProvider {
                         `/api2/json/nodes/${node.node}/qemu`
                     );
 
+                    const nodeLXCs = await this.makeRequest<{ data: ProxmoxVM[] }>(
+                        'GET', 
+                        `/api2/json/nodes/${node.node}/lxc`
+                    );
+
                     for (const vm of nodeVMs.data) {
                         vms.push({
                             id: vm.vmid.toString(),
                             name: vm.name || `VM-${vm.vmid}`,
+                            node: node.node,
                             status: this.mapProxmoxStatus(vm.status),
                             uptime: vm.uptime,
                             cpu_usage: vm.cpu ? vm.cpu * 100 : undefined,
@@ -170,7 +175,25 @@ export class ProxmoxProvider extends BaseVirtualizationProvider {
                             network_traffic: {
                                 rx_bytes: vm.netin || 0,
                                 tx_bytes: vm.netout || 0
-                            }
+                            },
+                            type: 'kvm'
+                        });
+                    }
+
+                    for (const lxc of nodeLXCs.data) {
+                        vms.push({
+                            id: lxc.vmid.toString(),
+                            node: node.node,
+                            name: lxc.name || `LXC-${lxc.vmid}`,
+                            status: this.mapProxmoxStatus(lxc.status),
+                            uptime: lxc.uptime,
+                            cpu_usage: lxc.cpu ? lxc.cpu * 100 : undefined,
+                            memory_usage: lxc.mem,
+                            network_traffic: {
+                                rx_bytes: lxc.netin || 0,
+                                tx_bytes: lxc.netout || 0
+                            },
+                            type: 'lxc'
                         });
                     }
                 } catch (error) {
@@ -203,6 +226,7 @@ export class ProxmoxProvider extends BaseVirtualizationProvider {
                     const vm = vmResponse.data;
                     return {
                         id: vm.vmid.toString(),
+                        node: node.node,
                         name: vm.name || `VM-${vm.vmid}`,
                         status: this.mapProxmoxStatus(vm.status),
                         uptime: vm.uptime,
