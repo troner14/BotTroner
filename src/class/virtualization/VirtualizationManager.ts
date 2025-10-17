@@ -201,7 +201,7 @@ export class VirtualizationManager {
                 id: panel.id,
                 guildId: panel.guildId,
                 name: panel.name || `Proxmox-${panel.id}`,
-                type: 'proxmox',
+                type: panel.type,
                 apiUrl: panel.apiUrl,
                 credentials: panel.credentials as unknown as PanelCredentials,
                 active: true,
