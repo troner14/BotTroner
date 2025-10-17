@@ -1,8 +1,8 @@
-import { MessageFlags, type AutocompleteInteraction } from "discord.js";
+import { type AutocompleteInteraction } from "discord.js";
 import { BaseHandler, type HandlerContext } from "../core/BaseHandler";
 
 
-export class PanelAutocompleteHandler extends BaseHandler<AutocompleteInteraction> {
+export class AutocompleteHandler extends BaseHandler<AutocompleteInteraction> {
     constructor() {
         super("PanelAutocomplete");
     }
@@ -14,9 +14,7 @@ export class PanelAutocompleteHandler extends BaseHandler<AutocompleteInteractio
         const focusedOption = args.getFocused(true);
         const vmManager = client.virtualization;
 
-        console.log("Handling autocomplete for command:", command, "focused option:", focusedOption);
-
-        if (command === "delete" && focusedOption.name === "panel-id") {
+        if (focusedOption.name === "panel-id") {
             const { success, data } = await vmManager.getPanelsByGuild(interaction.guildId!);
             if (success && data) {
                 const choices = data.map(panel => ({ name: `${panel.name} (ID: ${panel.id})`, value: panel.id }));

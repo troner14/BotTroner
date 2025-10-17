@@ -15,6 +15,7 @@ command.setName("vm")
                     .setName("panel")
                     .setDescription("ID del panel de virtualización")
                     .setRequired(false)
+                    .setAutocomplete(true)
             )
     )
     .addSubcommand(subcommand =>
@@ -26,12 +27,14 @@ command.setName("vm")
                     .setName("panel")
                     .setDescription("ID del panel de virtualización")
                     .setRequired(true)
+                    .setAutocomplete(true)
             )
             .addStringOption(option =>
                 option
                     .setName("vm-id")
                     .setDescription("ID de la máquina virtual")
                     .setRequired(true)
+                    .setAutocomplete(true)
             )
     )
     .addSubcommand(subcommand =>
@@ -43,12 +46,14 @@ command.setName("vm")
                     .setName("panel")
                     .setDescription("ID del panel de virtualización")
                     .setRequired(true)
+                    .setAutocomplete(true)
             )
             .addStringOption(option =>
                 option
                     .setName("vm-id")
                     .setDescription("ID de la máquina virtual")
                     .setRequired(true)
+                    .setAutocomplete(true)
             )
             .addStringOption(option =>
                 option
@@ -101,7 +106,7 @@ command.setName("vm")
             .setName("delete")
             .setDescription("Eliminar un panel de virtualización")
             .addIntegerOption(option => option
-                .setName("panel-id")
+                .setName("panel")
                 .setDescription("ID del panel a eliminar")
                 .setRequired(true)
                 .setAutocomplete(true)
