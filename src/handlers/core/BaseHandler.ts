@@ -47,7 +47,6 @@ export abstract class BaseHandler<T extends Interaction = Interaction> {
             try {
                 const result = await middleware.execute(context);
                 if (result && !result.success) {
-                    this.logger.warn(`Middleware ${middleware.name} failed: ${result.error?.message}`);
                     return false;
                 }
             } catch (error) {
