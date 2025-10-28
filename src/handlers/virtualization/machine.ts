@@ -103,7 +103,7 @@ export class MachineHandler extends BaseHandler<ChatInputCommandInteraction> {
                         const statusEmoji = vm.status === 'running' ? '🟢' : '🔴';
                         embed.addFields({ 
                             name: `${statusEmoji} ${vm.name}`, 
-                            value: `**Node:**${vm.node}\n**ID:** ${vm.id}\n**Tipo:** ${vm.type}\n**Estado:** ${vm.status}`,
+                            value: `**Node:** ${vm.node}\n**ID:** ${vm.id}\n**Tipo:** ${vm.type}\n**Estado:** ${vm.status}`,
                             inline: true,
                         });
                     });
