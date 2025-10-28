@@ -1,6 +1,6 @@
 import { BaseHandler, type HandlerContext } from "@handlers/core/BaseHandler";
 import { Paginator } from "@src/class/utils/Paginator";
-import type { ManagerResult, VMStatus } from "@src/class/virtualization/interfaces/IVirtualizationProvider";
+import type { ManagerResult, VMAction, VMStatus } from "@src/class/virtualization/interfaces/IVirtualizationProvider";
 import type { VirtualizationManager } from "@src/class/virtualization/VirtualizationManager";
 import { ActionRowBuilder, ButtonBuilder, ButtonInteraction, ButtonStyle, EmbedBuilder, MessageFlags, type ChatInputCommandInteraction, type InteractionReplyOptions } from "discord.js";
 
@@ -30,7 +30,7 @@ export class MachineHandler extends BaseHandler<ChatInputCommandInteraction> {
                     if (!data) {
                         data = res.data as VMStatus[];
                     } else {
-                        data.concat(res.data as VMStatus[]);
+                        data = data.concat(res.data as VMStatus[]);
                     }
                 }
             }
@@ -40,6 +40,14 @@ export class MachineHandler extends BaseHandler<ChatInputCommandInteraction> {
             error = res.error;
             data = res.data as VMStatus[];
         }
+
+        data?.sort((a, b) => {
+            const nom = a.node.localeCompare(b.node);
+
+            if (nom !== 0) return nom;
+
+            return parseInt(a.id) - parseInt(b.id);
+        });
         
         if (success && data?.length === 0) {
             return {
@@ -50,7 +58,7 @@ export class MachineHandler extends BaseHandler<ChatInputCommandInteraction> {
         if (success && data) {
             return {
                 success: true,
-                data: data.sort((a, b) => parseInt(a.id) - parseInt(b.id))
+                data: data
             };
         } else {
             return {
@@ -123,6 +131,56 @@ export class MachineHandler extends BaseHandler<ChatInputCommandInteraction> {
                     }
                 });
 
+                break;
+            case "status":
+                const panelId = args.getInteger("panel", true);
+                const vmId = args.getString("vm-id", true);
+
+                const statusRes = await vmManager.getVM(panelId, vmId);
+                const embed = new EmbedBuilder()
+                    .setTitle(`🖥️ Estado de la Máquina Virtual ${vmId}`)
+                    .setColor(0x0099ff);
+                if (!statusRes.success || !statusRes.data) {
+                    embed.setDescription(`Error al obtener el estado de la máquina virtual: ${statusRes.error}`);
+                } else {
+                    const vm = statusRes.data;
+                    const statusEmoji = vm.status === 'running' ? '🟢' : '🔴';
+                    embed.addFields(
+                        { name: 'Nombre', value: vm.name, inline: true },
+                        { name: 'ID', value: vm.id, inline: true },
+                        { name: 'Node', value: vm.node, inline: true },
+                        { name: 'Tipo', value: `${vm.type}`, inline: true },
+                        { name: 'Estado', value: `${statusEmoji} ${vm.status}`, inline: true },
+                        { name: 'Uso de CPU', value: `${vm.cpu_usage} %`, inline: true },
+                        { name: 'Uso de Memoria', value: `${vm.memory_usage} MB`, inline: true }
+                    );
+                }
+
+                await interaction.reply({
+                    embeds: [embed],
+                    flags: MessageFlags.Ephemeral
+                });
+                break;
+            case "action":
+                const actionPanelId = args.getInteger("panel", true);
+                const actionVmId = args.getString("vm-id", true);
+                const action = args.getString("action", true) as VMAction["type"];
+                const actionRes = await vmManager.executeVMAction(actionPanelId, {
+                    type: action,
+                    vmId: actionVmId
+                }, interaction.user.id);
+
+                if (actionRes.success) {
+                    await interaction.reply({
+                        content: `✅ Acción '${action}' ejecutada correctamente en la máquina virtual ${actionVmId}.`,
+                        flags: MessageFlags.Ephemeral
+                    });
+                } else {
+                    await interaction.reply({
+                        content: `❌ Error al ejecutar la acción '${action}' en la máquina virtual ${actionVmId}: ${actionRes.error}`,
+                        flags: MessageFlags.Ephemeral
+                    });
+                }
                 break;
         }
 

@@ -78,6 +78,16 @@ command.setName("vm")
             .setDescription("Listar todos los paneles de virtualización")
         )
         .addSubcommand(subcommand => subcommand
+            .setName("info")
+            .setDescription("Ver información de un panel de virtualización")
+            .addIntegerOption(option => option
+                .setName("panel")
+                .setDescription("ID del panel a consultar")
+                .setRequired(true)
+                .setAutocomplete(true)
+            )
+        )
+        .addSubcommand(subcommand => subcommand
             .setName("new")
             .setDescription("Crear un nuevo panel de virtualización")
             .addStringOption(option => option
