@@ -44,11 +44,11 @@ export class PanelHandler extends BaseHandler<ChatInputCommandInteraction> {
 
                     for (const node of info.nodes) {
                         const resources = node.resources;
-                        const uptimeDais = Math.floor(resources.uptime / 86400);
+                        const uptimeDays = Math.floor(resources.uptime / 86400);
                         const uptimeHours = Math.floor((resources.uptime % 86400) / 3600);
                         const uptimeMinutes = Math.floor((resources.uptime % 3600) / 60);
                         const uptimeSeconds = resources.uptime % 60;
-                        resources.uptime = `${uptimeDais}d ${uptimeHours}h ${uptimeMinutes}m ${uptimeSeconds}s`;
+                        resources.uptime = `${uptimeDays}d ${uptimeHours}h ${uptimeMinutes}m ${uptimeSeconds}s`;
                         embed.addFields(
                             { name: `Nodo: ${node.name}`, value: `CPU: ${resources.cpu.used.toFixed(3)} de ${resources.cpu.total} Cores\nMemoria: ${(resources.memory.used/1024).toFixed(2)}/${(resources.memory.total/1024).toFixed(2)} GB\nUpTime: ${resources.uptime}`, inline: false }
                         );
