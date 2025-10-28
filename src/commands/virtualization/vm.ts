@@ -134,14 +134,4 @@ command.autocomplete = async ({ client, interaction, args }) => {
 };
 
 
-function getStatusEmoji(status: VMStatus['status']): string {
-    switch (status) {
-        case 'running': return '🟢';
-        case 'stopped': return '🔴';
-        case 'paused': return '🟡';
-        case 'suspended': return '🟠';
-        default: return '⚪';
-    }
-}
-
 export default command;
