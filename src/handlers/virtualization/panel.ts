@@ -86,7 +86,7 @@ export class PanelHandler extends BaseHandler<ChatInputCommandInteraction> {
                 }
                 break;
             case "delete":
-                const panelId_dev = args.getInteger("panel-id", true);
+                const panelId_dev = args.getInteger("panel", true);
                 const deleteResult = await vmManager.removePanel(panelId_dev);
                 if (deleteResult.success) {
                     await interaction.reply({
