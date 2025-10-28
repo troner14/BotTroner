@@ -50,7 +50,7 @@ export class VirtualizationManager {
                     name: true,
                     apiUrl: true,
                     credentials: true,
-                    isDefault: true
+                    isDefault: true,
                 }
             });
 
@@ -226,19 +226,16 @@ export class VirtualizationManager {
      */
     async connectToPanel(panelId: number): Promise<ManagerResult<IVirtualizationProvider>> {
         try {
-            // Verificar si ya está conectado
             if (this.panelProviders.has(panelId)) {
                 const provider = this.panelProviders.get(panelId)!;
                 const isConnected = await provider.testConnection();
                 if (isConnected) {
-                    return { success: true, data: provider };
+                    return { success: true, data: provider, provider: provider.type };
                 } else {
-                    // Limpiar conexión inválida
                     this.panelProviders.delete(panelId);
                 }
             }
 
-            // Obtener configuración del panel
             const panelResult = await this.getPanel(panelId);
             if (!panelResult.success || !panelResult.data) {
                 return { success: false, error: panelResult.error };
