@@ -45,6 +45,7 @@ export class ProxmoxProvider extends BaseVirtualizationProvider {
     private ticket: string = "";
     private csrfToken: string = "";
     private ticketExpiry: number = 0;
+    private vms = new Map<string, string>();
 
     constructor() {
         super("Proxmox Virtual Environment", "proxmox", "8.x");
@@ -144,6 +145,7 @@ export class ProxmoxProvider extends BaseVirtualizationProvider {
     }
 
     async listVMs(): Promise<VMStatus[]> {
+
         this.validateConnection();
 
         try {
@@ -164,6 +166,7 @@ export class ProxmoxProvider extends BaseVirtualizationProvider {
                     );
 
                     for (const vm of nodeVMs.data) {
+                        this.vms.set(vm.vmid.toString(), 'qemu');
                         vms.push({
                             id: vm.vmid.toString(),
                             name: vm.name || `VM-${vm.vmid}`,
@@ -181,6 +184,7 @@ export class ProxmoxProvider extends BaseVirtualizationProvider {
                     }
 
                     for (const lxc of nodeLXCs.data) {
+                        this.vms.set(lxc.vmid.toString(), 'lxc');
                         vms.push({
                             id: lxc.vmid.toString(),
                             node: node.node,
@@ -215,18 +219,24 @@ export class ProxmoxProvider extends BaseVirtualizationProvider {
         try {
             // Primero encontrar en qué nodo está la VM
             const nodes = await this.makeRequest<{ data: ProxmoxNode[] }>('GET', '/api2/json/nodes');
+
+            if (!this.vms.has(vmId)) {
+                await this.listVMs();
+            }
             
             for (const node of nodes.data) {
                 try {
+                    const vmType = this.vms.get(vmId) || 'qemu';
                     const vmResponse = await this.makeRequest<{ data: ProxmoxVM }>(
                         'GET', 
-                        `/api2/json/nodes/${node.node}/qemu/${vmId}/status/current`
+                        `/api2/json/nodes/${node.node}/${vmType}/${vmId}/status/current`
                     );
 
                     const vm = vmResponse.data;
                     return {
                         id: vm.vmid.toString(),
                         node: node.node,
+                        type: vmType === 'qemu' ? 'kvm' : 'lxc',
                         name: vm.name || `VM-${vm.vmid}`,
                         status: this.mapProxmoxStatus(vm.status),
                         uptime: vm.uptime,
@@ -238,7 +248,6 @@ export class ProxmoxProvider extends BaseVirtualizationProvider {
                         }
                     };
                 } catch {
-                    // VM no está en este nodo, continuar
                     continue;
                 }
             }
@@ -265,12 +274,16 @@ export class ProxmoxProvider extends BaseVirtualizationProvider {
             }
 
             const proxmoxAction = this.mapActionToProxmox(action.type);
-            const endpoint = `/api2/json/nodes/${node}/qemu/${action.vmId}/status/${proxmoxAction}`;
+            const vmType = this.vms.get(action.vmId) || 'qemu';
+            const endpoint = `/api2/json/nodes/${node}/${vmType}/${action.vmId}/status/${proxmoxAction}`;
 
             const response = await this.makeRequest<{ data: string }>(
                 'POST', 
-                endpoint, 
-                action.options
+                endpoint,
+                action.options,
+                {
+                    ["Content-Type"]: "application/x-www-form-urlencoded"
+                }
             );
 
             return {
@@ -280,7 +293,7 @@ export class ProxmoxProvider extends BaseVirtualizationProvider {
                 metadata: { node, action: proxmoxAction }
             };
         } catch (error) {
-            this.logger.error({ error, action }, "Failed to execute action");
+            this.logger.error({ err: error, action }, "Failed to execute action");
             return {
                 success: false,
                 message: `Failed to execute ${action.type} on VM ${action.vmId}`,
@@ -305,7 +318,7 @@ export class ProxmoxProvider extends BaseVirtualizationProvider {
                     status: node.status,
                     resources: {
                         cpu: { used: node.cpu, total: node.maxcpu },
-                        memory: { used: node.mem, total: node.maxmem },
+                        memory: { used: ((node.mem/1024)/1024).toFixed(2), total: ((node.maxmem/1024)/1024).toFixed(2) },
                         uptime: node.uptime
                     }
                 })),
@@ -417,10 +430,15 @@ export class ProxmoxProvider extends BaseVirtualizationProvider {
     private async findVMNode(vmId: string): Promise<string | null> {
         try {
             const nodes = await this.makeRequest<{ data: ProxmoxNode[] }>('GET', '/api2/json/nodes');
+
+            if (!this.vms.has(vmId)) {
+                await this.listVMs();
+            }
             
             for (const node of nodes.data) {
                 try {
-                    await this.makeRequest<any>('GET', `/api2/json/nodes/${node.node}/qemu/${vmId}/status/current`);
+                    const vmType = this.vms.get(vmId) || 'qemu';
+                    await this.makeRequest<any>('GET', `/api2/json/nodes/${node.node}/${vmType}/${vmId}/status/current`);
                     return node.node;
                 } catch {
                     continue;
