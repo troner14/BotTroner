@@ -10,7 +10,7 @@ export class Paginator<T> {
     constructor(items: T[], itemsPerPage: number = 10) {
         this.items = items;
         this.itemsPerPage = itemsPerPage;
-        this.sessionId = `paginator_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+        this.sessionId = `paginator_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`;
     }
 
     getPageData() {
