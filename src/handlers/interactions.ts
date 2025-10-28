@@ -1,15 +1,17 @@
 import type { Interaction } from "discord.js";
 import type { ExtendedClient } from "@class/extendClient";
-import { CommandHandler } from "@handlers/core/CommandHandler";
-import { AutocompleteHandler } from "@handlers/core/AutocompleteHandler";
-import { ComponentHandler } from "./core/ComponentHandler";
+import { CommandHandler } from "@handlers/interactions/CommandHandler";
+import { AutocompleteHandler } from "@handlers/interactions/AutocompleteHandler";
+import { ComponentHandler } from "@handlers/interactions/ComponentHandler";
 import { activityLogMiddleware } from "./middlewares/logger";
+import { ignoreComponentsMiddleware } from "./middlewares/ignoreComponents";
 
 
 // Instancias de handlers
 const commandHandler = new CommandHandler()
     .use(activityLogMiddleware);
 const buttonHandler = new ComponentHandler({ type: "button", clientKey: "button" })
+	.use(ignoreComponentsMiddleware)
     .use(activityLogMiddleware);
 const selectMenuHandler = new ComponentHandler({ type: "selectmenu", clientKey: "selectmenu" })
     .use(activityLogMiddleware);
