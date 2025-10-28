@@ -152,7 +152,7 @@ export abstract class BaseVirtualizationProvider implements IVirtualizationProvi
         this.logger.debug(`Making ${method} request to ${url}`);
 
         const response = await fetch(url, requestOptions);
-        
+
         if (!response.ok) {
             const errorText = await response.text();
             throw new Error(`HTTP ${response.status}: ${errorText}`);
