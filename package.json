@@ -21,6 +21,7 @@
   "scripts": {
     "script:folder": "bun run ./scripts/generateListFolderType.ts",
     "script:translation": "bun run ./scripts/generateTranslationTypes.ts",
+    "script:permissions": "bun run ./scripts/generatePermsIdTypes.ts", 
     "start": "bun run .",
     "test": "bun test",
     "test:watch": "bun test --watch",
@@ -31,6 +32,7 @@
   },
   "devDependencies": {
     "@types/bun": "latest",
+    "@types/html-minifier-terser": "^7.0.2",
     "pino-pretty": "^13.1.2"
   },
   "peerDependencies": {
@@ -40,6 +42,7 @@
     "@prisma/client": "^6.17.1",
     "discord.js": "^14.23.2",
     "dotenv": "^17.2.3",
+    "html-minifier-terser": "^7.2.0",
     "pino": "^10.1.0",
     "prisma": "^6.17.1",
     "winston": "^3.18.3"
