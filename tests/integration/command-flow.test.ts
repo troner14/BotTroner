@@ -1,6 +1,6 @@
 import { test, expect, describe } from "bun:test";
 import { CommandBuilder } from "@src/class/builders/CommandBuilder";
-import { CommandHandler } from "@src/handlers/core/CommandHandler";
+import { CommandHandler } from "@src/handlers/interactions/CommandHandler";
 import { MockInteraction } from "../mocks/discord.mock";
 import type { ExtendedClient } from "@src/class/extendClient";
 
