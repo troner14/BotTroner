@@ -10,7 +10,7 @@ import { HavePerms } from "@src/utils/perms";
 const permission = PermissionsBitField.Flags;
 
 class Tickets {
-    readonly #logs = logger.child({ module: "ExtendedClient" });
+    readonly #logs = logger.child({ module: "Tickets" });
     readonly #client: ExtendedClient;
     readonly #transcripter: Transcripter
 
