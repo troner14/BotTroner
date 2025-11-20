@@ -132,11 +132,11 @@ command
     );
 
 
-command.runner = async ({client, interaction, args}: RunOptions) => {
+command.runner = async ({client, interaction}: RunOptions) => {
     await handleTickets(interaction, client);
 }
 
-command.autocomplete = async ({interaction, client, args}: autocomplete_type) => {
+command.autocomplete = async ({interaction, client}: autocomplete_type) => {
     await handleTickets(interaction, client);
 }
 

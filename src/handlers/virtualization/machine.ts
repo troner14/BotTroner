@@ -2,7 +2,7 @@ import { BaseHandler, type HandlerContext } from "@handlers/core/BaseHandler";
 import { Paginator } from "@src/class/utils/Paginator";
 import type { ManagerResult, VMAction, VMStatus } from "@src/class/virtualization/interfaces/IVirtualizationProvider";
 import type { VirtualizationManager } from "@src/class/virtualization/VirtualizationManager";
-import { ButtonInteraction, EmbedBuilder, MessageFlags, type ChatInputCommandInteraction, type InteractionReplyOptions } from "discord.js";
+import { ButtonInteraction, EmbedBuilder, MessageFlags, type ChatInputCommandInteraction } from "discord.js";
 
 export class MachineHandler extends BaseHandler<ChatInputCommandInteraction> {
     constructor() {

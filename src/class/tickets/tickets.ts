@@ -122,7 +122,7 @@ class Tickets {
             if (name) data.name = name;
             if (description) data.description = description;
             if (categoryId) data.CategId = categoryId;
-            const result = await this.#client.prisma.tickets_categories.update({
+            await this.#client.prisma.tickets_categories.update({
                 where: { id: categId },
                 data: data
             });
@@ -138,7 +138,7 @@ class Tickets {
             throw new TicketsErrors("ticketCategoryError");
         }
 
-        const { tickets, tickets_categories, permisos, perfil_permisos, guilds } = client.prisma;
+        const { tickets, tickets_categories, perfil_permisos, guilds } = client.prisma;
         const nTickets = await tickets.count({
             where: {
                 usrId: interaction.user.id,
