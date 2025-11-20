@@ -1,6 +1,6 @@
 import logger from "@src/utils/logger";
 import { Client } from "discord.js";
-import { PrismaClient } from '@prismaClient';
+import { prisma } from "@class/prismaClient";
 import { CommandsLoader } from "./loaders/Commands";
 import { EventsLoader } from "./loaders/events";
 import { ComponentsLoader } from "./loaders/components";
@@ -10,7 +10,7 @@ import Tickets from "./tickets/tickets";
 
 export class ExtendedClient extends Client {
     logger = logger.child({module: "ExtendedClient"});
-    #prisma: PrismaClient;
+    #prisma: typeof prisma;
 
     private commandsLoader: CommandsLoader;
     private eventsLoader: EventsLoader;
@@ -20,7 +20,7 @@ export class ExtendedClient extends Client {
 
     constructor() {
         super({intents: 3276799});
-        this.#prisma = new PrismaClient();
+        this.#prisma = prisma;
         
         this.commandsLoader = new CommandsLoader(this);
         this.eventsLoader = new EventsLoader(this);
@@ -87,6 +87,22 @@ export class ExtendedClient extends Client {
 
     get commands() {
         return this.commandsLoader.info;
+    }
+
+    get components() {
+        return this.componentsLoader.info;
+    }
+
+    get buttons() {
+        return this.componentsLoader.buttons;
+    }
+
+    get modals() {
+        return this.componentsLoader.modals;
+    }
+
+    get selectMenus() {
+        return this.componentsLoader.selectMenus;
     }
 
     get virtualization() {

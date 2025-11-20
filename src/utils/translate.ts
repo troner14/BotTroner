@@ -1,12 +1,12 @@
 // import { traducciones } from '../database/models/traducciones';
 import type {langsKey, TranslationKey, TranslationVariables} from "@dTypes/translationTypes";
-import { PrismaClient } from "@prismaClient";
+import { prisma } from "@class/prismaClient";
 
 
 type TranslationCache = Map<string, Map<string, string>>;
 
 const translationCache: TranslationCache = new Map();
-const pclient = new PrismaClient();
+const pclient = prisma;
 
 /**
  * Fetches a translation from the database, caches it, and replaces variables.
