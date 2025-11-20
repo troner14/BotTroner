@@ -7,7 +7,7 @@ export const data: selMenuType["data"] = {
 
 export const type: selMenuType["type"] = "selectmenu";
 
-export const run: selMenuType["run"] = async ({ interaction, client }) => {
+export const run: selMenuType["run"] = async ({ interaction }) => {
     const ticketType = interaction.values[0]
     const modal = new ModalBuilder()
         .setCustomId(`ticket-modal_${ticketType}`)

@@ -11,7 +11,7 @@ export const optionalParams: Buttons["optionalParams"] = {
     guildId: ""
 }
 
-export const run: Buttons["run"] = async ({ interaction, client, optionalParams }) => {
+export const run: Buttons["run"] = async ({ interaction, optionalParams }) => {
     const guildId = optionalParams?.guildId as string;
     const modal = new ModalBuilder()
         .setCustomId(`ticket-suggest-modal_${guildId}`)

@@ -1,4 +1,4 @@
-import { MessageFlags, OverwriteType, TextChannel} from "discord.js";
+import { MessageFlags, TextChannel} from "discord.js";
 import { CommandBuilder } from "@class/builders/CommandBuilder";
 
 const command = new CommandBuilder();
@@ -18,7 +18,7 @@ command.setName("lock")
         .setMaxValue(1440) // 24 horas
     );
 
-command.runner = async ({client, interaction, args}) => {
+command.runner = async ({interaction, args}) => {
     if (!interaction.inGuild() || !interaction.guild) {
         throw new Error("Interaction not in a guild");
     }

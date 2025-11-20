@@ -3,7 +3,7 @@ import { BaseHandler, type HandlerContext } from "@handlers/core/BaseHandler";
 
 type ComponentType = "button" | "modal" | "selectmenu";
 
-interface ComponentHandlerOptions<T extends Interaction> {
+interface ComponentHandlerOptions {
     type: ComponentType;
     clientKey: keyof any;
 }
@@ -12,7 +12,7 @@ export class ComponentHandler<T extends Interaction = Interaction> extends BaseH
     private readonly clientKey: keyof any;
     private readonly type: ComponentType;
 
-    constructor(options: ComponentHandlerOptions<T>) {
+    constructor(options: ComponentHandlerOptions) {
         super(`component:${options.type}`);
         this.type = options.type;
         this.clientKey = options.clientKey;

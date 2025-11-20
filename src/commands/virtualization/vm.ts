@@ -1,5 +1,4 @@
 import { CommandBuilder } from "@class/builders/CommandBuilder";
-import type { VMStatus } from "@class/virtualization/interfaces/IVirtualizationProvider";
 import { virtualizationHandler } from "@handlers/virtualization";
 
 const command = new CommandBuilder();
@@ -124,12 +123,12 @@ command.setName("vm")
         )
     );
 
-command.runner = async ({ client, interaction, args }) => {
+command.runner = async ({ client, interaction }) => {
     await virtualizationHandler(client, interaction);
 };
 
 
-command.autocomplete = async ({ client, interaction, args }) => {
+command.autocomplete = async ({ client, interaction }) => {
     await virtualizationHandler(client, interaction);
 };
 

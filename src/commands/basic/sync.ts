@@ -7,7 +7,7 @@ const command = new CommandBuilder();
 command.setName("sync")
     .setDescription("commando que syncronitza els commands del bot con tus commandos disponibles");
 
-command.runner = async ({client, interaction}) => {
+command.runner = async ({interaction}) => {
     const loader = CommandsLoader.getInstance();
     await loader.refreshGuildCommands(interaction.guildId!);
     await loader.RegisterCommands(interaction.guildId!);

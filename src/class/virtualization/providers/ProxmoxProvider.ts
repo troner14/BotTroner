@@ -4,7 +4,6 @@ import type {
     VMAction, 
     VMActionResult, 
     VMSpecs,
-    PanelCredentials
 } from "@class/virtualization/interfaces/IVirtualizationProvider";
 
 interface ProxmoxVM {

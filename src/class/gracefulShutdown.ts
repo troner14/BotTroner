@@ -54,7 +54,7 @@ export class GracefulShutdown {
             await this.shutdown("UNCAUGHT_EXCEPTION");
         });
 
-        process.on("unhandledRejection", async (reason, promise) => {
+        process.on("unhandledRejection", async (reason) => {
             this.logger.fatal(reason, "Unhandled Rejection");
             await this.shutdown("UNHANDLED_REJECTION");
         });
