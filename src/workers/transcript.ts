@@ -1,10 +1,7 @@
 import { randomUUIDv7 } from "bun";
-import { writeFileSync } from "node:fs";
+import { writeFileSync, statSync, mkdirSync } from "node:fs";
 import {brotliCompressSync} from "node:zlib";
-// import {Tickets} from "@db/models/tickets"
-import { PrismaClient } from "@prismaClient";
-
-declare const self: Worker;
+import { parentPort } from "node:worker_threads";
 
 interface workerData {
     html: string;
@@ -12,32 +9,35 @@ interface workerData {
     guildId: string;
 }
 
-self.onmessage = async (event) => {
-    const { html, channelId, guildId } = event.data as workerData;
-    const prisma = new PrismaClient();
-    const uuid = randomUUIDv7("hex");
-    const buffer = brotliCompressSync(html);
 
-    writeFileSync(`./transcripts/${uuid}.html.br`, buffer, { encoding: 'utf-8' });
-    
-    const findedTicket = await prisma.tickets.findFirst({
-        where: {
-            channelId,
-            guildId
-        },
-        select: {
-            id: true
-        }
-    });
-
-    if (findedTicket) {
-        await prisma.tickets.update({
-            where: {
-                id: findedTicket.id
-            },
-            data: {
-                transcript: uuid
-            }
-        });
-    }
+interface WorkerInput {
+    html: string;
+    channelId: string;
+    guildId: string;
 }
+
+if (!parentPort) {
+    throw new Error('This worker must be run as a Node worker thread.');
+}
+
+parentPort.on('message', async (event: WorkerInput) => {
+    try {
+        const { html, channelId, guildId } = event as workerData;
+        const uuid = randomUUIDv7("hex");
+        const buffer = brotliCompressSync(html);
+
+        try {
+            if (statSync('./transcripts').isDirectory() === false) {
+                mkdirSync('./transcripts');
+            }
+        } catch {
+            mkdirSync('./transcripts');
+        }
+
+        writeFileSync(`./transcripts/${uuid}.html.br`, buffer, { encoding: 'utf-8' });
+
+        parentPort!.postMessage({ uuid, channelId, guildId, error: null });
+    } catch (err) {
+        parentPort!.postMessage({ error: (err as Error).message });
+    }
+});

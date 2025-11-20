@@ -58,7 +58,9 @@ export class TicketsHandler extends BaseHandler<ChatInputCommandInteraction> {
                     return;
                 }
 
-                if (categ in validCategs.map(c => c.id)) {
+                console.log(validCategs.map(c => c.id), categ);
+
+                if (validCategs.map(c => c.id).some(id => id === categ)) {
                     try {
                         const message = await client.ticket.newTicket(interaction, client, categ, {
                             lang: lang ?? "es",

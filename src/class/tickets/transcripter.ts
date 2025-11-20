@@ -4,6 +4,7 @@ import { type Message, type GuildTextBasedChannel, type BaseGuildTextChannel, ty
 import path from "path"
 import {minify} from "html-minifier-terser"
 import type { PrismaClient } from "@prismaClient";
+import { Worker } from 'node:worker_threads';
 import type { langsKey } from "@src/types/translationTypes";
 
 export class Transcripter {
@@ -412,18 +413,42 @@ export class Transcripter {
             removeAttributeQuotes: true
         });
 
-        const worker = new Worker("./src/workers/transcript.ts", {
-            type: "module",
-            name: "transcript",
-        });
+        const workerFile = new URL("../../workers/transcript.ts", import.meta.url);
+
+        const worker = new Worker(workerFile);
 
         worker.postMessage({
             html: compresHtml,
             channelId: channel.id,
             guildId: channel.guild.id
         });
-        
-        
+
+        worker.on("message", async (event) => {
+            const { error, ...data } = event;
+            if (error) {
+                console.log("Transcript Worker Error:", error);
+                return;
+            }
+            const { uuid, channelId, guildId } = data;
+            const findedTicket = await this.#prisma.tickets.findFirst({
+                where: {
+                    channelId: channelId,
+                    guildId: guildId
+                },
+            });
+
+            if (findedTicket) {
+                await this.#prisma.tickets.update({
+                    where: {
+                        id: findedTicket.id
+                    },
+                    data: {
+                        transcript: uuid
+                    }
+                });
+            }
+        })
+
         return compresHtml;
     }
 }

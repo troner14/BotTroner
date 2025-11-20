@@ -11,12 +11,29 @@ export class AutocompleteHandler extends BaseHandler<AutocompleteInteraction> {
     async handle(context: { interaction: AutocompleteInteraction, client: ExtendedClient}): Promise<void> {
         const { interaction, client } = context;
         const args = interaction.options;
-        const input = args.getFocused(true);
+        const {name, value} = args.getFocused(true);
 
-        switch (input.name) {
-            case "add":
+        switch (name) {
+            case "categid":
+            case "category":
+                const categories = await client.prisma.tickets_categories.findMany({
+                    where: {
+                        guildId: interaction.guild!.id,
+                    }
+                });
+                const categValues = categories.map((categ) => ({
+                    name: categ.name,
+                    value: categ.id
+                })).filter(categ => categ.name.includes(value));
+                await interaction.respond(categValues.slice(0, 25));
                 break;
-            case "remove":
+            case "categdiscid":
+                const guildCategories = interaction.guild?.channels.cache.filter(channel => channel.type == 4);
+                const guildCategValues = guildCategories?.map((categ) => ({
+                    name: categ.name,
+                    value: categ.id
+                })).filter(categ => categ.name.includes(value)) || [];
+                await interaction.respond(guildCategValues.slice(0, 25));
                 break;
         }
     }

@@ -1,6 +1,4 @@
-import { ChannelType, type ApplicationCommandOptionChoiceData} from "discord.js";
 import type { autocomplete_type, RunOptions } from "@dTypes/commands";
-// import { TicketExeHandler, type TicketGroupKey, type TicketSubcommandKey, } from "@handlers/tickets";
 import { CommandBuilder } from "@src/class/builders/CommandBuilder";
 import { handleTickets } from "@src/handlers/ticket";
 
