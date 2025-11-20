@@ -1,34 +1,40 @@
 import logger from "@src/utils/logger";
 import { Client } from "discord.js";
-import { Prisma, PrismaClient } from '@prismaClient';
-import type { DefaultArgs } from "generated/prisma/runtime/library";
+import { prisma } from "@class/prismaClient";
 import { CommandsLoader } from "./loaders/Commands";
 import { EventsLoader } from "./loaders/events";
 import { ComponentsLoader } from "./loaders/components";
 import { VirtualizationManager } from "./virtualization/VirtualizationManager";
+import Tickets from "./tickets/tickets";
 
 
 export class ExtendedClient extends Client {
     logger = logger.child({module: "ExtendedClient"});
-    #prisma: PrismaClient<Prisma.PrismaClientOptions, never, DefaultArgs>;
+    #prisma: typeof prisma;
 
     private commandsLoader: CommandsLoader;
     private eventsLoader: EventsLoader;
     private componentsLoader: ComponentsLoader;
     private virtualizationManager: VirtualizationManager;
+    private ticketSystem: Tickets;
 
     constructor() {
         super({intents: 3276799});
-        this.#prisma = new PrismaClient();
+        this.#prisma = prisma;
         
         this.commandsLoader = new CommandsLoader(this);
         this.eventsLoader = new EventsLoader(this);
         this.componentsLoader = new ComponentsLoader();
         this.virtualizationManager = new VirtualizationManager(this.#prisma);
+        this.ticketSystem = new Tickets(this);
     }
 
     get prisma() {
         return this.#prisma;
+    }
+
+    get ticket() {
+        return this.ticketSystem;
     }
 
     async start() {
@@ -81,6 +87,22 @@ export class ExtendedClient extends Client {
 
     get commands() {
         return this.commandsLoader.info;
+    }
+
+    get components() {
+        return this.componentsLoader.info;
+    }
+
+    get buttons() {
+        return this.componentsLoader.buttons;
+    }
+
+    get modals() {
+        return this.componentsLoader.modals;
+    }
+
+    get selectMenus() {
+        return this.componentsLoader.selectMenus;
     }
 
     get virtualization() {

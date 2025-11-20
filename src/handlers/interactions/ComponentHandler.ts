@@ -29,8 +29,7 @@ export class ComponentHandler<T extends Interaction = Interaction> extends BaseH
             customId = optParams.shift() ?? "";
             queryParams = optParams;
         }
-        // @ts-ignore
-        const collection = client[this.clientKey];
+        const collection = client[this.clientKey as unknown as keyof typeof client] as Map<string, any> | undefined;
         const component = collection?.get(customId);
         if (component?.optionalParams && queryParams.length > 0) {
             const optionalParamsKeys = Object.keys(component.optionalParams);

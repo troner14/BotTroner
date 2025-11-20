@@ -168,7 +168,7 @@ model tickets {
   channelId          String             @db.VarChar(25)
   usrId              String             @db.VarChar(25)
   category           Int
-  transcript         String             @db.Text
+  transcript         String?             @db.Text
   closed             Boolean            @default(false)
   CreatedAt          DateTime           @default(now()) @db.Timestamp(0)
   tickets_categories tickets_categories @relation(fields: [category], references: [id], onUpdate: Restrict, map: "FK1_categorias")

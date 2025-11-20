@@ -1,5 +1,5 @@
 import type { CommandInteraction, ButtonInteraction, ModalSubmitInteraction } from "discord.js";
-import {ExtendedClient} from "@class/extendedClient"
+import {ExtendedClient} from "@src/class/extendClient"
 
 export interface RunOptions {
     client: ExtendedClient
