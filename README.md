@@ -11,6 +11,7 @@ Un bot de Discord modular construido con TypeScript, Bun y Prisma para uso públ
 - ✅ Sistema de logging avanzado
 - ✅ Soporte para múltiples guilds
 - ✅ TypeScript con tipos estrictos
+- ✅ Sistema de tickets con transcripciones comprimidas
 
 ## 🛠️ Instalación
 
