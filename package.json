@@ -44,7 +44,7 @@
     "dotenv": "^17.2.3",
     "html-minifier-terser": "^7.2.0",
     "pino": "^10.1.0",
-    "prisma": "^6.17.1",
+    "prisma": "^7.0.1",
     "winston": "^3.18.3"
   }
 }
