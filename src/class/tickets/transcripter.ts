@@ -1,16 +1,18 @@
 import type { AllMessagesTypes } from "@src/types/transcripter";
-import { _U } from "@src/utils/translate";
+import { _U, getGuildLang } from "@src/utils/translate";
 import { type Message, type GuildTextBasedChannel, type BaseGuildTextChannel, type ActionRow, ButtonComponent, StringSelectMenuComponent } from "discord.js";
 import path from "path"
 import {minify} from "html-minifier-terser"
 import type { PrismaClient } from "@prismaClient";
 import { Worker } from 'node:worker_threads';
-import type { langsKey } from "@src/types/translationTypes";
+import type { ExtendedClient } from "../extendClient";
 
 export class Transcripter {
     #prisma: PrismaClient;
-    constructor(prisma: PrismaClient) {
+    #client: ExtendedClient;
+    constructor(prisma: PrismaClient, client: ExtendedClient) {
         this.#prisma = prisma;
+        this.#client = client;
     }
 
     public async downloadFile(url: string) {
@@ -164,10 +166,7 @@ export class Transcripter {
             if (ref.messageId) {
                 const invalidMsg = msg.reference.HaveEmbed || msg.reference.HaveAttachment;
                 let translateMsg = "";
-                const guildLang = ((await this.#prisma.guilds.findUnique({
-                    where: { id: msg.guildId },
-                    select: { lang: true }
-                }))?.lang || "es") as unknown as langsKey;
+                const guildLang = await getGuildLang(msg.guildId, this.#client);
                 if (invalidMsg) translateMsg = await _U(guildLang, "ticketTranscriptRefMsg");
                 
                 referenceHTML += `

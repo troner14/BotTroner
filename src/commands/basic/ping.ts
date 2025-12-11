@@ -1,7 +1,6 @@
 import { MessageFlags} from "discord.js";
 import { CommandBuilder } from "@class/builders/CommandBuilder";
-import { _U } from "@src/utils/translate";
-import type { langsKey } from "@dTypes/translationTypes";
+import { _U, getGuildLang } from "@src/utils/translate";
 
 const command = new CommandBuilder();
 
@@ -9,12 +8,7 @@ command.setName("ping")
     .setDescription("comando que te envia el ping del bot")
 
 command.runner = async ({client, interaction}) => {
-    const langquery = await client.prisma.guilds
-        .findUnique({
-            select: {lang: true},
-            where: {id: interaction.guildId || ""}
-        });
-    const discordLang: langsKey = (langquery?.lang as langsKey) ?? "es-es";
+    const discordLang = await getGuildLang(interaction.guildId!, client);
     const start = interaction.createdTimestamp;
     let msg = "";
 

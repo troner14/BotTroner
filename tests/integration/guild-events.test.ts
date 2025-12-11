@@ -3,7 +3,7 @@ import { createMockGuild, createMockExtendedClient, MockPrismaClientForGuilds } 
 
 // Import both event functions
 import { run as guildCreateRun } from "../../src/events/guilds/guildCreate";
-import { run as guildDeleteRun } from "../../src/events/guilds/GuildDelete";
+import { run as guildDeleteRun } from "../../src/events/guilds/guildDelete";
 
 describe("Guild Events Integration Tests", () => {
     let mockClient: any;

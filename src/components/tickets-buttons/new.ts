@@ -1,7 +1,6 @@
 import { ActionRowBuilder, MessageFlags, StringSelectMenuBuilder, StringSelectMenuOptionBuilder } from "discord.js";
 import type { Buttons } from "@src/types/components";
-import { _U } from "@utils/translate";
-import type { langsKey } from "@src/types/translationTypes";
+import { _U, getGuildLang } from "@utils/translate";
 
 export const data: Buttons["data"] = {
     name: 'ticket-new'
@@ -10,10 +9,7 @@ export const data: Buttons["data"] = {
 export const type: Buttons["type"] = "button";
 
 export const run: Buttons["run"] = async ({ interaction, client }) => {
-    const discLang = ((await client.prisma.guilds.findUnique({
-            where: { id: interaction.guild!.id },
-            select: { lang: true }
-        }))?.lang ?? "es-es") as langsKey;
+    const discLang = await getGuildLang(interaction.guild!.id, client);
     const ticketType = new StringSelectMenuBuilder()
         .setCustomId("categ-ticket")
         .setPlaceholder("Elije el tipo de ticket")

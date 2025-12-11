@@ -1,7 +1,7 @@
 import { TicketsErrors } from "@src/class/tickets/tickets";
 import type { modalsType } from "@dTypes/components";
 import type { langsKey } from "@dTypes/translationTypes";
-import { _U } from "@utils/translate";
+import { _U, getGuildLang } from "@utils/translate";
 import { MessageFlags } from "discord.js";
 
 export const data: modalsType["data"] = {
@@ -15,10 +15,7 @@ export const optionalParams: modalsType["optionalParams"] = {
 export const type: modalsType["type"] = "modals";
 
 export const run: modalsType["run"] = async ({ interaction, client, optionalParams }) => {
-    const guildLang = ((await client.prisma.guilds.findUnique({
-        where: { id: interaction.guild!.id },
-        select: { lang: true }
-    }))?.lang ?? "es-es") as langsKey;
+    const guildLang = await getGuildLang(interaction.guild!.id, client);
     const fields = interaction.fields;
     const lang = fields.getTextInputValue("lang") as langsKey;
     const desc = fields.getTextInputValue("description");

@@ -1,6 +1,5 @@
 import { test, expect, describe, beforeEach, mock } from "bun:test";
 import { CommandsLoader } from "@src/class/loaders/Commands";
-import { MockClient } from "../mocks/discord.mock";
 import { mockPrisma } from "../mocks/prisma.mock";
 import { CommandBuilder } from "@src/class/builders/CommandBuilder";
 
@@ -39,7 +38,6 @@ const createMockCommand = (name: string, description: string, enabled: boolean =
 };
 
 const mockPingCommand = createMockCommand("ping", "Ping command");
-const mockHelpCommand = createMockCommand("help", "Help command");
 const mockDisabledCommand = createMockCommand("disabled", "Disabled command", false);
 
 describe("CommandsLoader", () => {

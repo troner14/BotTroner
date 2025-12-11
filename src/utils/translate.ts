@@ -1,6 +1,7 @@
 // import { traducciones } from '../database/models/traducciones';
 import type {langsKey, TranslationKey, TranslationVariables} from "@dTypes/translationTypes";
 import { prisma } from "@class/prismaClient";
+import type { ExtendedClient } from "@src/class/extendClient";
 
 
 type TranslationCache = Map<string, Map<string, string>>;
@@ -60,6 +61,15 @@ function replaceVariables(template: string, variables?: Record<string, string>):
     return template.replace(/\{(\w+)\}/g, (_, variable) => {
         return variables[variable] ?? `{${variable}}`;
     }).replace(/\\n/g, "\n");
+}
+
+export async function getGuildLang(guildId: string, client: ExtendedClient): Promise<langsKey> {
+    const guild = await client.prisma.guilds.findUnique({
+        where: { id: guildId },
+        select: { lang: true }
+    });
+
+    return (guild?.lang || "es") as langsKey;
 }
 
 export const T = getTranslation;

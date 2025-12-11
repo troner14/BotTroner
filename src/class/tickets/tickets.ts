@@ -2,7 +2,7 @@ import { ActionRowBuilder, AttachmentBuilder, BaseGuildTextChannel, ButtonBuilde
 import type { ExtendedClient } from "@src/class/extendClient";
 import { Transcripter } from "./transcripter";
 import logger from "@src/utils/logger";
-import { _U } from "@src/utils/translate";
+import { _U, getGuildLang } from "@src/utils/translate";
 import type { langsKey, TranslationKey } from "@src/types/translationTypes";
 import { HavePerms } from "@src/utils/perms";
 
@@ -17,7 +17,7 @@ class Tickets {
 
     constructor(client: ExtendedClient) {
         this.#client = client;
-        this.#transcripter = new Transcripter(client.prisma);
+        this.#transcripter = new Transcripter(client.prisma, client);
         this.#client.prisma.guilds.findMany({
             where: { TicketChannel: { not: null } }
         }).then(guilds => {
@@ -28,10 +28,7 @@ class Tickets {
     }
 
     async setup(guildId: string) {
-        const guildLang = ((await this.#client.prisma.guilds.findUnique({
-            where: { id: guildId },
-            select: { lang: true }
-        }))?.lang || "en") as langsKey;
+        const guildLang = await getGuildLang(guildId, this.#client);
         const tDescMsg = await _U(guildLang, "ticketNew");
         const ticketMsg = new EmbedBuilder()
             .setTitle('Tickets')
@@ -138,7 +135,7 @@ class Tickets {
             throw new TicketsErrors("ticketCategoryError");
         }
 
-        const { tickets, tickets_categories, perfil_permisos, guilds } = client.prisma;
+        const { tickets, tickets_categories, perfil_permisos } = client.prisma;
         const nTickets = await tickets.count({
             where: {
                 usrId: interaction.user.id,
@@ -215,10 +212,7 @@ class Tickets {
 
             channel.setTopic(`ticket id: ${res.id}`);
 
-            const guildLang = ((await guilds.findUnique({
-                where: { id: interaction.guild!.id },
-                select: { lang: true }
-            }))?.lang ?? "es-es") as langsKey;
+            const guildLang = await getGuildLang(interaction.guild!.id, this.#client);
             const tDescMsg = await _U(guildLang, "ticketNewMsg", {
                 user: interaction.user.username,
                 category: categName,
@@ -293,10 +287,7 @@ class Tickets {
             return await this.close(interaction, client, false);
         }
 
-        const guildLang = ((await client.prisma.guilds.findUnique({
-            where: { id: interaction.guildId! },
-            select: { lang: true }
-        }))?.lang ?? "es-es") as langsKey;
+        const guildLang = await getGuildLang(interaction.guildId!, client);
         const tModalTitle = await _U(guildLang, "ticketModalTitle");
         const tModalInput = await _U(guildLang, "ticketModalInput");
 
@@ -343,10 +334,7 @@ class Tickets {
             name: `${tickets.guildId}-${tickets.usrId}-transcript.html`
         })
 
-        const guildLang = ((await client.prisma.guilds.findUnique({
-                where: { id: interaction.guild!.id },
-                select: { lang: true }
-            }))?.lang ?? "es-es") as langsKey;
+        const guildLang = await getGuildLang(interaction.guild!.id, client);
         const tBtnOpinar = await _U(guildLang, "ticketBtnOpinar");
         const tCloseMsg = await _U(guildLang, "ticketCloseMsg");
 
