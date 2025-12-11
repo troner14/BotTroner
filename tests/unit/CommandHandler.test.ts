@@ -1,5 +1,5 @@
 import { test, expect, describe, beforeEach, mock } from "bun:test";
-import { CommandHandler } from "@src/handlers/core/CommandHandler";
+import { CommandHandler } from "@src/handlers/interactions/CommandHandler";
 import { MockInteraction } from "../mocks/discord.mock";
 import { CommandBuilder } from "@src/class/builders/CommandBuilder";
 
@@ -95,7 +95,7 @@ describe("CommandHandler", () => {
 
             const context = {
                 interaction: mockInteraction as any,
-                client: clientWithoutCommands
+                client: clientWithoutCommands as any
             };
 
             expect(commandHandler.handle(context)).rejects.toThrow(`Command test-command not found`);

@@ -1,4 +1,4 @@
-import { test, expect, describe, beforeEach, afterEach } from "bun:test";
+import { test, expect, describe, beforeEach } from "bun:test";
 import { createMockGuild, createMockExtendedClient, MockPrismaClientForGuilds } from "../mocks/guild-events.mock";
 
 // Import the actual event functions
@@ -30,7 +30,6 @@ describe("GuildCreate Event", () => {
     describe("Successful Guild Creation", () => {
         test("should create new guild and enable all commands", async () => {
             // Arrange
-            const expectedCommands = ["ping", "vm"];
             mockClient.commands = new Map([
                 ["ping", { name: "ping" }],
                 ["vm", { name: "vm" }]

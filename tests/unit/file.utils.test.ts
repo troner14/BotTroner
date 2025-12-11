@@ -1,4 +1,4 @@
-import { test, expect, describe, beforeEach, afterEach, mock } from "bun:test";
+import { test, expect, describe, beforeEach, mock } from "bun:test";
 import fs from "fs";
 import { folderExist, getFiles } from "@src/utils/file";
 
