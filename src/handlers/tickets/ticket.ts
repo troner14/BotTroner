@@ -2,8 +2,7 @@ import { MessageFlags, type ChatInputCommandInteraction } from "discord.js";
 import { BaseHandler } from "../core/BaseHandler";
 import type { ExtendedClient } from "@src/class/extendClient";
 import { TicketsErrors } from "@src/class/tickets/tickets";
-import { _U } from "@src/utils/translate";
-import type { langsKey } from "@src/types/translationTypes";
+import { _U, getGuildLang } from "@src/utils/translate";
 
 
 export class TicketsHandler extends BaseHandler<ChatInputCommandInteraction> {
@@ -16,10 +15,7 @@ export class TicketsHandler extends BaseHandler<ChatInputCommandInteraction> {
         const args = interaction.options;
         const command = args.getSubcommand();
 
-        const discLang = ((await client.prisma.guilds.findUnique({
-            where: { id: interaction.guildId! },
-            select: { lang: true }
-        }))?.lang ?? "es-es") as unknown as langsKey;
+        const discLang = await getGuildLang(interaction.guildId!, client);
 
         switch (command) {
             case "setup":
