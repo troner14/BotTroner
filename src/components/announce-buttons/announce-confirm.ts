@@ -35,7 +35,7 @@ export const run: Buttons["run"] = async ({ interaction, client, optionalParams 
         return;
     }
 
-    const { channelId, title, message } = announcementData;
+    const { channelId, title, message, fields, imatge } = announcementData;
 
     try {
         const channel = await client.channels.fetch(channelId);
@@ -52,10 +52,18 @@ export const run: Buttons["run"] = async ({ interaction, client, optionalParams 
         // Crear embed del anuncio
         const announceEmbed = new EmbedBuilder()
             .setTitle(title)
-            .setDescription(message)
             .setColor(0x5865F2)
             .setFooter({ text: `Anuncio de ${interaction.user.tag}` })
             .setTimestamp();
+        if (message.trim() !== "") {
+            announceEmbed.setDescription(message);
+        }
+        if (fields && fields.length > 0) {
+            announceEmbed.addFields(fields);
+        }
+        if (imatge) {
+            announceEmbed.setImage(imatge);
+        }
 
         // Enviar al canal designado
         await (channel as TextChannel).send({ embeds: [announceEmbed] });

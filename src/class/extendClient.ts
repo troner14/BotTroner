@@ -17,7 +17,7 @@ export class ExtendedClient extends Client {
     private componentsLoader: ComponentsLoader;
     private virtualizationManager: VirtualizationManager;
     private ticketSystem: Tickets;
-    private pendingAnnouncements: Map<string, { channelId: string; title: string; message: string; userId: string }>;
+    private pendingAnnouncements: Map<string, { channelId: string; title: string; message: string; userId: string, fields?: any[], imatge?: string }>;
 
     constructor() {
         super({intents: 3276799});
