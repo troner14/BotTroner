@@ -17,6 +17,7 @@ export class ExtendedClient extends Client {
     private componentsLoader: ComponentsLoader;
     private virtualizationManager: VirtualizationManager;
     private ticketSystem: Tickets;
+    private pendingAnnouncements: Map<string, { channelId: string; title: string; message: string; userId: string }>;
 
     constructor() {
         super({intents: 3276799});
@@ -27,6 +28,7 @@ export class ExtendedClient extends Client {
         this.componentsLoader = new ComponentsLoader();
         this.virtualizationManager = new VirtualizationManager(this.#prisma);
         this.ticketSystem = new Tickets(this);
+        this.pendingAnnouncements = new Map();
     }
 
     get prisma() {
@@ -107,5 +109,9 @@ export class ExtendedClient extends Client {
 
     get virtualization() {
         return this.virtualizationManager;
+    }
+
+    get announcements() {
+        return this.pendingAnnouncements;
     }
 }
