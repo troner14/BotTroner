@@ -94,6 +94,7 @@ export class VirtualizationMonitor {
                 code: error.code,
                 data: entry
             }, "Failed to save monitor to DB");
+            this.monitors.delete(entry.messageId); // Roll back in-memory addition
         }
 
         this.logger.debug({ ...entry }, "Added new VM monitor");
