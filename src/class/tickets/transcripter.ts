@@ -2,8 +2,8 @@ import type { AllMessagesTypes } from "@src/types/transcripter";
 import { _U, getGuildLang } from "@src/utils/translate";
 import { type Message, type GuildTextBasedChannel, type BaseGuildTextChannel, type ActionRow, ButtonComponent, StringSelectMenuComponent } from "discord.js";
 import path from "path"
-import {minify} from "html-minifier-terser"
-import type { PrismaClient } from "@prismaClient";
+import { minify } from "html-minifier-terser"
+import type { PrismaClient } from "@prismaClient/client";
 import { Worker } from 'node:worker_threads';
 import type { ExtendedClient } from "../extendClient";
 
@@ -58,7 +58,7 @@ export class Transcripter {
         return attachments;
     }
 
-    public async getAllMessages(channel: GuildTextBasedChannel|BaseGuildTextChannel, limit?: number) {
+    public async getAllMessages(channel: GuildTextBasedChannel | BaseGuildTextChannel, limit?: number) {
         const AllMessages: AllMessagesTypes[] = [];
         let index = 0;
         let messages;
@@ -101,15 +101,15 @@ export class Transcripter {
                 if (refMsg) {
                     const info = {
                         messageId: refMsg.id,
-                        content:  refMsg.content,
+                        content: refMsg.content,
                         msgUser: refMsg.author.username,
                         HaveEmbed: refMsg.embeds.length > 0,
                         HaveAttachment: refMsg.attachments.size > 0,
                     }
                     AllMessages[index]!.reference = info;
                 }
-                
-                
+
+
             }
 
             index++;
@@ -145,7 +145,7 @@ export class Transcripter {
                 if (e.title) embedsHTML += `<h3 href="${e.url}" target="_blank" class="embed-title">${e.title}</h3>`;
                 if (e.description) embedsHTML += `<p class="embed-description">${e.description}</p>`;
                 e.fields?.forEach(f => {
-                embedsHTML += `<p class="embed-field"><strong>${f.name}</strong><br> ${f.value}</p>`;
+                    embedsHTML += `<p class="embed-field"><strong>${f.name}</strong><br> ${f.value}</p>`;
                 });
                 if (e.image) {
                     const url = await this.downloadFile(e.image.url);
@@ -168,7 +168,7 @@ export class Transcripter {
                 let translateMsg = "";
                 const guildLang = await getGuildLang(msg.guildId, this.#client);
                 if (invalidMsg) translateMsg = await _U(guildLang, "ticketTranscriptRefMsg");
-                
+
                 referenceHTML += `
                 <div class="reference-block" data-ref="${msg.reference.messageId}">
                     <div class="reference-bar"></div>
@@ -207,7 +207,7 @@ export class Transcripter {
             componentsHTML += '</div>';
         }
 
-                
+
         return `
             <div class="message" id="${msg.id}">
                 ${referenceHTML}
@@ -369,7 +369,7 @@ export class Transcripter {
         `;
     }
 
-    public async generateTranscript(channel: GuildTextBasedChannel|BaseGuildTextChannel, limit?: number) {
+    public async generateTranscript(channel: GuildTextBasedChannel | BaseGuildTextChannel, limit?: number) {
         const AllMessages = await this.getAllMessages(channel, limit);
         let htmlMessages = '';
         for (const msg of AllMessages) {

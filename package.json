@@ -21,7 +21,7 @@
   "scripts": {
     "script:folder": "bun run ./scripts/generateListFolderType.ts",
     "script:translation": "bun run ./scripts/generateTranslationTypes.ts",
-    "script:permissions": "bun run ./scripts/generatePermsIdTypes.ts", 
+    "script:permissions": "bun run ./scripts/generatePermsIdTypes.ts",
     "start": "bun run .",
     "test": "bun test",
     "test:watch": "bun test --watch",
@@ -39,6 +39,7 @@
     "typescript": "^5.9.2"
   },
   "dependencies": {
+    "@prisma/adapter-mariadb": "^7.1.0",
     "@prisma/client": "^7.0.1",
     "discord.js": "^14.23.2",
     "dotenv": "^17.2.3",

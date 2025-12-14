@@ -19,7 +19,6 @@ model guilds {
   mail                  mail?
   perfils               perfils[]
   virtualization_panels virtualization_panels[]
-  virtual_machines      virtual_machines[]
   guilds_commandos      guilds_commandos[]
 }
 
@@ -87,41 +86,12 @@ model virtualization_panels {
   updatedAt   DateTime @updatedAt
 
   // Relaciones
-  guilds   guilds             @relation(fields: [guildId], references: [id], onDelete: Cascade)
-  machines virtual_machines[]
+  guilds     guilds             @relation(fields: [guildId], references: [id], onDelete: Cascade)
+  vmMonitors vm_monitors[]
 
   @@unique([guildId, name])
   @@index([guildId, type])
   @@index([guildId, isDefault])
-}
-
-// Máquinas virtuales genéricas
-model virtual_machines {
-  id          String    @id @db.VarChar(50) // ID único de la VM
-  panelId     Int       @db.UnsignedInt
-  guildId     String    @db.VarChar(30)
-  userId      String?   @db.VarChar(25) // Owner de la VM (opcional)
-  name        String    @db.VarChar(100)
-  description String?   @db.VarChar(255)
-  status      String    @db.VarChar(20) // running, stopped, paused, etc.
-  specs       Json // CPU, RAM, Storage, etc.
-  network     Json? // IPs, puertos, etc.
-  metadata    Json? // Datos específicos del panel
-  tags        String?   @db.VarChar(500) // Tags separados por comas
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  lastSync    DateTime? // Última sincronización con el panel
-
-  // Relaciones
-  panel       virtualization_panels @relation(fields: [panelId], references: [id], onDelete: Cascade)
-  guilds      guilds                @relation(fields: [guildId], references: [id], onDelete: Cascade)
-  logs        vm_action_logs[]
-  permissions vm_permissions[]
-
-  @@unique([panelId, id])
-  @@index([panelId, status])
-  @@index([guildId, userId])
-  @@index([guildId, status])
 }
 
 // Logs de acciones en las VMs
@@ -134,9 +104,6 @@ model vm_action_logs {
   details    Json? // Detalles adicionales
   error      String?  @db.Text // Error message si falla
   executedAt DateTime @default(now())
-
-  // Relaciones
-  machine virtual_machines @relation(fields: [vmId], references: [id], onDelete: Cascade)
 
   @@index([vmId, executedAt])
   @@index([userId, executedAt])
@@ -153,9 +120,6 @@ model vm_permissions {
   grantedAt   DateTime  @default(now())
   expiresAt   DateTime? // Opcional: permisos temporales
 
-  // Relaciones
-  machine virtual_machines @relation(fields: [vmId], references: [id], onDelete: Cascade)
-
   @@index([vmId])
   @@index([userId])
   @@index([roleId])
@@ -167,7 +131,7 @@ model tickets {
   channelId          String             @db.VarChar(25)
   usrId              String             @db.VarChar(25)
   category           Int
-  transcript         String?             @db.Text
+  transcript         String?            @db.Text
   closed             Boolean            @default(false)
   CreatedAt          DateTime           @default(now()) @db.Timestamp(0)
   tickets_categories tickets_categories @relation(fields: [category], references: [id], onUpdate: Restrict, map: "FK1_categorias")
@@ -197,4 +161,18 @@ model traducciones {
 
   @@unique([lang, id], map: "lang")
   @@index([lang], map: "lang_index")
+}
+
+model vm_monitors {
+  id        Int      @id @default(autoincrement())
+  guildId   String   @db.VarChar(50)
+  channelId String   @db.VarChar(50)
+  messageId String   @unique @db.VarChar(50)
+  panelId   Int      @db.UnsignedInt
+  vmId      String   @db.VarChar(50)
+  userId    String   @db.VarChar(50)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  panel virtualization_panels @relation(fields: [panelId], references: [id], onDelete: Cascade)
 }

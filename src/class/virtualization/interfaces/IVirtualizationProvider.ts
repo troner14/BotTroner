@@ -41,6 +41,7 @@ export interface VMActionResult {
     message: string;
     taskId?: string; // Para operaciones asíncronas
     error?: string;
+    errorCode?: string; // Code from VirtualizationErrorCode
     metadata?: Record<string, any>;
 }
 
@@ -68,6 +69,10 @@ export interface PanelConfig {
         supportsClone: boolean;
         supportsTemplate: boolean;
     };
+    cache?: {
+        enabled: boolean;
+        ttl: number; // seconds
+    };
 }
 
 /**
@@ -87,7 +92,7 @@ export interface IVirtualizationProvider {
     listVMs(): Promise<VMStatus[]>;
     getVM(vmId: string): Promise<VMStatus | null>;
     executeAction(action: VMAction): Promise<VMActionResult>;
-    
+
     // Información del sistema
     getSystemInfo(): Promise<{
         nodes?: Array<{ name: string; status: string; resources: any }>;
@@ -111,6 +116,7 @@ export interface ManagerResult<T = any> {
     success: boolean;
     data?: T;
     error?: string;
+    errorCode?: string;
     provider?: string;
 }
 

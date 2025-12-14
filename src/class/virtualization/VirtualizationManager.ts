@@ -1,16 +1,18 @@
-import type { Prisma, PrismaClient } from "@prismaClient";
+import type { Prisma, PrismaClient } from "@prismaClient/client";
 import type { Logger } from "pino";
 import logger from "@utils/logger";
-import type { 
-    IVirtualizationProvider, 
-    PanelDBConfig, 
-    VMStatus, 
-    VMAction, 
+import type {
+    IVirtualizationProvider,
+    PanelDBConfig,
+    VMStatus,
+    VMAction,
     VMActionResult,
     ManagerResult,
     PanelCredentials
 } from "@class/virtualization/interfaces/IVirtualizationProvider";
 import { ProxmoxProvider } from "./providers/ProxmoxProvider";
+import { VirtualizationError, VirtualizationErrorCode } from "./errors";
+import type { VirtualizationMonitor } from "./VirtualizationMonitor";
 
 /**
  * Manager principal para gestión de virtualización
@@ -20,6 +22,7 @@ export class VirtualizationManager {
     private logger: Logger;
     private providers: Map<string, IVirtualizationProvider> = new Map();
     private panelProviders: Map<number, IVirtualizationProvider> = new Map(); // panelId -> provider instance
+    public monitor: VirtualizationMonitor | null = null;
 
     constructor(private prisma: PrismaClient) {
         this.logger = logger.child({ module: "VirtualizationManager" });
@@ -33,7 +36,7 @@ export class VirtualizationManager {
         // Registrar Proxmox
         this.providers.set('proxmox', new ProxmoxProvider());
         // Futuro: registrar otros proveedores como VMware, Hyper-V, OpenStack, etc.
-        
+
         this.logger.info(`Initialized ${this.providers.size} virtualization providers`);
     }
 
@@ -72,9 +75,11 @@ export class VirtualizationManager {
             };
         } catch (error) {
             this.logger.error({ error, guildId }, "Failed to get panels for guild");
+            const errorCode = error instanceof VirtualizationError ? error.code : VirtualizationErrorCode.UNKNOWN_ERROR;
             return {
                 success: false,
-                error: (error as Error).message
+                error: (error as Error).message,
+                errorCode
             };
         }
     }
@@ -90,7 +95,7 @@ export class VirtualizationManager {
      * @returns Resultado con el panel creado o error
      */
     async addPanel(
-        guildId: string, 
+        guildId: string,
         name: string,
         type: string,
         apiUrl: string,
@@ -151,9 +156,11 @@ export class VirtualizationManager {
             };
         } catch (error) {
             this.logger.error({ error, guildId, name, type, apiUrl }, "Failed to add panel");
+            const errorCode = error instanceof VirtualizationError ? error.code : VirtualizationErrorCode.UNKNOWN_ERROR;
             return {
                 success: false,
-                error: (error as Error).message
+                error: (error as Error).message,
+                errorCode
             };
         }
     }
@@ -173,9 +180,11 @@ export class VirtualizationManager {
             return { success: true, data: true };
         } catch (error) {
             this.logger.error({ error, panelId }, "Failed to remove panel");
+            const errorCode = error instanceof VirtualizationError ? error.code : VirtualizationErrorCode.UNKNOWN_ERROR;
             return {
                 success: false,
-                error: (error as Error).message
+                error: (error as Error).message,
+                errorCode
             };
         }
     }
@@ -214,9 +223,11 @@ export class VirtualizationManager {
             };
         } catch (error) {
             this.logger.error({ error, panelId }, "Failed to get panel");
+            const errorCode = error instanceof VirtualizationError ? error.code : VirtualizationErrorCode.UNKNOWN_ERROR;
             return {
                 success: false,
-                error: (error as Error).message
+                error: (error as Error).message,
+                errorCode
             };
         }
     }
@@ -242,7 +253,7 @@ export class VirtualizationManager {
             }
 
             const panel = panelResult.data;
-            
+
             // Obtener el proveedor apropiado
             const provider = this.providers.get(panel.type);
             if (!provider) {
@@ -253,13 +264,13 @@ export class VirtualizationManager {
             }
 
             // Crear nueva instancia del proveedor para este panel
-            const ProviderClass = provider.constructor as new() => IVirtualizationProvider;
+            const ProviderClass = provider.constructor as new () => IVirtualizationProvider;
             const panelProvider = new ProviderClass();
 
             // Conectar
             const connected = await panelProvider.connect(
-                panel.apiUrl, 
-                panel.credentials, 
+                panel.apiUrl,
+                panel.credentials,
                 panel.config
             );
 
@@ -282,9 +293,11 @@ export class VirtualizationManager {
             };
         } catch (error) {
             this.logger.error({ error, panelId }, "Failed to connect to panel");
+            const errorCode = error instanceof VirtualizationError ? error.code : VirtualizationErrorCode.CONNECTION_FAILED;
             return {
                 success: false,
-                error: (error as Error).message
+                error: (error as Error).message,
+                errorCode
             };
         }
     }
@@ -309,9 +322,11 @@ export class VirtualizationManager {
             };
         } catch (error) {
             this.logger.error({ error, panelId }, "Failed to list VMs");
+            const errorCode = error instanceof VirtualizationError ? error.code : VirtualizationErrorCode.UNKNOWN_ERROR;
             return {
                 success: false,
-                error: (error as Error).message
+                error: (error as Error).message,
+                errorCode
             };
         }
     }
@@ -343,9 +358,11 @@ export class VirtualizationManager {
             };
         } catch (error) {
             this.logger.error({ error, panelId, vmId }, "Failed to get VM");
+            const errorCode = error instanceof VirtualizationError ? error.code : VirtualizationErrorCode.UNKNOWN_ERROR;
             return {
                 success: false,
-                error: (error as Error).message
+                error: (error as Error).message,
+                errorCode
             };
         }
     }
@@ -354,10 +371,33 @@ export class VirtualizationManager {
      * Ejecuta una acción en una VM
      */
     async executeVMAction(
-        panelId: number, 
-        action: VMAction, 
-        userId: string
+        panelId: number,
+        action: VMAction,
+        userId: string,
+        guildId?: string
     ): Promise<ManagerResult<VMActionResult>> {
+        // 1. Get Panel Config (needed for context, although executeVMAction fetches it again inside check/execution)
+        // Optimization: checking permissions first avoids DB call for panel if permission is denied.
+        // But we need to know if panel exists? Not strictly if we trust the ID passed.
+        // However, standard flow:
+
+        // 1. Check Permissions
+        const hasPermission = await this.checkVMPermission(userId, action.vmId, action.type, guildId);
+        if (!hasPermission) {
+            await this.logVMAction({
+                vmId: action.vmId,
+                userId: userId,
+                action: action.type,
+                status: "error",
+                error: "Permission denied"
+            });
+            return {
+                success: false,
+                error: "No tienes permiso para realizar esta acción.",
+                errorCode: VirtualizationErrorCode.AUTHENTICATION_FAILED
+            };
+        }
+
         try {
             const connectionResult = await this.connectToPanel(panelId);
             if (!connectionResult.success || !connectionResult.data) {
@@ -365,8 +405,8 @@ export class VirtualizationManager {
             }
 
             const provider = connectionResult.data;
-            
-            // Log de la acción
+
+            // Log de intento (pending/executing) - opcional, por ahora solo log final
             this.logger.info({
                 panelId,
                 vmId: action.vmId,
@@ -374,26 +414,99 @@ export class VirtualizationManager {
                 userId
             }, "Executing VM action");
 
+            // 2. Execute Action
             const result = await provider.executeAction(action);
 
-            // TODO: Guardar en vm_action_logs cuando tengamos la tabla
-            try {
-                // await this.logAction(panelId, action, userId, result);
-            } catch (logError) {
-                this.logger.warn({ logError }, "Failed to log action");
-            }
+            // 3. Log Result
+            await this.logVMAction({
+                vmId: action.vmId,
+                userId: userId,
+                action: action.type,
+                status: result.success ? "success" : "error",
+                error: result.error,
+                details: result.success ? (result as any).data : undefined
+            });
 
             return {
                 success: result.success,
                 data: result,
                 provider: connectionResult.provider
             };
-        } catch (error) {
+        } catch (error: any) {
             this.logger.error({ error, panelId, action, userId }, "Failed to execute VM action");
+            const errorCode = error instanceof VirtualizationError ? error.code : VirtualizationErrorCode.ACTION_FAILED;
+
+            // Log Error
+            await this.logVMAction({
+                vmId: action.vmId,
+                userId: userId,
+                action: action.type,
+                status: "error",
+                error: error.message || String(error)
+            });
+
             return {
                 success: false,
-                error: (error as Error).message
+                error: (error as Error).message,
+                errorCode
             };
+        }
+    }
+
+    /**
+     * Check if a user has permission to perform an action on a VM.
+     */
+    async checkVMPermission(userId: string, vmId: string, action: string, guildId?: string): Promise<boolean> {
+        try {
+            // Fetch permissions for this User+VM
+            const perms = await this.prisma.vm_permissions.findMany({
+                where: {
+                    vmId: vmId,
+                    userId: userId
+                }
+            });
+
+            // Check user-specific permissions
+            for (const p of perms) {
+                const allowed = p.permissions as any[]; // Prisma JSON type
+                if (Array.isArray(allowed)) {
+                    if (allowed.includes("*") || allowed.includes(action)) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        } catch (error) {
+            this.logger.error({ error, userId, vmId }, "Error checking permissions");
+            return false; // Fail safe
+        }
+    }
+
+    /**
+     * Log a VM action to the database.
+     */
+    async logVMAction(data: {
+        vmId: string,
+        userId: string,
+        action: string,
+        status: "success" | "pending" | "error",
+        error?: string,
+        details?: any
+    }) {
+        try {
+            await this.prisma.vm_action_logs.create({
+                data: {
+                    vmId: data.vmId,
+                    userId: data.userId,
+                    action: data.action,
+                    status: data.status,
+                    error: data.error,
+                    details: data.details || undefined
+                }
+            });
+        } catch (err) {
+            this.logger.error({ err }, "Failed to log VM action");
+            // Don't throw, just log
         }
     }
 
@@ -417,9 +530,11 @@ export class VirtualizationManager {
             };
         } catch (error) {
             this.logger.error({ error, panelId }, "Failed to get system info");
+            const errorCode = error instanceof VirtualizationError ? error.code : VirtualizationErrorCode.UNKNOWN_ERROR;
             return {
                 success: false,
-                error: (error as Error).message
+                error: (error as Error).message,
+                errorCode
             };
         }
     }
@@ -504,9 +619,11 @@ export class VirtualizationManager {
             };
         } catch (error) {
             this.logger.error({ error, guildId }, "Failed to get stats");
+            const errorCode = error instanceof VirtualizationError ? error.code : VirtualizationErrorCode.UNKNOWN_ERROR;
             return {
                 success: false,
-                error: (error as Error).message
+                error: (error as Error).message,
+                errorCode
             };
         }
     }
@@ -522,8 +639,8 @@ export class VirtualizationManager {
      * Valida las credenciales de un panel antes de guardarlo
      */
     async validatePanelCredentials(
-        type: string, 
-        apiUrl: string, 
+        type: string,
+        apiUrl: string,
         credentials: PanelCredentials
     ): Promise<ManagerResult<boolean>> {
         try {
@@ -536,7 +653,7 @@ export class VirtualizationManager {
             }
 
             // Crear instancia temporal para test
-            const ProviderClass = provider.constructor as new() => IVirtualizationProvider;
+            const ProviderClass = provider.constructor as new () => IVirtualizationProvider;
             const testProvider = new ProviderClass();
 
             const connected = await testProvider.connect(apiUrl, credentials);
@@ -548,9 +665,11 @@ export class VirtualizationManager {
             };
         } catch (error) {
             this.logger.error({ error, type, apiUrl }, "Failed to validate credentials");
+            const errorCode = error instanceof VirtualizationError ? error.code : VirtualizationErrorCode.VALIDATION_FAILED;
             return {
                 success: false,
-                error: (error as Error).message
+                error: (error as Error).message,
+                errorCode
             };
         }
     }
