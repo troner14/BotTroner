@@ -1,5 +1,5 @@
 import type { Buttons } from "@src/types/components";
-import { MessageFlags, type ButtonInteraction } from "discord.js";
+import type { ButtonInteraction } from "discord.js";
 
 export const data: Buttons["data"] = {
     name: "vm-monitor-stop"
