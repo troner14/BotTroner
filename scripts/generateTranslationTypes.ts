@@ -1,13 +1,12 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { exit } from 'process';
-import { PrismaClient } from '@prismaClient';
+import { prisma } from "../src/class/prismaClient";
 
 async function generateTranslationTypes() {
     // Consulta todas las traducciones desde la base de datos
-    const pclient = new PrismaClient();
-    const allTranslations = await pclient.traducciones.findMany();
-    const allLangs = await pclient.traducciones.findMany({
+    const allTranslations = await prisma.traducciones.findMany();
+    const allLangs = await prisma.traducciones.findMany({
         distinct: ['lang'],
         select: { lang: true }
     }).then(results => results.map(r => r.lang));

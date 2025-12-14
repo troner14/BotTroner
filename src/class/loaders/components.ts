@@ -65,7 +65,7 @@ export class ComponentsLoader extends BaseLoader {
             const customId = component.data.name;
             this.#components.set(customId, component);
             this.#cacheComponents.set(customId, file);
-            this.logger.info(`component ${customId} loaded.`);
+            this.logger.debug(`component ${customId} loaded.`);
         }
         const end = performance.now();
         this.logger.info(`Loaded ${this.#components.size} components in ${(end - start).toFixed(2)}ms`);

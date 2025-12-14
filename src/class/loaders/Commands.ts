@@ -1,9 +1,9 @@
-import {getFiles} from "@utils/file";
+import { getFiles } from "@utils/file";
 import type { CommandBuilder } from "@class/builders/CommandBuilder";
 import type { ApplicationCommandDataResolvable } from "discord.js";
 import { BaseLoader } from "./base";
 import type { ExtendedClient } from "../extendClient";
-import type { guilds_commandos } from "@prismaClient";
+import type { guilds_commandos } from "@prismaClient/client";
 
 type commandsOmit = Omit<guilds_commandos, "enabled">;
 interface commands extends commandsOmit {
@@ -107,7 +107,7 @@ export class CommandsLoader extends BaseLoader {
     public async load(): Promise<void> {
         const start = performance.now();
         const files = getFiles("commands");
-        
+
         const guildsCommandsRaw = await this.#client.prisma.guilds_commandos.findMany({
             where: {
                 enabled: true
@@ -151,7 +151,7 @@ export class CommandsLoader extends BaseLoader {
                     continue;
                 }
                 const command: CommandBuilder = commandImport.default;
-                if (this.isValidCommand(file, command)) {                
+                if (this.isValidCommand(file, command)) {
                     if (!this.#commands.has(command.name)) this.#commands.set(command.name, command);
                     if (!this.#cacheCommands.has(command.name)) this.#cacheCommands.set(command.name, file);
                     if (guildsCommands.length > 0) {
@@ -170,7 +170,7 @@ export class CommandsLoader extends BaseLoader {
                 this.logger.error(err, `Error al importar fitxer:  ${file}:`);
             }
         }
-        
+
         const end = performance.now();
         this.logger.info(`Loaded ${files.length} commands in ${(end - start).toFixed(2)}ms`);
     }

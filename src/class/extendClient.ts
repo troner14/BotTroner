@@ -5,11 +5,12 @@ import { CommandsLoader } from "./loaders/Commands";
 import { EventsLoader } from "./loaders/events";
 import { ComponentsLoader } from "./loaders/components";
 import { VirtualizationManager } from "./virtualization/VirtualizationManager";
+import { VirtualizationMonitor } from "./virtualization/VirtualizationMonitor";
 import Tickets from "./tickets/tickets";
 
 
 export class ExtendedClient extends Client {
-    logger = logger.child({module: "ExtendedClient"});
+    logger = logger.child({ module: "ExtendedClient" });
     #prisma: typeof prisma;
 
     private commandsLoader: CommandsLoader;
@@ -20,13 +21,16 @@ export class ExtendedClient extends Client {
     private pendingAnnouncements: Map<string, { channelId: string; title: string; message: string; userId: string, fields?: any[], imatge?: string }>;
 
     constructor() {
-        super({intents: 3276799});
+        super({ intents: 3276799 });
         this.#prisma = prisma;
-        
+
         this.commandsLoader = new CommandsLoader(this);
         this.eventsLoader = new EventsLoader(this);
         this.componentsLoader = new ComponentsLoader();
         this.virtualizationManager = new VirtualizationManager(this.#prisma);
+        // Initialize monitor
+        this.virtualizationManager.monitor = new VirtualizationMonitor(this, this.virtualizationManager);
+
         this.ticketSystem = new Tickets(this);
         this.pendingAnnouncements = new Map();
     }
@@ -42,6 +46,10 @@ export class ExtendedClient extends Client {
     async start() {
         try {
             await this.login(process.env.botToken);
+
+            // Start virtualization monitor
+            this.virtualizationManager.monitor?.start();
+
             await this.prepare();
         } catch (error) {
             this.logger.error(error);
@@ -50,26 +58,27 @@ export class ExtendedClient extends Client {
 
     async shutdown() {
         this.logger.info("Shutting down...");
-        
+
         try {
             // Disconnect from virtualization panels
+            this.virtualizationManager.monitor?.stop();
             await this.virtualizationManager.disconnectAll();
             this.logger.debug("Virtualization panels disconnected.");
-            
+
             // Disconnect from Prisma
             await this.#prisma.$disconnect();
             this.logger.debug("Prisma disconnected.");
-            
+
             // Destroy Discord client connection
             this.destroy();
             this.logger.debug("Client destroyed.");
-            
+
             // Give some time for cleanup
             setTimeout(() => {
                 this.logger.debug("Graceful shutdown completed.");
                 process.exit(0);
             }, 100);
-            
+
         } catch (error) {
             this.logger.error({ error }, "Error during shutdown");
             process.exit(1);

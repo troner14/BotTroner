@@ -69,6 +69,48 @@ command.setName("vm")
                     )
             )
     )
+
+    .addSubcommandGroup(group => group
+        .setName("monitor")
+        .setDescription("Gestionar el monitoreo de VMs")
+        .addSubcommand(subcommand => subcommand
+            .setName("start")
+            .setDescription("Iniciar monitorización de una VM para un usuario")
+            .addIntegerOption(option => option
+                .setName("panel")
+                .setDescription("ID del panel")
+                .setRequired(true)
+                .setAutocomplete(true)
+            )
+            .addStringOption(option => option
+                .setName("vm-id")
+                .setDescription("ID de la VM")
+                .setRequired(true)
+                .setAutocomplete(true)
+            )
+            .addUserOption(option => option
+                .setName("user")
+                .setDescription("Usuario que recibirá el panel")
+                .setRequired(true)
+            )
+        )
+        .addSubcommand(subcommand => subcommand
+            .setName("stop")
+            .setDescription("Detener monitorización de una VM")
+            .addIntegerOption(option => option
+                .setName("panel")
+                .setDescription("ID del panel")
+                .setRequired(true)
+                .setAutocomplete(true)
+            )
+            .addStringOption(option => option
+                .setName("vm-id")
+                .setDescription("ID de la VM")
+                .setRequired(true)
+                .setAutocomplete(true)
+            )
+        )
+    )
     .addSubcommandGroup(group => group
         .setName("panel")
         .setDescription("Gestionar paneles de virtualización")

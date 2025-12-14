@@ -1,10 +1,11 @@
 import { BaseVirtualizationProvider } from "./BaseProvider";
-import type { 
-    VMStatus, 
-    VMAction, 
-    VMActionResult, 
+import type {
+    VMStatus,
+    VMAction,
+    VMActionResult,
     VMSpecs,
 } from "@class/virtualization/interfaces/IVirtualizationProvider";
+import { AuthenticationError, ConnectionError, VirtualizationError, VirtualizationErrorCode, VMNotFoundError } from "@class/virtualization/errors";
 
 interface ProxmoxVM {
     vmid: number;
@@ -53,7 +54,7 @@ export class ProxmoxProvider extends BaseVirtualizationProvider {
     protected async performConnect(): Promise<boolean> {
         try {
             if (!this.credentials) {
-                throw new Error("No credentials provided");
+                throw new AuthenticationError("No credentials provided");
             }
 
             if (this.credentials.type === 'token') {
@@ -62,10 +63,11 @@ export class ProxmoxProvider extends BaseVirtualizationProvider {
                 return await this.performLogin();
             }
 
-            throw new Error("Unsupported credentials type for Proxmox");
+            throw new AuthenticationError("Unsupported credentials type for Proxmox");
         } catch (error) {
             this.logger.error({ error }, "Failed to connect to Proxmox");
-            return false;
+            if (error instanceof VirtualizationError) throw error;
+            throw new ConnectionError(`Failed to connect: ${(error as Error).message}`, error);
         }
     }
 
@@ -77,6 +79,7 @@ export class ProxmoxProvider extends BaseVirtualizationProvider {
         } catch (error) {
             console.log(error);
             this.logger.error(error, "Token authentication failed");
+            if (error instanceof VirtualizationError) throw error;
             return false;
         }
     }
@@ -84,7 +87,7 @@ export class ProxmoxProvider extends BaseVirtualizationProvider {
     private async performLogin(): Promise<boolean> {
         try {
             const { username, password } = this.credentials!.data;
-            
+
             const response = await fetch(`${this.apiUrl}/api2/json/access/ticket`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -95,7 +98,7 @@ export class ProxmoxProvider extends BaseVirtualizationProvider {
             });
 
             if (!response.ok) {
-                throw new Error(`Login failed: ${response.statusText}`);
+                throw new AuthenticationError(`Login failed: ${response.statusText}`, undefined, { status: response.status });
             }
 
             const data = await response.json() as { data: { ticket: string; CSRFPreventionToken: string } };
@@ -106,7 +109,8 @@ export class ProxmoxProvider extends BaseVirtualizationProvider {
             return true;
         } catch (error) {
             this.logger.error({ error }, "Login failed");
-            return false;
+            if (error instanceof VirtualizationError) throw error;
+            throw new AuthenticationError(`Login failed: ${(error as Error).message}`, error);
         }
     }
 
@@ -134,7 +138,7 @@ export class ProxmoxProvider extends BaseVirtualizationProvider {
         } else if (this.credentials?.type === 'userpass' && this.ticket) {
             // Verificar si el ticket ha expirado
             if (Date.now() > this.ticketExpiry) {
-                throw new Error("Session expired, please reconnect");
+                throw new AuthenticationError("Session expired, please reconnect");
             }
             headers['Cookie'] = `PVEAuthCookie=${this.ticket}`;
             headers['CSRFPreventionToken'] = this.csrfToken;
@@ -147,6 +151,11 @@ export class ProxmoxProvider extends BaseVirtualizationProvider {
 
         this.validateConnection();
 
+        if (this.config.cache?.enabled) {
+            const cached = this.cache.get<VMStatus[]>('vms_list');
+            if (cached) return cached;
+        }
+
         try {
             const nodesResponse = await this.makeRequest<{ data: ProxmoxNode[] }>('GET', '/api2/json/nodes');
             const vms: VMStatus[] = [];
@@ -155,12 +164,12 @@ export class ProxmoxProvider extends BaseVirtualizationProvider {
             for (const node of nodesResponse.data) {
                 try {
                     const nodeVMs = await this.makeRequest<{ data: ProxmoxVM[] }>(
-                        'GET', 
+                        'GET',
                         `/api2/json/nodes/${node.node}/qemu`
                     );
 
                     const nodeLXCs = await this.makeRequest<{ data: ProxmoxVM[] }>(
-                        'GET', 
+                        'GET',
                         `/api2/json/nodes/${node.node}/lxc`
                     );
 
@@ -204,6 +213,10 @@ export class ProxmoxProvider extends BaseVirtualizationProvider {
                 }
             }
 
+            if (this.config.cache?.enabled) {
+                this.cache.set('vms_list', vms, this.config.cache.ttl);
+            }
+
             return vms;
         } catch (error) {
             this.logger.error({ error }, "Failed to list VMs");
@@ -222,20 +235,20 @@ export class ProxmoxProvider extends BaseVirtualizationProvider {
             if (!this.vms.has(vmId)) {
                 await this.listVMs();
             }
-            
+
             for (const node of nodes.data) {
                 try {
                     const vmType = this.vms.get(vmId) || 'qemu';
                     const vmResponse = await this.makeRequest<{ data: ProxmoxVM }>(
-                        'GET', 
+                        'GET',
                         `/api2/json/nodes/${node.node}/${vmType}/${vmId}/status/current`
                     );
 
                     const vm = vmResponse.data;
-                    return {
+                    const vmData = {
                         id: vm.vmid.toString(),
                         node: node.node,
-                        type: vmType === 'qemu' ? 'kvm' : 'lxc',
+                        type: (vmType === 'qemu' ? 'kvm' : 'lxc') as 'kvm' | 'lxc',
                         name: vm.name || `VM-${vm.vmid}`,
                         status: this.mapProxmoxStatus(vm.status),
                         uptime: vm.uptime,
@@ -246,6 +259,8 @@ export class ProxmoxProvider extends BaseVirtualizationProvider {
                             tx_bytes: vm.netout || 0
                         }
                     };
+
+                    return vmData;
                 } catch {
                     continue;
                 }
@@ -268,7 +283,8 @@ export class ProxmoxProvider extends BaseVirtualizationProvider {
                 return {
                     success: false,
                     message: `VM ${action.vmId} not found`,
-                    error: "VM_NOT_FOUND"
+                    error: "VM_NOT_FOUND",
+                    errorCode: VirtualizationErrorCode.VM_NOT_FOUND
                 };
             }
 
@@ -277,7 +293,7 @@ export class ProxmoxProvider extends BaseVirtualizationProvider {
             const endpoint = `/api2/json/nodes/${node}/${vmType}/${action.vmId}/status/${proxmoxAction}`;
 
             const response = await this.makeRequest<{ data: string }>(
-                'POST', 
+                'POST',
                 endpoint,
                 action.options,
                 {
@@ -293,10 +309,14 @@ export class ProxmoxProvider extends BaseVirtualizationProvider {
             };
         } catch (error) {
             this.logger.error({ err: error, action }, "Failed to execute action");
+
+            const errorCode = error instanceof VirtualizationError ? error.code : VirtualizationErrorCode.ACTION_FAILED;
+
             return {
                 success: false,
                 message: `Failed to execute ${action.type} on VM ${action.vmId}`,
-                error: (error as Error).message
+                error: (error as Error).message,
+                errorCode: errorCode
             };
         }
     }
@@ -317,7 +337,7 @@ export class ProxmoxProvider extends BaseVirtualizationProvider {
                     status: node.status,
                     resources: {
                         cpu: { used: node.cpu, total: node.maxcpu },
-                        memory: { used: ((node.mem/1024)/1024).toFixed(2), total: ((node.maxmem/1024)/1024).toFixed(2) },
+                        memory: { used: ((node.mem / 1024) / 1024).toFixed(2), total: ((node.maxmem / 1024) / 1024).toFixed(2) },
                         uptime: node.uptime
                     }
                 })),
@@ -338,7 +358,7 @@ export class ProxmoxProvider extends BaseVirtualizationProvider {
             if (!node) return null;
 
             const configResponse = await this.makeRequest<{ data: any }>(
-                'GET', 
+                'GET',
                 `/api2/json/nodes/${node}/qemu/${vmId}/config`
             );
 
@@ -370,7 +390,7 @@ export class ProxmoxProvider extends BaseVirtualizationProvider {
             if (specs.memory) updateData.memory = specs.memory;
 
             await this.makeRequest<any>(
-                'PUT', 
+                'PUT',
                 `/api2/json/nodes/${node}/qemu/${vmId}/config`,
                 updateData
             );
@@ -398,7 +418,7 @@ export class ProxmoxProvider extends BaseVirtualizationProvider {
             if (!node) return [];
 
             const response = await this.makeRequest<{ data: Array<{ n: number; t: string }> }>(
-                'GET', 
+                'GET',
                 `/api2/json/nodes/${node}/qemu/${vmId}/log?lines=${lines}`
             );
 
@@ -433,7 +453,7 @@ export class ProxmoxProvider extends BaseVirtualizationProvider {
             if (!this.vms.has(vmId)) {
                 await this.listVMs();
             }
-            
+
             for (const node of nodes.data) {
                 try {
                     const vmType = this.vms.get(vmId) || 'qemu';
@@ -487,7 +507,7 @@ export class ProxmoxProvider extends BaseVirtualizationProvider {
 
     private parseNetworkConfig(config: any): VMSpecs['network'] {
         const interfaces: Array<{ name: string; ip?: string; mac?: string }> = [];
-        
+
         Object.keys(config).forEach(key => {
             if (key.startsWith('net')) {
                 const netConfig = config[key];
