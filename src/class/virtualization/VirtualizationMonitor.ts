@@ -146,53 +146,65 @@ export class VirtualizationMonitor {
 
         // Group monitors by Panel to leverage caching or batched fetching in future
         // For now, we iterate and fetch individually but utilize the Manager's cache
+        const updatePromises: Promise<void>[] = [];
         for (const [messageId, entry] of this.monitors.entries()) {
-            try {
-                // Fetch current VM Status
-                const result = await this.manager.getVM(entry.panelId, entry.vmId);
-
-                if (!result.success || !result.data) {
-                    // If VM is gone or error, maybe stop monitoring after X failures?
-                    // For now just log and skip
-                    continue;
-                }
-
-                const vmStatus = result.data;
-
-                // Fetch Discord Message
-                const channel = await this.client.channels.fetch(entry.channelId) as TextChannel;
-                if (!channel) {
-                    this.removeMonitor(messageId);
-                    continue;
-                }
-
+            const updatePromise = (async () => {
                 try {
-                    const message = await channel.messages.fetch(messageId);
-                    if (!message) {
-                        this.removeMonitor(messageId);
-                        continue;
+                    // Fetch current VM Status
+                    const result = await this.manager.getVM(entry.panelId, entry.vmId);
+
+                    if (!result.success || !result.data) {
+                        // If VM is gone or error, maybe stop monitoring after X failures?
+                        // For now just log and skip
+                        return;
                     }
 
-                    // Generate new Embed
-                    const embed = VmEmbedGenerator.generateStatusEmbed(vmStatus);
-                    const components = VmEmbedGenerator.generateControlButtons(vmStatus);
+                    const vmStatus = result.data;
 
-                    // Update Message
-                    // Only update if something changed? Or always to show "alive"? 
-                    // Discord ignores edit if payload is identical, so it's safe to call.
-                    await message.edit({
-                        embeds: [embed],
-                        components: components
-                    });
+                    // Fetch Discord Message
+                    const channel = await this.client.channels.fetch(entry.channelId) as TextChannel;
+                    if (!channel) {
+                        this.removeMonitor(messageId);
+                        return;
+                    }
 
-                } catch (msgError) {
-                    // Message probably deleted or no permission
-                    this.logger.warn({ msgError, messageId }, "Failed to update monitor message");
-                    this.removeMonitor(messageId);
+                    try {
+                        const message = await channel.messages.fetch(messageId);
+                        if (!message) {
+                            this.removeMonitor(messageId);
+                            return;
+                        }
+
+                        // Generate new Embed
+                        const embed = VmEmbedGenerator.generateStatusEmbed(vmStatus);
+                        const components = VmEmbedGenerator.generateControlButtons(vmStatus);
+
+                        // Update Message
+                        // Only update if something changed? Or always to show "alive"? 
+                        // Discord ignores edit if payload is identical, so it's safe to call.
+                        await message.edit({
+                            embeds: [embed],
+                            components: components
+                        });
+
+                    } catch (msgError) {
+                        // Message probably deleted or no permission
+                        this.logger.warn({ msgError, messageId }, "Failed to update monitor message");
+                        this.removeMonitor(messageId);
+                    }
+
+                } catch (error) {
+                    this.logger.error({ error, entry }, "Error in monitor loop");
                 }
-
-            } catch (error) {
-                this.logger.error({ error, entry }, "Error in monitor loop");
+            })();
+            updatePromises.push(updatePromise);
+        }
+        // Wait for all updates to complete, log any errors
+        const results = await Promise.allSettled(updatePromises);
+        for (const [i, result] of results.entries()) {
+            if (result.status === "rejected") {
+                const [messageId, entry] = Array.from(this.monitors.entries())[i] || [];
+                this.logger.error({ error: result.reason, messageId, entry }, "Monitor update promise rejected");
             }
         }
     }
