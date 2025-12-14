@@ -23,7 +23,7 @@ export class MonitorHandler extends BaseHandler<ChatInputCommandInteraction> {
             const vmResult = await vmManager.getVM(panelId, vmId);
             if (!vmResult.success || !vmResult.data) {
                 await interaction.editReply({
-                    content: `❌ Error al obtener la VM: ${vmResult.error}`
+                    content: `❌ Error al obtener la VM (Panel ID: ${panelId}, VM ID: ${vmId}): ${vmResult.error}`
                 });
                 return;
             }
