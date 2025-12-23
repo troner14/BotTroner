@@ -1,7 +1,6 @@
 {
   "$schema": "https://turborepo.com/schema.json",
   "globalDependencies": [
-    "**/.env",
     ".env"
   ],
   "globalEnv": [
@@ -13,7 +12,8 @@
     },
     "dev": {
       "persistent": true,
-      "cache": false
+      "cache": false,
+      "env": ["*"]
     },
     "DB:generate": {
       "outputs": []

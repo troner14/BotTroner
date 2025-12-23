@@ -1,4 +1,4 @@
-import 'dotenv/config';
+import "@bot/env";
 import { ExtendedClient } from "@class/extendClient";
 import { GracefulShutdown } from "./class/gracefulShutdown";
 
@@ -14,6 +14,5 @@ client.logger.info("bot started in " + (Date.now() - start) + "ms");
 
 // Setup graceful shutdown handling
 GracefulShutdown.setup(client);
-
 
 export default client;
