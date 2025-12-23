@@ -1,0 +1,19 @@
+{
+  "name": "@bot/env",
+  "module": "index.ts",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./index.ts"
+    }
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.3"
+  }
+}
