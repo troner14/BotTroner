@@ -1,0 +1,19 @@
+{
+  "name": "@bot/database",
+  "module": "src/index.ts",
+  "type": "module",
+  "private": true,
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "DB:generate": "bun prisma generate",
+    "DB:push": "bun prisma db push"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  }
+}

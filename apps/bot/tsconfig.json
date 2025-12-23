@@ -10,6 +10,8 @@
     "allowJs": false,
     // Bundler mode
     "moduleResolution": "bundler",
+    "resolvePackageJsonExports": true,
+    "resolvePackageJsonImports": true,
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true,
     "noEmit": true,
@@ -22,7 +24,25 @@
     // Some stricter flags (disabled by default)
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noPropertyAccessFromIndexSignature": false,    
+    "noPropertyAccessFromIndexSignature": false,
+    "baseUrl": ".",
+    "paths": {
+      "@src/*": [
+        "./src/*"
+      ],
+      "@class/*": [
+        "./src/class/*"
+      ],
+      "@utils/*": [
+        "./src/utils/*"
+      ],
+      "@events/*": [
+        "./src/events/*"
+      ],
+      "@handlers/*": [
+        "./src/handlers/*"
+      ],
+    }
   },
   "include": [
     "src",

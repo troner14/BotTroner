@@ -1,0 +1,25 @@
+{
+  "$schema": "https://turborepo.com/schema.json",
+  "globalDependencies": [
+    "**/.env",
+    ".env"
+  ],
+  "globalEnv": [
+    "DATABASE_URL"
+  ],
+  "tasks": {
+    "build": {
+      "outputs": ["dist/**"]
+    },
+    "dev": {
+      "persistent": true,
+      "cache": false
+    },
+    "DB:generate": {
+      "outputs": []
+    },
+    "DB:push": {
+      "outputs": []
+    }
+  }
+}

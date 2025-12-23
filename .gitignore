@@ -6,6 +6,11 @@ out
 dist
 *.tgz
 
+#turbo
+.turbo
+
+bun.lock
+
 # code coverage
 coverage
 *.lcov
@@ -33,5 +38,5 @@ report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
 # Finder (MacOS) folder config
 .DS_Store
 
-/generated/prisma
-/transcripts
+/**/generated/prisma
+/**/transcripts

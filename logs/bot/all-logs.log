@@ -1,0 +1,8 @@
+{"level":30,"time":1766500939159,"pid":31968,"hostname":"troner14","module":"VirtualizationManager","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1766500939973,"pid":31968,"hostname":"troner14","module":"VirtualizationMonitor","msg":"Starting Virtualization Monitor loop"}
+{"level":30,"time":1766500939993,"pid":31968,"hostname":"troner14","module":"Commands","msg":"Loaded 7 commands in 34.86ms"}
+{"level":30,"time":1766500940003,"pid":31968,"hostname":"troner14","module":"Events","msg":"Loaded 4 events in 5.59ms"}
+{"level":30,"time":1766500940013,"pid":31968,"hostname":"troner14","module":"Components","msg":"Loaded 13 components in 9.60ms"}
+{"level":30,"time":1766500940013,"pid":31968,"hostname":"troner14","module":"ExtendedClient","msg":"bot started in 882ms"}
+{"level":30,"time":1766500940049,"pid":31968,"hostname":"troner14","module":"ExtendedClient","msg":"PROYECTO VIDA is Ready! 0 ms"}
+{"level":30,"time":1766500940053,"pid":31968,"hostname":"troner14","module":"ExtendedClient","msg":"No se encontraron comandos nuevos para sincronizar"}

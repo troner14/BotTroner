@@ -1,0 +1,22 @@
+{
+  "name": "@bot/shared-types",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "main": "./index.d.ts",
+  "types": "./index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./index.d.ts"
+    },
+    "./bot/*": {
+      "types": "./bot/*.d.ts"
+    }
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  }
+}
