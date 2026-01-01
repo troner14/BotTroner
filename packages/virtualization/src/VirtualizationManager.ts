@@ -1,6 +1,5 @@
-import type { Prisma, PrismaClient } from "@prismaClient/client";
-import type { Logger } from "pino";
-import logger from "@utils/logger";
+import type { Prisma, PrismaClient } from "@bot/database";
+import logger from "./utils/logger";
 import type {
     IVirtualizationProvider,
     PanelDBConfig,
@@ -9,23 +8,20 @@ import type {
     VMActionResult,
     ManagerResult,
     PanelCredentials
-} from "@class/virtualization/interfaces/IVirtualizationProvider";
+} from "./interfaces/IVirtualizationProvider";
 import { ProxmoxProvider } from "./providers/ProxmoxProvider";
 import { VirtualizationError, VirtualizationErrorCode } from "./errors";
-import type { VirtualizationMonitor } from "./VirtualizationMonitor";
 
 /**
  * Manager principal para gestión de virtualización
  * Maneja múltiples proveedores y paneles por guild
  */
 export class VirtualizationManager {
-    private logger: Logger;
+    private logger = logger;
     private providers: Map<string, IVirtualizationProvider> = new Map();
-    private panelProviders: Map<number, IVirtualizationProvider> = new Map(); // panelId -> provider instance
-    public monitor: VirtualizationMonitor | null = null;
+    private panelProviders: Map<number, IVirtualizationProvider> = new Map();
 
     constructor(private prisma: PrismaClient) {
-        this.logger = logger.child({ module: "VirtualizationManager" });
         this.initializeProviders();
     }
 

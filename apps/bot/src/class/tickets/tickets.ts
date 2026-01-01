@@ -3,7 +3,7 @@ import type { ExtendedClient } from "@src/class/extendClient";
 import { Transcripter } from "./transcripter";
 import logger from "@src/utils/logger";
 import { _U, getGuildLang } from "@src/utils/translate";
-import type { langsKey, TranslationKey } from "@src/types/translationTypes";
+import type { langsKey, TranslationKey } from "@bot/shared-types/bot/translationTypes";
 import { HavePerms } from "@src/utils/perms";
 
 

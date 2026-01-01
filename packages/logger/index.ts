@@ -1,5 +1,6 @@
 import pino from "pino";
 import fs from "fs";
+export * as pino from "pino";
 
 interface LoggerOptions {
     appName: string

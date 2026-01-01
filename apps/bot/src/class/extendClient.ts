@@ -4,7 +4,7 @@ import { prisma, PrismaClient } from "@bot/database";
 import { CommandsLoader } from "./loaders/Commands";
 import { EventsLoader } from "./loaders/events";
 import { ComponentsLoader } from "./loaders/components";
-import { VirtualizationManager } from "./virtualization/VirtualizationManager";
+import { DiscordVirtualizationManager } from "./virtualization/DiscordVirtualizationManager";
 import { VirtualizationMonitor } from "./virtualization/VirtualizationMonitor";
 import Tickets from "./tickets/tickets";
 
@@ -16,7 +16,7 @@ export class ExtendedClient extends Client {
     private commandsLoader: CommandsLoader;
     private eventsLoader: EventsLoader;
     private componentsLoader: ComponentsLoader;
-    private virtualizationManager: VirtualizationManager;
+    private virtualizationManager: DiscordVirtualizationManager;
     private ticketSystem: Tickets;
     private pendingAnnouncements: Map<string, { channelId: string; title: string; message: string; userId: string, fields?: any[], imatge?: string }>;
 
@@ -27,9 +27,10 @@ export class ExtendedClient extends Client {
         this.commandsLoader = new CommandsLoader(this);
         this.eventsLoader = new EventsLoader(this);
         this.componentsLoader = new ComponentsLoader();
-        this.virtualizationManager = new VirtualizationManager(this.#prisma);
+        this.virtualizationManager = new DiscordVirtualizationManager(this.#prisma);
         // Initialize monitor
-        this.virtualizationManager.monitor = new VirtualizationMonitor(this, this.virtualizationManager);
+        const monitor = new VirtualizationMonitor(this, this.virtualizationManager);
+        this.virtualizationManager.setMonitor(monitor);
 
         this.ticketSystem = new Tickets(this);
         this.pendingAnnouncements = new Map();

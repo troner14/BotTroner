@@ -1,13 +1,13 @@
 // import { traducciones } from '../database/models/traducciones';
 import type {langsKey, TranslationKey, TranslationVariables} from "@bot/shared-types/bot/translationTypes";
-import { prisma } from "@bot/database";
+import { prisma, PrismaClient } from "@bot/database";
 import type { ExtendedClient } from "@src/class/extendClient";
 
 
 type TranslationCache = Map<string, Map<string, string>>;
 
 const translationCache: TranslationCache = new Map();
-const pclient = prisma;
+const pclient: PrismaClient = prisma;
 
 /**
  * Fetches a translation from the database, caches it, and replaces variables.

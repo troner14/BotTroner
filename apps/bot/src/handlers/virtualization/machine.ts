@@ -1,7 +1,7 @@
 import { BaseHandler, type HandlerContext } from "@handlers/core/BaseHandler";
 import { Paginator } from "@src/class/utils/Paginator";
-import type { ManagerResult, VMAction, VMStatus } from "@src/class/virtualization/interfaces/IVirtualizationProvider";
-import type { VirtualizationManager } from "@src/class/virtualization/VirtualizationManager";
+import type { ManagerResult, VMAction, VMStatus } from "@bot/virtualization";
+import type { DiscordVirtualizationManager } from "@src/class/virtualization/DiscordVirtualizationManager";
 import { ButtonInteraction, EmbedBuilder, MessageFlags, type ChatInputCommandInteraction } from "discord.js";
 
 export class MachineHandler extends BaseHandler<ChatInputCommandInteraction> {
@@ -9,7 +9,7 @@ export class MachineHandler extends BaseHandler<ChatInputCommandInteraction> {
         super("Machine");
     }
 
-    private async getListVMs(vmManager: VirtualizationManager, guildId: string, panelId?: number): Promise<ManagerResult<VMStatus[]>> {
+    private async getListVMs(vmManager: DiscordVirtualizationManager, guildId: string, panelId?: number): Promise<ManagerResult<VMStatus[]>> {
         let success: boolean = false;
         let data: VMStatus[] | undefined;
         let error: string | undefined;

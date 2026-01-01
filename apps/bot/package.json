@@ -7,6 +7,9 @@
     "module": "src/index.ts",
     "type": "module",
     "private": true,
+    "exports": {
+        ".": "./src/index.ts"
+    },
     "scripts": {
         "script:folder": "bun run ./scripts/generateListFolderType.ts",
         "script:translation": "bun run ./scripts/generateTranslationTypes.ts",
@@ -24,6 +27,7 @@
         "@bot/shared-types": "workspace:^",
         "@bot/logger": "workspace:^",
         "@bot/env": "workspace:^",
+        "@bot/virtualization": "workspace:^",
         "@prisma/adapter-mariadb": "^7.1.0",
         "@prisma/client": "^7.0.1",
         "discord.js": "^14.23.2",

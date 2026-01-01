@@ -1,5 +1,5 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, Colors } from "discord.js";
-import type { VMStatus } from "../interfaces/IVirtualizationProvider";
+import type { VMStatus } from "@bot/virtualization";
 
 export class VmEmbedGenerator {
 

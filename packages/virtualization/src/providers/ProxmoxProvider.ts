@@ -4,8 +4,8 @@ import type {
     VMAction,
     VMActionResult,
     VMSpecs,
-} from "@class/virtualization/interfaces/IVirtualizationProvider";
-import { AuthenticationError, ConnectionError, VirtualizationError, VirtualizationErrorCode } from "@class/virtualization/errors";
+} from "../interfaces/IVirtualizationProvider";
+import { AuthenticationError, ConnectionError, VirtualizationError, VirtualizationErrorCode } from "../errors";
 
 interface ProxmoxVM {
     vmid: number;

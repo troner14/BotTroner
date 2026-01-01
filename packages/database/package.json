@@ -8,12 +8,19 @@
   },
   "scripts": {
     "DB:generate": "bun prisma generate",
-    "DB:push": "bun prisma db push"
+    "DB:push": "bun prisma db push",
+    "postinstall": "bun prisma generate"
   },
   "devDependencies": {
     "@types/bun": "latest"
   },
   "peerDependencies": {
     "typescript": "^5"
+  },
+  "dependencies": {
+    "@bot/env": "workspace:^",
+    "@prisma/adapter-mariadb": "^7.2.0",
+    "@prisma/client": "^7.2.0",
+    "prisma": "^7.2.0"
   }
 }

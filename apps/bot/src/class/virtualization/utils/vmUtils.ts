@@ -1,7 +1,7 @@
 import type { ButtonInteraction } from "discord.js";
-import type { VirtualizationManager } from "../VirtualizationManager";
+import type { DiscordVirtualizationManager } from "../DiscordVirtualizationManager";
 
-export async function findPanel(vmManager: VirtualizationManager, interaction: ButtonInteraction, vmId: string): Promise<number | null> {
+export async function findPanel(vmManager: DiscordVirtualizationManager, interaction: ButtonInteraction, vmId: string): Promise<number | null> {
     if (vmManager.monitor) {
         const entry = vmManager.monitor.getMonitorByMessageId(interaction.message.id);
         if (entry) return entry.panelId;

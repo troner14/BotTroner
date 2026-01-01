@@ -1,0 +1,7 @@
+[install]
+# Desactiva advertencias de peer dependencies
+logLevel = "error"
+
+[install.peer]
+# Ignora advertencias de peer dependencies incorrectas
+checkVersions = false

@@ -1,5 +1,4 @@
-import type { Logger } from "pino";
-import logger from "@utils/logger";
+import { pino} from "@bot/logger";
 import type {
     IVirtualizationProvider,
     VMStatus,
@@ -8,7 +7,7 @@ import type {
     PanelCredentials,
     PanelConfig,
     VMSpecs
-} from "@class/virtualization/interfaces/IVirtualizationProvider";
+} from "../interfaces/IVirtualizationProvider";
 
 /**
  * Clase base abstracta para todos los proveedores de virtualización
@@ -21,12 +20,13 @@ import {
     ResourceNotFoundError
 } from "../errors";
 import { VirtualizationCache } from "../utils/cache";
+import logger from "../utils/logger";
 
 /**
  * Clase base abstracta para todos los proveedores de virtualización
  */
 export abstract class BaseVirtualizationProvider implements IVirtualizationProvider {
-    protected logger: Logger;
+    protected logger: pino.Logger;
     protected apiUrl: string = "";
     protected credentials: PanelCredentials | null = null;
     protected config: PanelConfig = {};
@@ -38,10 +38,7 @@ export abstract class BaseVirtualizationProvider implements IVirtualizationProvi
         public readonly type: string,
         public readonly version?: string
     ) {
-        this.logger = logger.child({
-            module: `${this.constructor.name}`,
-            provider: this.type
-        });
+        this.logger = logger.child({ module: `Provider:${this.type}` });
         this.cache = new VirtualizationCache();
     }
 

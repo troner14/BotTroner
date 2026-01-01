@@ -1,0 +1,19 @@
+{
+  "name": "@bot/virtualization",
+  "module": "src/index.ts",
+  "main": "src/index.ts",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@bot/logger": "workspace:^",
+    "@bot/database": "workspace:^"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  }
+}

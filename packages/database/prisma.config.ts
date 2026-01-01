@@ -1,4 +1,4 @@
-import 'dotenv/config'
+import '@bot/env';
 import type { PrismaConfig } from "prisma";
 import { env } from "prisma/config";
 

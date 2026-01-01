@@ -1,8 +1,7 @@
 import { TextChannel } from "discord.js";
 import type { ExtendedClient } from "@src/class/extendClient";
-import type { Logger } from "pino";
 import logger from "@utils/logger";
-import { VirtualizationManager } from "./VirtualizationManager";
+import type { DiscordVirtualizationManager } from "./DiscordVirtualizationManager";
 import { VmEmbedGenerator } from "./utils/embedGenerator";
 
 interface MonitorEntry {
@@ -16,14 +15,14 @@ interface MonitorEntry {
 }
 
 export class VirtualizationMonitor {
-    private logger: Logger;
+    private logger: typeof logger;
     private monitors: Map<string, MonitorEntry> = new Map(); // key: messageId
     private interval: Timer | null = null;
     private readonly UPDATE_INTERVAL = 5000;
 
     constructor(
         private client: ExtendedClient,
-        private manager: VirtualizationManager
+        private manager: DiscordVirtualizationManager
     ) {
         this.logger = logger.child({ module: "VirtualizationMonitor" });
     }

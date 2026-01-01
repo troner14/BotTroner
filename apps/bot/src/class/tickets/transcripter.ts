@@ -1,9 +1,9 @@
-import type { AllMessagesTypes } from "@src/types/transcripter";
+import type { AllMessagesTypes } from "@bot/shared-types/bot/transcripter";
 import { _U, getGuildLang } from "@src/utils/translate";
 import { type Message, type GuildTextBasedChannel, type BaseGuildTextChannel, type ActionRow, ButtonComponent, StringSelectMenuComponent } from "discord.js";
 import path from "path"
 import { minify } from "html-minifier-terser"
-import type { PrismaClient } from "@prismaClient/client";
+import type { PrismaClient } from "@bot/database";
 import { Worker } from 'node:worker_threads';
 import type { ExtendedClient } from "../extendClient";
 
