@@ -6,7 +6,8 @@ import type {
     VMActionResult,
     PanelCredentials,
     PanelConfig,
-    VMSpecs
+    VMSpecs,
+    RRDDataPoint
 } from "../interfaces/IVirtualizationProvider";
 
 /**
@@ -136,6 +137,8 @@ export abstract class BaseVirtualizationProvider implements IVirtualizationProvi
     // Métodos principales de la interfaz que deben implementar las clases hijas
     abstract listVMs(): Promise<VMStatus[]>;
     abstract getVM(vmId: string): Promise<VMStatus | null>;
+    abstract getHistory(vmId: string, timeframe: "hour" | "day" | "week" | "month" | "year"): Promise<RRDDataPoint[]>;
+    abstract getNoVNCUrl(vmId: string): Promise<{ url: string; token: string; websocket: string; node: string; port: number }>;
     abstract executeAction(action: VMAction): Promise<VMActionResult>;
     abstract getSystemInfo(): Promise<any>;
     abstract getVMSpecs(vmId: string): Promise<VMSpecs | null>;

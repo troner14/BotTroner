@@ -7,7 +7,8 @@ import type {
     VMAction,
     VMActionResult,
     ManagerResult,
-    PanelCredentials
+    PanelCredentials,
+    RRDDataPoint
 } from "./interfaces/IVirtualizationProvider";
 import { ProxmoxProvider } from "./providers/ProxmoxProvider";
 import { VirtualizationError, VirtualizationErrorCode } from "./errors";
@@ -228,6 +229,19 @@ export class VirtualizationManager {
         }
     }
 
+    async getPanelAuthHeader(panelId: number): Promise<IVirtualizationProvider | null> {
+        try {
+            const connectionResult = await this.connectToPanel(panelId);
+            if (!connectionResult.success || !connectionResult.data) {
+                return null;
+            }
+            return connectionResult.data;
+        } catch (error) {
+            this.logger.error({ error, panelId }, "Failed to get panel auth header");
+            return null;
+        }
+    }
+
     /**
      * Conecta a un panel y lo cachea
      */
@@ -354,6 +368,31 @@ export class VirtualizationManager {
             };
         } catch (error) {
             this.logger.error({ error, panelId, vmId }, "Failed to get VM");
+            const errorCode = error instanceof VirtualizationError ? error.code : VirtualizationErrorCode.UNKNOWN_ERROR;
+            return {
+                success: false,
+                error: (error as Error).message,
+                errorCode
+            };
+        }
+    }
+
+    async getVMHistory(panelId: number, vmId: string, timeframe: "hour" | "day" | "week" | "month" | "year"): Promise<ManagerResult<RRDDataPoint[]>> {
+        try {
+            const connectionResult = await this.connectToPanel(panelId);
+            if (!connectionResult.success || !connectionResult.data) {
+                return { success: false, error: connectionResult.error };
+            }
+            const provider = connectionResult.data;
+            const history = await provider.getHistory(vmId, timeframe);
+            return {
+                success: true,
+                data: history,
+                provider: connectionResult.provider
+            };
+        }
+        catch (error) {
+            this.logger.error({ error, panelId, vmId }, "Failed to get VM history");
             const errorCode = error instanceof VirtualizationError ? error.code : VirtualizationErrorCode.UNKNOWN_ERROR;
             return {
                 success: false,
@@ -629,6 +668,43 @@ export class VirtualizationManager {
      */
     getAvailableProviders(): string[] {
         return Array.from(this.providers.keys());
+    }
+
+    /**
+     * Genera la URL de noVNC para acceder a la consola de una VM
+     */
+    async getNoVNCUrl(panelId: number, vmId: string): Promise<ManagerResult<{ url: string; token: string }>> {
+        try {
+            const connectionResult = await this.connectToPanel(panelId);
+            if (!connectionResult.success || !connectionResult.data) {
+                return { success: false, error: connectionResult.error };
+            }
+
+            const provider = connectionResult.data;
+
+            const result = await provider.getNoVNCUrl(vmId);
+            
+            if (!result) {
+                return {
+                    success: false,
+                    error: 'Failed to generate noVNC URL',
+                    errorCode: VirtualizationErrorCode.UNKNOWN_ERROR
+                };
+            }
+
+            return {
+                success: true,
+                data: result
+            };
+        } catch (error) {
+            this.logger.error({ error, panelId, vmId }, "Failed to get noVNC URL");
+            const errorCode = error instanceof VirtualizationError ? error.code : VirtualizationErrorCode.UNKNOWN_ERROR;
+            return {
+                success: false,
+                error: (error as Error).message,
+                errorCode
+            };
+        }
     }
 
     /**

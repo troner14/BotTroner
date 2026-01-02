@@ -4,6 +4,7 @@ import type {
     VMAction,
     VMActionResult,
     VMSpecs,
+    RRDDataPoint,
 } from "../interfaces/IVirtualizationProvider";
 import { AuthenticationError, ConnectionError, VirtualizationError, VirtualizationErrorCode } from "../errors";
 
@@ -129,7 +130,7 @@ export class ProxmoxProvider extends BaseVirtualizationProvider {
         }
     }
 
-    protected getAuthHeaders(): Record<string, string> {
+    public getAuthHeaders(): Record<string, string> {
         const headers: Record<string, string> = {};
 
         if (this.credentials?.type === 'token') {
@@ -243,7 +244,32 @@ export class ProxmoxProvider extends BaseVirtualizationProvider {
                         'GET',
                         `/api2/json/nodes/${node.node}/${vmType}/${vmId}/status/current`
                     );
-
+                    let guestDisk = {};
+                    if (vmType === "qemu") {
+                        const discStorage = await this.makeRequest<{ data: {
+                            result: Array<{
+                                mountpoint: string;
+                                "total-bytes": number;
+                                "used-bytes": number;
+                                name: string;
+                                type: string;
+                                disk: Array<any>;
+                            }>
+                        } }>(
+                            'GET',
+                            `/api2/json/nodes/${node.node}/qemu/${vmId}/agent/get-fsinfo`
+                        );
+                        if (discStorage.data) {
+                            for (const d of discStorage.data.result) {
+                                if (d.mountpoint === "/" || d.mountpoint.includes("C:")) {
+                                    guestDisk = {
+                                        total: d["total-bytes"],
+                                        used: d["used-bytes"],
+                                    }
+                                }
+                            }
+                        }
+                    }
                     const vm = vmResponse.data;
                     const vmData = {
                         id: vm.vmid.toString(),
@@ -254,10 +280,14 @@ export class ProxmoxProvider extends BaseVirtualizationProvider {
                         uptime: vm.uptime,
                         cpu_usage: vm.cpu ? vm.cpu * 100 : undefined,
                         memory_usage: vm.mem,
+                        maxMemory: vm.maxmem,
+                        disk_usage: vm.disk,
+                        maxDisk: vm.maxdisk,
                         network_traffic: {
                             rx_bytes: vm.netin || 0,
                             tx_bytes: vm.netout || 0
-                        }
+                        },
+                        guestDisk: guestDisk
                     };
 
                     return vmData;
@@ -269,6 +299,75 @@ export class ProxmoxProvider extends BaseVirtualizationProvider {
             return null;
         } catch (error) {
             this.logger.error({ error, vmId }, "Failed to get VM");
+            throw error;
+        }
+    }
+
+    async getHistory(vmId: string, timeframe: "hour" | "day" | "week" | "month" | "year"): Promise<RRDDataPoint[]> {
+        this.validateConnection();
+        this.validateVMId(vmId);
+
+        try {
+            const node = await this.findVMNode(vmId);
+            if (!node) return [];
+            const vmType = this.vms.get(vmId) || 'qemu';
+            const historyResponse = await this.makeRequest<{ data: RRDDataPoint[] }>(
+                'GET',
+                `/api2/json/nodes/${node}/${vmType}/${vmId}/rrddata?timeframe=${timeframe}`
+            );
+            return historyResponse.data;
+        } catch (error) {
+            this.logger.error({ error, vmId }, "Failed to get VM history");
+            return [];
+        }
+    }
+
+    /**
+     * Genera la URL de noVNC con token para acceder a la consola de la VM
+     */
+    async getNoVNCUrl(vmId: string): Promise<{ url: string; token: string; websocket: string; node: string; port: number }> {
+        this.validateConnection();
+        this.validateVMId(vmId);
+
+        try {
+            const node = await this.findVMNode(vmId);
+            if (!node) {
+                this.logger.error({ vmId }, "VM node not found for noVNC");
+                throw new VirtualizationError("VM node not found", VirtualizationErrorCode.RESOURCE_NOT_FOUND, undefined, { vmId });
+            }
+
+            const vmType = this.vms.get(vmId) || 'qemu';
+            
+            // Generar ticket de VNC para VMs qemu
+            const vncResponse = await this.makeRequest<{ data: { user: string; ticket: string; port: number; upid: string } }>(
+                'POST',
+                `/api2/json/nodes/${node}/${vmType}/${vmId}/vncproxy`,
+                { websocket: 1 }
+            );
+
+            const { ticket, port } = vncResponse.data;
+            
+            // Construir URL del websocket VNC
+            const wsProtocol = this.apiUrl.startsWith('https') ? 'wss' : 'ws';
+            const host = this.apiUrl.replace(/^https?:\/\//, '').split('/')[0];
+            
+            // El websocket debe usar la ruta completa del endpoint vncwebsocket
+            const vncWebSocket = `${wsProtocol}://${host}/api2/json/nodes/${node}/${vmType}/${vmId}/vncwebsocket?port=${port}&vncticket=${encodeURIComponent(ticket)}`;
+            
+            this.logger.info({ vmId, node, port, vmType, websocketUrl: vncWebSocket }, "Generated VNC WebSocket URL");
+            
+            // URL de la interfaz web de Proxmox (opcional)
+            const proxmoxConsoleUrl = `${this.apiUrl}/?console=${vmType}&novnc=1&vmid=${vmId}&vmname=VM-${vmId}&node=${node}&resize=scale`;
+
+            return {
+                url: proxmoxConsoleUrl,        // URL de interfaz de Proxmox
+                websocket: vncWebSocket,        // URL del websocket para noVNC client
+                token: ticket,                  // Token de autenticación
+                node: node,                     // Nodo donde está la VM
+                port: port                      // Puerto del websocket
+            };
+        } catch (error) {
+            this.logger.error({ error, vmId }, "Failed to generate noVNC URL");
             throw error;
         }
     }

@@ -75,6 +75,17 @@ export interface PanelConfig {
     };
 }
 
+export interface RRDDataPoint {
+    time: number;
+    diskwrite?: number;
+    mem?: number;
+    maxdisk?: number;
+    maxmem?: number;
+    cpu?: number;
+    disk?: number;
+    netin?: number;
+    netout?: number;
+}
 /**
  * Interface principal para cualquier proveedor de virtualización
  */
@@ -91,6 +102,8 @@ export interface IVirtualizationProvider {
     // Gestión de VMs
     listVMs(): Promise<VMStatus[]>;
     getVM(vmId: string): Promise<VMStatus | null>;
+    getHistory(vmId: string, timeframe: "hour" | "day" | "week" | "month" | "year"): Promise<RRDDataPoint[]>;
+    getNoVNCUrl(vmId: string): Promise<{ url: string; token: string; websocket: string; node: string; port: number }>;
     executeAction(action: VMAction): Promise<VMActionResult>;
 
     // Información del sistema
@@ -99,6 +112,7 @@ export interface IVirtualizationProvider {
         version: string;
         features: string[];
     }>;
+    getAuthHeaders(): Record<string, string>;
 
     // Gestión de recursos
     getVMSpecs(vmId: string): Promise<VMSpecs | null>;
