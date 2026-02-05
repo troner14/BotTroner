@@ -1,0 +1,392 @@
+{"level":30,"time":1767379223238,"pid":18352,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767379240040,"pid":30520,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767379254482,"pid":30520,"hostname":"troner14","module":"Provider:proxmox","msg":"Connecting to proxmox at https://192.168.1.30:8006"}
+{"level":30,"time":1767379254490,"pid":30520,"hostname":"troner14","module":"Provider:proxmox","msg":"Connected to Proxmox 9.0.11"}
+{"level":30,"time":1767379254490,"pid":30520,"hostname":"troner14","module":"Provider:proxmox","msg":"Successfully connected to proxmox"}
+{"level":30,"time":1767379254490,"pid":30520,"hostname":"troner14","msg":"Connected to panel test (proxmox)"}
+{"level":30,"time":1767379297440,"pid":30520,"hostname":"troner14","module":"Provider:proxmox","vmId":"100","node":"pve","port":"5900","vmType":"lxc","websocketUrl":"wss://192.168.1.30:8006/api2/json/nodes/pve/lxc/100/vncwebsocket?port=5900&vncticket=PVEVNC%3A69581161%3A%3ACBlZJnb5OW6I%2FH5%2BdUi8UH6s1JTbw5qx0xel2JG738MK7oPIbhz971Md%2F%2B3vmFFLq2BAfSn1xZSX6IInugttRvcatcbQ%2FElPCd%2FiI4F%2F%2FFuNDP9pAxxA0GYts7%2F9NdaO8RKGfR%2FaRP92kniBPBznYzO2R0klVoai522wOf9eBPEP49%2B3HBvnSRS2hrHqV86eudyuesNNfxtQqRKqsX60qDNdKLkIhlnIPAwlaLBZ0nBEmtZa7TZTEyP3bQ5AK2HaFR5RTQYmyv85mcszTUisuFo4RORyg%2FNGzU2hwQ7UHIfkYnh0f%2Bd0Rne9kNsYAemmRz9NzmdX%2FxZt3mBd5OXDSQ%3D%3D","msg":"Generated VNC WebSocket URL"}
+{"level":30,"time":1767379297469,"pid":30520,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767379297474,"pid":30520,"hostname":"troner14","module":"Provider:proxmox","msg":"Connecting to proxmox at https://192.168.1.30:8006"}
+{"level":30,"time":1767379297482,"pid":30520,"hostname":"troner14","module":"Provider:proxmox","msg":"Connected to Proxmox 9.0.11"}
+{"level":30,"time":1767379297482,"pid":30520,"hostname":"troner14","module":"Provider:proxmox","msg":"Successfully connected to proxmox"}
+{"level":30,"time":1767379297482,"pid":30520,"hostname":"troner14","msg":"Connected to panel test (proxmox)"}
+{"level":30,"time":1767380167284,"pid":30520,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767380178884,"pid":30520,"hostname":"troner14","module":"Provider:proxmox","msg":"Connecting to proxmox at https://192.168.1.30:8006"}
+{"level":30,"time":1767380178893,"pid":30520,"hostname":"troner14","module":"Provider:proxmox","msg":"Connected to Proxmox 9.0.11"}
+{"level":30,"time":1767380178893,"pid":30520,"hostname":"troner14","module":"Provider:proxmox","msg":"Successfully connected to proxmox"}
+{"level":30,"time":1767380178893,"pid":30520,"hostname":"troner14","msg":"Connected to panel test (proxmox)"}
+{"level":30,"time":1767456256582,"pid":2004,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767456282796,"pid":2004,"hostname":"troner14","module":"Provider:proxmox","msg":"Connecting to proxmox at https://192.168.1.30:8006"}
+{"level":30,"time":1767456282806,"pid":2004,"hostname":"troner14","module":"Provider:proxmox","msg":"Connected to Proxmox 9.0.11"}
+{"level":30,"time":1767456282806,"pid":2004,"hostname":"troner14","module":"Provider:proxmox","msg":"Successfully connected to proxmox"}
+{"level":30,"time":1767456282806,"pid":2004,"hostname":"troner14","msg":"Connected to panel test (proxmox)"}
+{"level":30,"time":1767456990357,"pid":2004,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767456998476,"pid":2004,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767457005365,"pid":2004,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767457055304,"pid":2004,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767457150195,"pid":2004,"hostname":"troner14","module":"Provider:proxmox","msg":"Connecting to proxmox at https://192.168.1.30:8006"}
+{"level":30,"time":1767457150216,"pid":2004,"hostname":"troner14","module":"Provider:proxmox","msg":"Connected to Proxmox 9.0.11"}
+{"level":30,"time":1767457150216,"pid":2004,"hostname":"troner14","module":"Provider:proxmox","msg":"Successfully connected to proxmox"}
+{"level":30,"time":1767457150216,"pid":2004,"hostname":"troner14","msg":"Connected to panel test (proxmox)"}
+{"level":30,"time":1767458744378,"pid":2004,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767458746506,"pid":2004,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767458766488,"pid":2004,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767458769035,"pid":2004,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767458773971,"pid":2004,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767458788368,"pid":2004,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767459043782,"pid":3308,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767459225145,"pid":3308,"hostname":"troner14","module":"Provider:proxmox","msg":"Connecting to proxmox at https://192.168.1.30:8006"}
+{"level":30,"time":1767459225152,"pid":3308,"hostname":"troner14","module":"Provider:proxmox","msg":"Connected to Proxmox 9.0.11"}
+{"level":30,"time":1767459225152,"pid":3308,"hostname":"troner14","module":"Provider:proxmox","msg":"Successfully connected to proxmox"}
+{"level":30,"time":1767459225152,"pid":3308,"hostname":"troner14","msg":"Connected to panel test (proxmox)"}
+{"level":30,"time":1767459407063,"pid":28276,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767459447509,"pid":28276,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767459451194,"pid":28276,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767459463816,"pid":28276,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767459467933,"pid":28276,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767459470903,"pid":28276,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767459513425,"pid":28276,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767459515375,"pid":28276,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767459521577,"pid":28276,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767459525721,"pid":28276,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767459532173,"pid":28276,"hostname":"troner14","module":"Provider:proxmox","msg":"Connecting to proxmox at https://192.168.1.30:8006"}
+{"level":30,"time":1767459532197,"pid":28276,"hostname":"troner14","module":"Provider:proxmox","msg":"Connected to Proxmox 9.0.11"}
+{"level":30,"time":1767459532197,"pid":28276,"hostname":"troner14","module":"Provider:proxmox","msg":"Successfully connected to proxmox"}
+{"level":30,"time":1767459532197,"pid":28276,"hostname":"troner14","msg":"Connected to panel test (proxmox)"}
+{"level":30,"time":1767459703559,"pid":28276,"hostname":"troner14","module":"Provider:proxmox","vmId":"100","node":"pve","port":"5900","vmType":"lxc","websocketUrl":"wss://192.168.1.30:8006/api2/json/nodes/pve/lxc/100/vncwebsocket?port=5900&vncticket=PVEVNC%3A69594B76%3A%3ACpGMExwioR8TUaYj%2BrA0zepoRLJvsLFpjaAvr1959%2BUhY2lx9F7VCtZyRoeTfMK%2BctIWC1Ao72emLwKW5uo372AodSuu1uxF3WcOUXEHiK1FKhRiG2pbgTkwSMOhzyeV8c2Qwv9LinfKCwzhWoH%2BuzAF%2FtliyoU7oVMd7761mOMNf9t9tProGBqETvla1QQOXog243SB%2BMDAYIU7tQrJzP7Yw2Btm0YfvtcVyynFqNE6EyFJsGk19rYC5RJryEJBwHkiJ5wsOTQ49xVwrC98gedYyO7zNYATbdSZ%2BCtlpzBlynJjjO2sEt9kEhUNh3P9N0G%2BOX5lm2nnXCy8fjs40w%3D%3D","msg":"Generated VNC WebSocket URL"}
+{"level":30,"time":1767459703570,"pid":28276,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767459703573,"pid":28276,"hostname":"troner14","module":"Provider:proxmox","msg":"Connecting to proxmox at https://192.168.1.30:8006"}
+{"level":30,"time":1767459703578,"pid":28276,"hostname":"troner14","module":"Provider:proxmox","msg":"Connected to Proxmox 9.0.11"}
+{"level":30,"time":1767459703578,"pid":28276,"hostname":"troner14","module":"Provider:proxmox","msg":"Successfully connected to proxmox"}
+{"level":30,"time":1767459703578,"pid":28276,"hostname":"troner14","msg":"Connected to panel test (proxmox)"}
+{"level":30,"time":1767459752088,"pid":28276,"hostname":"troner14","module":"Provider:proxmox","vmId":"100","node":"pve","port":"5900","vmType":"lxc","websocketUrl":"wss://192.168.1.30:8006/api2/json/nodes/pve/lxc/100/vncwebsocket?port=5900&vncticket=PVEVNC%3A69594BA6%3A%3AJs8by5rOYL8V%2FKVDboOd8J7jsFzSjkPlgMWV5NWWvH93NgAioodUfBtBnnWy7Z1Jdc7IFv5hTGFqOIwIJHibaX3kYduvDEGBrIizizaviLHTnO96Octm2WLhGaOp2KxIFctayZqKGh%2BY7zCh%2BSIOexM7%2FCjJU7%2Bwr32MEW2rMEbvQVIY8d9bHiD0573eCqwPMWRhlg9pxyHuzY%2Bn8rNbvWWcExFOJRvKeUUciVweH%2BqEA%2Fnnc4j0NiBxDhEHVVghGt3a1wro%2FQRqBBx14xFXrdaxG8zck%2Bby7Ui5ODUmDCE3ICvaLNk%2Fq15HrBDnyOODMkSXQDDP99dtzmrz8Y%2Ff8g%3D%3D","msg":"Generated VNC WebSocket URL"}
+{"level":30,"time":1767459752095,"pid":28276,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767459752099,"pid":28276,"hostname":"troner14","module":"Provider:proxmox","msg":"Connecting to proxmox at https://192.168.1.30:8006"}
+{"level":30,"time":1767459752107,"pid":28276,"hostname":"troner14","module":"Provider:proxmox","msg":"Connected to Proxmox 9.0.11"}
+{"level":30,"time":1767459752107,"pid":28276,"hostname":"troner14","module":"Provider:proxmox","msg":"Successfully connected to proxmox"}
+{"level":30,"time":1767459752107,"pid":28276,"hostname":"troner14","msg":"Connected to panel test (proxmox)"}
+{"level":30,"time":1767459846221,"pid":28276,"hostname":"troner14","module":"Provider:proxmox","vmId":"100","node":"pve","port":"5901","vmType":"lxc","websocketUrl":"wss://192.168.1.30:8006/api2/json/nodes/pve/lxc/100/vncwebsocket?port=5901&vncticket=PVEVNC%3A69594C05%3A%3AX6vVQ%2Bo2PgJRn%2BiCNJA%2B3Vl0c0jmBdyr%2Bzhu24L7z%2Bb6Jxq9avqp2IoEpLmP088LfyLB8U6h1D4YQKJ2jVe3xKzpFiAhcSIn9H9lv1CumdlFjGEIKAwHWOU5%2BEeA2ruuxWi3ozThSzWIZsMNNhuSdMHFiKNyRsqNsZiN%2B2lH9j7QC43RGP4F3iKtXAcCMqhCPvblcuYkbgk8XfPMy36p8ommQzXCU6pAOsL%2By0Eh87evOPkcFlf38TMMGc8AFmhAx58KIhMDTcFrUp3bTwpZQRNLBAlqpTc6Tx6tSYAg3Of4dL9ggvGECqWWgsNlRAawZqklKR53ZE6O%2F5h8wF792g%3D%3D","msg":"Generated VNC WebSocket URL"}
+{"level":30,"time":1767459846231,"pid":28276,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767459846234,"pid":28276,"hostname":"troner14","module":"Provider:proxmox","msg":"Connecting to proxmox at https://192.168.1.30:8006"}
+{"level":30,"time":1767459846241,"pid":28276,"hostname":"troner14","module":"Provider:proxmox","msg":"Connected to Proxmox 9.0.11"}
+{"level":30,"time":1767459846241,"pid":28276,"hostname":"troner14","module":"Provider:proxmox","msg":"Successfully connected to proxmox"}
+{"level":30,"time":1767459846241,"pid":28276,"hostname":"troner14","msg":"Connected to panel test (proxmox)"}
+{"level":30,"time":1767459910389,"pid":28276,"hostname":"troner14","module":"Provider:proxmox","vmId":"100","node":"pve","port":"5900","vmType":"lxc","websocketUrl":"wss://192.168.1.30:8006/api2/json/nodes/pve/lxc/100/vncwebsocket?port=5900&vncticket=PVEVNC%3A69594C44%3A%3ACQ%2B3uSNs6iGkexRghmheadv1%2FBHyqCKc%2B%2Bv4Qkrwe1Eil4xeRV6dEcnJKZENjIDQIn5AlGYYYVuHE%2BWejQT89D2AjqRk5Ajtc%2F4QRJnXgGxU%2FSzhp5HcvdQzijfPJzj37DynROWS1CMxdce2LJAYJ3Oh9lvtHdnQNsP1l%2BSxA4ZJznIdwDt9rUU1FvaznYGjG%2BKq%2FawofNFoGNYCI8Gfc6cmQGbWk%2FpPpZaid2U6ZuXuZ80xBj1ZVy1N6Qp9j2AQlQIIXpDCO2khWK3q66MG0pYadsoNhmb79RTlDO6Rud3Jtk2cUO6u5mmKWDISiGCG0kQ8tq8l9HzoxPqMKGPmlQ%3D%3D","msg":"Generated VNC WebSocket URL"}
+{"level":30,"time":1767459910398,"pid":28276,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767459910401,"pid":28276,"hostname":"troner14","module":"Provider:proxmox","msg":"Connecting to proxmox at https://192.168.1.30:8006"}
+{"level":30,"time":1767459910406,"pid":28276,"hostname":"troner14","module":"Provider:proxmox","msg":"Connected to Proxmox 9.0.11"}
+{"level":30,"time":1767459910406,"pid":28276,"hostname":"troner14","module":"Provider:proxmox","msg":"Successfully connected to proxmox"}
+{"level":30,"time":1767459910406,"pid":28276,"hostname":"troner14","msg":"Connected to panel test (proxmox)"}
+{"level":30,"time":1767474415450,"pid":30972,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767474453054,"pid":30972,"hostname":"troner14","module":"Provider:proxmox","msg":"Connecting to proxmox at https://192.168.1.30:8006"}
+{"level":30,"time":1767474453063,"pid":30972,"hostname":"troner14","module":"Provider:proxmox","msg":"Connected to Proxmox 9.0.11"}
+{"level":30,"time":1767474453063,"pid":30972,"hostname":"troner14","module":"Provider:proxmox","msg":"Successfully connected to proxmox"}
+{"level":30,"time":1767474453063,"pid":30972,"hostname":"troner14","msg":"Connected to panel test (proxmox)"}
+{"level":30,"time":1767474466386,"pid":30972,"hostname":"troner14","module":"Provider:proxmox","vmId":"100","node":"pve","port":"5900","vmType":"lxc","websocketUrl":"wss://192.168.1.30:8006/api2/json/nodes/pve/lxc/100/vncwebsocket?port=5900&vncticket=PVEVNC%3A69598521%3A%3AJgjYfSgsK2Br%2B98x8R7zRU%2BjiVj0bJrVPXG7yJBkqqdfcCaFZfVINSJC%2BZk4y4mtQ69ENalPDwNAyZGsQF1mcLwqr0cQdLF%2B6w7%2BDTnFEUbd6yqHr%2Fp67KXCHCVPUbSdBln5ORN2bNUXhH%2BUMBUcom0UXVuNDrxVf6zrRN2jrIyGecZejd0%2BMwW8dzN3g%2FQ2yeGiGcDKuVwYfW%2FbOZft11%2F%2FU%2BVUcBVRt%2FEPF2h1ZmfK9mY5BF%2F78HTS97HtmrcqfLV7dBmcA9LftGwt9opqJyLLdpclIPB4eP%2B%2BzZLvrPRN0cM4MwnqOesMz8qIgKkS5ZlhqUyt6Ic2lsXaNjRfAg%3D%3D","msg":"Generated VNC WebSocket URL"}
+{"level":30,"time":1767474466399,"pid":30972,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767474466403,"pid":30972,"hostname":"troner14","module":"Provider:proxmox","msg":"Connecting to proxmox at https://192.168.1.30:8006"}
+{"level":30,"time":1767474466409,"pid":30972,"hostname":"troner14","module":"Provider:proxmox","msg":"Connected to Proxmox 9.0.11"}
+{"level":30,"time":1767474466409,"pid":30972,"hostname":"troner14","module":"Provider:proxmox","msg":"Successfully connected to proxmox"}
+{"level":30,"time":1767474466409,"pid":30972,"hostname":"troner14","msg":"Connected to panel test (proxmox)"}
+{"level":30,"time":1767474569868,"pid":30972,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767474578204,"pid":30972,"hostname":"troner14","module":"Provider:proxmox","msg":"Connecting to proxmox at https://192.168.1.30:8006"}
+{"level":30,"time":1767474578226,"pid":30972,"hostname":"troner14","module":"Provider:proxmox","msg":"Connected to Proxmox 9.0.11"}
+{"level":30,"time":1767474578226,"pid":30972,"hostname":"troner14","module":"Provider:proxmox","msg":"Successfully connected to proxmox"}
+{"level":30,"time":1767474578226,"pid":30972,"hostname":"troner14","msg":"Connected to panel test (proxmox)"}
+{"level":30,"time":1767475170108,"pid":30972,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767475172358,"pid":30972,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767475190306,"pid":27008,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767477437332,"pid":27008,"hostname":"troner14","panelId":5,"active":true,"msg":"Panel activated"}
+{"level":30,"time":1767477453387,"pid":27008,"hostname":"troner14","module":"Provider:proxmox","msg":"Connecting to proxmox at https://roothosting.myddns.me:8006/"}
+{"level":50,"time":1767477453562,"pid":27008,"hostname":"troner14","module":"Provider:proxmox","err":{"type":"ConnectionError","message":"HTTP 500: no such file '/json/version'\n","stack":"ConnectionError: HTTP 500: no such file '/json/version'\n\n    at ProxmoxProvider.makeRequest (file:///E:/newBot/apps/dasboard/.nuxt/dev/index.mjs:2847:15)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async ProxmoxProvider.testTokenAuth (file:///E:/newBot/apps/dasboard/.nuxt/dev/index.mjs:2922:24)\n    at async ProxmoxProvider.performConnect (file:///E:/newBot/apps/dasboard/.nuxt/dev/index.mjs:2909:16)\n    at async ProxmoxProvider.connect (file:///E:/newBot/apps/dasboard/.nuxt/dev/index.mjs:2744:23)\n    at async VirtualizationManager.connectToPanel (file:///E:/newBot/apps/dasboard/.nuxt/dev/index.mjs:3741:25)\n    at async VirtualizationManager.listVMs (file:///E:/newBot/apps/dasboard/.nuxt/dev/index.mjs:3774:32)\n    at async Object.handler (file:///E:/newBot/apps/dasboard/.nuxt/dev/index.mjs:5144:17)\n    at async file:///E:/newBot/node_modules/.bun/h3@1.15.4/node_modules/h3/dist/index.mjs:2004:19\n    at async Object.callAsync (file:///E:/newBot/node_modules/.bun/unctx@2.5.0/node_modules/unctx/dist/index.mjs:72:16)","code":"CONNECTION_FAILED","details":{"status":500},"name":"ConnectionError"},"msg":"Token authentication failed"}
+{"level":50,"time":1767477453562,"pid":27008,"hostname":"troner14","module":"Provider:proxmox","error":{"code":"CONNECTION_FAILED","details":{"status":500},"name":"ConnectionError"},"msg":"Failed to connect to Proxmox"}
+{"level":50,"time":1767477453562,"pid":27008,"hostname":"troner14","module":"Provider:proxmox","error":{"code":"CONNECTION_FAILED","details":{"status":500},"name":"ConnectionError"},"msg":"Error connecting to proxmox"}
+{"level":50,"time":1767477453563,"pid":27008,"hostname":"troner14","error":{"code":"CONNECTION_FAILED","details":{"status":500},"name":"ConnectionError"},"panelId":5,"msg":"Failed to connect to panel"}
+{"level":30,"time":1767477453566,"pid":27008,"hostname":"troner14","module":"Provider:proxmox","msg":"Connecting to proxmox at https://192.168.1.30:8006"}
+{"level":30,"time":1767477453572,"pid":27008,"hostname":"troner14","module":"Provider:proxmox","msg":"Connected to Proxmox 9.0.11"}
+{"level":30,"time":1767477453572,"pid":27008,"hostname":"troner14","module":"Provider:proxmox","msg":"Successfully connected to proxmox"}
+{"level":30,"time":1767477453572,"pid":27008,"hostname":"troner14","msg":"Connected to panel test (proxmox)"}
+{"level":30,"time":1767477455023,"pid":27008,"hostname":"troner14","module":"Provider:proxmox","msg":"Connecting to proxmox at https://roothosting.myddns.me:8006/"}
+{"level":50,"time":1767477455131,"pid":27008,"hostname":"troner14","module":"Provider:proxmox","err":{"type":"ConnectionError","message":"HTTP 500: no such file '/json/version'\n","stack":"ConnectionError: HTTP 500: no such file '/json/version'\n\n    at ProxmoxProvider.makeRequest (file:///E:/newBot/apps/dasboard/.nuxt/dev/index.mjs:2847:15)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async ProxmoxProvider.testTokenAuth (file:///E:/newBot/apps/dasboard/.nuxt/dev/index.mjs:2922:24)\n    at async ProxmoxProvider.performConnect (file:///E:/newBot/apps/dasboard/.nuxt/dev/index.mjs:2909:16)\n    at async ProxmoxProvider.connect (file:///E:/newBot/apps/dasboard/.nuxt/dev/index.mjs:2744:23)\n    at async VirtualizationManager.connectToPanel (file:///E:/newBot/apps/dasboard/.nuxt/dev/index.mjs:3741:25)\n    at async VirtualizationManager.listVMs (file:///E:/newBot/apps/dasboard/.nuxt/dev/index.mjs:3774:32)\n    at async Object.handler (file:///E:/newBot/apps/dasboard/.nuxt/dev/index.mjs:5144:17)\n    at async file:///E:/newBot/node_modules/.bun/h3@1.15.4/node_modules/h3/dist/index.mjs:2004:19\n    at async Object.callAsync (file:///E:/newBot/node_modules/.bun/unctx@2.5.0/node_modules/unctx/dist/index.mjs:72:16)","code":"CONNECTION_FAILED","details":{"status":500},"name":"ConnectionError"},"msg":"Token authentication failed"}
+{"level":50,"time":1767477455131,"pid":27008,"hostname":"troner14","module":"Provider:proxmox","error":{"code":"CONNECTION_FAILED","details":{"status":500},"name":"ConnectionError"},"msg":"Failed to connect to Proxmox"}
+{"level":50,"time":1767477455131,"pid":27008,"hostname":"troner14","module":"Provider:proxmox","error":{"code":"CONNECTION_FAILED","details":{"status":500},"name":"ConnectionError"},"msg":"Error connecting to proxmox"}
+{"level":50,"time":1767477455131,"pid":27008,"hostname":"troner14","error":{"code":"CONNECTION_FAILED","details":{"status":500},"name":"ConnectionError"},"panelId":5,"msg":"Failed to connect to panel"}
+{"level":30,"time":1767477471389,"pid":27008,"hostname":"troner14","module":"Provider:proxmox","msg":"Connecting to proxmox at https://roothosting.myddns.me:8006/"}
+{"level":50,"time":1767477471528,"pid":27008,"hostname":"troner14","module":"Provider:proxmox","err":{"type":"ConnectionError","message":"HTTP 500: no such file '/json/version'\n","stack":"ConnectionError: HTTP 500: no such file '/json/version'\n\n    at ProxmoxProvider.makeRequest (file:///E:/newBot/apps/dasboard/.nuxt/dev/index.mjs:2847:15)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async ProxmoxProvider.testTokenAuth (file:///E:/newBot/apps/dasboard/.nuxt/dev/index.mjs:2922:24)\n    at async ProxmoxProvider.performConnect (file:///E:/newBot/apps/dasboard/.nuxt/dev/index.mjs:2909:16)\n    at async ProxmoxProvider.connect (file:///E:/newBot/apps/dasboard/.nuxt/dev/index.mjs:2744:23)\n    at async VirtualizationManager.connectToPanel (file:///E:/newBot/apps/dasboard/.nuxt/dev/index.mjs:3741:25)\n    at async VirtualizationManager.listVMs (file:///E:/newBot/apps/dasboard/.nuxt/dev/index.mjs:3774:32)\n    at async Object.handler (file:///E:/newBot/apps/dasboard/.nuxt/dev/index.mjs:5144:17)\n    at async file:///E:/newBot/node_modules/.bun/h3@1.15.4/node_modules/h3/dist/index.mjs:2004:19\n    at async Object.callAsync (file:///E:/newBot/node_modules/.bun/unctx@2.5.0/node_modules/unctx/dist/index.mjs:72:16)","code":"CONNECTION_FAILED","details":{"status":500},"name":"ConnectionError"},"msg":"Token authentication failed"}
+{"level":50,"time":1767477471528,"pid":27008,"hostname":"troner14","module":"Provider:proxmox","error":{"code":"CONNECTION_FAILED","details":{"status":500},"name":"ConnectionError"},"msg":"Failed to connect to Proxmox"}
+{"level":50,"time":1767477471528,"pid":27008,"hostname":"troner14","module":"Provider:proxmox","error":{"code":"CONNECTION_FAILED","details":{"status":500},"name":"ConnectionError"},"msg":"Error connecting to proxmox"}
+{"level":50,"time":1767477471528,"pid":27008,"hostname":"troner14","error":{"code":"CONNECTION_FAILED","details":{"status":500},"name":"ConnectionError"},"panelId":5,"msg":"Failed to connect to panel"}
+{"level":30,"time":1767477504933,"pid":27008,"hostname":"troner14","module":"Provider:proxmox","msg":"Connecting to proxmox at https://roothosting.myddns.me:8006/"}
+{"level":50,"time":1767477505034,"pid":27008,"hostname":"troner14","module":"Provider:proxmox","err":{"type":"ConnectionError","message":"HTTP 500: no such file '/json/version'\n","stack":"ConnectionError: HTTP 500: no such file '/json/version'\n\n    at ProxmoxProvider.makeRequest (file:///E:/newBot/apps/dasboard/.nuxt/dev/index.mjs:2847:15)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async ProxmoxProvider.testTokenAuth (file:///E:/newBot/apps/dasboard/.nuxt/dev/index.mjs:2922:24)\n    at async ProxmoxProvider.performConnect (file:///E:/newBot/apps/dasboard/.nuxt/dev/index.mjs:2909:16)\n    at async ProxmoxProvider.connect (file:///E:/newBot/apps/dasboard/.nuxt/dev/index.mjs:2744:23)\n    at async VirtualizationManager.connectToPanel (file:///E:/newBot/apps/dasboard/.nuxt/dev/index.mjs:3741:25)\n    at async VirtualizationManager.listVMs (file:///E:/newBot/apps/dasboard/.nuxt/dev/index.mjs:3774:32)\n    at async Object.handler (file:///E:/newBot/apps/dasboard/.nuxt/dev/index.mjs:5144:17)\n    at async file:///E:/newBot/node_modules/.bun/h3@1.15.4/node_modules/h3/dist/index.mjs:2004:19\n    at async Object.callAsync (file:///E:/newBot/node_modules/.bun/unctx@2.5.0/node_modules/unctx/dist/index.mjs:72:16)","code":"CONNECTION_FAILED","details":{"status":500},"name":"ConnectionError"},"msg":"Token authentication failed"}
+{"level":50,"time":1767477505034,"pid":27008,"hostname":"troner14","module":"Provider:proxmox","error":{"code":"CONNECTION_FAILED","details":{"status":500},"name":"ConnectionError"},"msg":"Failed to connect to Proxmox"}
+{"level":50,"time":1767477505034,"pid":27008,"hostname":"troner14","module":"Provider:proxmox","error":{"code":"CONNECTION_FAILED","details":{"status":500},"name":"ConnectionError"},"msg":"Error connecting to proxmox"}
+{"level":50,"time":1767477505034,"pid":27008,"hostname":"troner14","error":{"code":"CONNECTION_FAILED","details":{"status":500},"name":"ConnectionError"},"panelId":5,"msg":"Failed to connect to panel"}
+{"level":30,"time":1767818540304,"pid":27160,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767818568218,"pid":27160,"hostname":"troner14","module":"Provider:proxmox","msg":"Connecting to proxmox at https://roothosting.myddns.me:8006/"}
+{"level":50,"time":1767818568372,"pid":27160,"hostname":"troner14","module":"Provider:proxmox","err":{"type":"ConnectionError","message":"HTTP 500: no such file '/json/version'\n","stack":"ConnectionError: HTTP 500: no such file '/json/version'\n\n    at ProxmoxProvider.makeRequest (file:///E:/newBot/apps/dasboard/.nuxt/dev/index.mjs:2847:15)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async ProxmoxProvider.testTokenAuth (file:///E:/newBot/apps/dasboard/.nuxt/dev/index.mjs:2922:24)\n    at async ProxmoxProvider.performConnect (file:///E:/newBot/apps/dasboard/.nuxt/dev/index.mjs:2909:16)\n    at async ProxmoxProvider.connect (file:///E:/newBot/apps/dasboard/.nuxt/dev/index.mjs:2744:23)\n    at async VirtualizationManager.connectToPanel (file:///E:/newBot/apps/dasboard/.nuxt/dev/index.mjs:3741:25)\n    at async VirtualizationManager.listVMs (file:///E:/newBot/apps/dasboard/.nuxt/dev/index.mjs:3774:32)\n    at async Object.handler (file:///E:/newBot/apps/dasboard/.nuxt/dev/index.mjs:5144:17)\n    at async file:///E:/newBot/node_modules/.bun/h3@1.15.4/node_modules/h3/dist/index.mjs:2004:19\n    at async Object.callAsync (file:///E:/newBot/node_modules/.bun/unctx@2.5.0/node_modules/unctx/dist/index.mjs:72:16)","code":"CONNECTION_FAILED","details":{"status":500},"name":"ConnectionError"},"msg":"Token authentication failed"}
+{"level":50,"time":1767818568372,"pid":27160,"hostname":"troner14","module":"Provider:proxmox","error":{"code":"CONNECTION_FAILED","details":{"status":500},"name":"ConnectionError"},"msg":"Failed to connect to Proxmox"}
+{"level":50,"time":1767818568372,"pid":27160,"hostname":"troner14","module":"Provider:proxmox","error":{"code":"CONNECTION_FAILED","details":{"status":500},"name":"ConnectionError"},"msg":"Error connecting to proxmox"}
+{"level":50,"time":1767818568372,"pid":27160,"hostname":"troner14","error":{"code":"CONNECTION_FAILED","details":{"status":500},"name":"ConnectionError"},"panelId":5,"msg":"Failed to connect to panel"}
+{"level":30,"time":1767818568377,"pid":27160,"hostname":"troner14","module":"Provider:proxmox","msg":"Connecting to proxmox at https://192.168.1.30:8006"}
+{"level":30,"time":1767818568383,"pid":27160,"hostname":"troner14","module":"Provider:proxmox","msg":"Connected to Proxmox 9.0.11"}
+{"level":30,"time":1767818568383,"pid":27160,"hostname":"troner14","module":"Provider:proxmox","msg":"Successfully connected to proxmox"}
+{"level":30,"time":1767818568383,"pid":27160,"hostname":"troner14","msg":"Connected to panel test (proxmox)"}
+{"level":30,"time":1767818582883,"pid":27160,"hostname":"troner14","panelId":5,"active":false,"msg":"Panel deactivated"}
+{"level":30,"time":1767818634190,"pid":27160,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767818638368,"pid":27160,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767819061829,"pid":27160,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767819068872,"pid":27160,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767819070019,"pid":27160,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767819074105,"pid":27160,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767819082735,"pid":27160,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767819116579,"pid":27160,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767819130962,"pid":27160,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767819159734,"pid":27160,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767819171098,"pid":27160,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767819213804,"pid":27160,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767819222560,"pid":27160,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767819301606,"pid":27616,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767819433121,"pid":27616,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767819437241,"pid":27616,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767819451092,"pid":27616,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767819471713,"pid":27616,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767819482672,"pid":27616,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767819557974,"pid":27616,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767819575208,"pid":27616,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767819578653,"pid":27616,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767819583796,"pid":27616,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767819641155,"pid":27616,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767819651656,"pid":27616,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767819688485,"pid":27616,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767819690922,"pid":27616,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767819699154,"pid":27616,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767819714026,"pid":27616,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767819741821,"pid":27616,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767819777475,"pid":27616,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767819795475,"pid":25412,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767820309076,"pid":25412,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767820313128,"pid":25412,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767820326952,"pid":25412,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767820332625,"pid":25412,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767820350177,"pid":6100,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767820375806,"pid":6100,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767820401695,"pid":6100,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767820408575,"pid":6100,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767820418482,"pid":6100,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767820452818,"pid":6100,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767820456800,"pid":6100,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767820470098,"pid":6100,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767820483458,"pid":6100,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767820505244,"pid":6100,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767820526992,"pid":6100,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767820568501,"pid":6100,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767820573627,"pid":6100,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767820587270,"pid":6100,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767820595104,"pid":6100,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767820621233,"pid":6100,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767820679630,"pid":6100,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767820682282,"pid":6100,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767820690843,"pid":6100,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767820763805,"pid":6100,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767820772372,"pid":6100,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767820781762,"pid":6100,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767820791572,"pid":6100,"hostname":"troner14","module":"Provider:proxmox","msg":"Connecting to proxmox at https://192.168.1.30:8006"}
+{"level":30,"time":1767820791588,"pid":6100,"hostname":"troner14","module":"Provider:proxmox","msg":"Connected to Proxmox 9.0.11"}
+{"level":30,"time":1767820791588,"pid":6100,"hostname":"troner14","module":"Provider:proxmox","msg":"Successfully connected to proxmox"}
+{"level":30,"time":1767820791588,"pid":6100,"hostname":"troner14","msg":"Connected to panel test (proxmox)"}
+{"level":30,"time":1767820822920,"pid":6100,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767820825695,"pid":6100,"hostname":"troner14","module":"Provider:proxmox","msg":"Connecting to proxmox at https://192.168.1.30:8006"}
+{"level":30,"time":1767820825718,"pid":6100,"hostname":"troner14","module":"Provider:proxmox","msg":"Connected to Proxmox 9.0.11"}
+{"level":30,"time":1767820825718,"pid":6100,"hostname":"troner14","module":"Provider:proxmox","msg":"Successfully connected to proxmox"}
+{"level":30,"time":1767820825718,"pid":6100,"hostname":"troner14","msg":"Connected to panel test (proxmox)"}
+{"level":30,"time":1767821005129,"pid":6100,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767821103534,"pid":6100,"hostname":"troner14","module":"Provider:proxmox","msg":"Connecting to proxmox at https://192.168.1.30:8006"}
+{"level":30,"time":1767821103550,"pid":6100,"hostname":"troner14","module":"Provider:proxmox","msg":"Connected to Proxmox 9.0.11"}
+{"level":30,"time":1767821103550,"pid":6100,"hostname":"troner14","module":"Provider:proxmox","msg":"Successfully connected to proxmox"}
+{"level":30,"time":1767821103550,"pid":6100,"hostname":"troner14","msg":"Connected to panel test (proxmox)"}
+{"level":30,"time":1767821108759,"pid":6100,"hostname":"troner14","module":"Provider:proxmox","vmId":"100","node":"pve","port":"5900","vmType":"lxc","websocketUrl":"wss://192.168.1.30:8006/api2/json/nodes/pve/lxc/100/vncwebsocket?port=5900&vncticket=PVEVNC%3A695ECF2F%3A%3AUCvpA844IJxBoIlvCzKAZ7OXTm3JtrSAa0zA8e02MoHXRrPmpuqflt3bIYXPWcMgChbiGDSGJjfXOyIXgITHVd3s4xVCxRje%2B0%2F%2FBnWWrGdSj%2FZpN%2FPGlPo1QZQcWssur7HKyeyRnzDz%2BrjYU7SeOYLMnGhWcpxfyWS8U5rFkzc5LkXEiNZFyQg%2B%2Bc3zw15lbkWjQnegPthQhUkGA7tcMuhjkxowlkO74ao01UT9ACJCikajB%2BulcQgCupkquHjAToq8BNKE%2B%2FNYikuXLLxrGF6%2F4CIKnFRg%2Bb6RN9dntpmYiT1nJ%2BJAgNIDn%2F26NBKc%2Fu0jLIoYQa1%2FpI1NY73rRQ%3D%3D","msg":"Generated VNC WebSocket URL"}
+{"level":30,"time":1767821108769,"pid":6100,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767821108772,"pid":6100,"hostname":"troner14","module":"Provider:proxmox","msg":"Connecting to proxmox at https://192.168.1.30:8006"}
+{"level":30,"time":1767821108778,"pid":6100,"hostname":"troner14","module":"Provider:proxmox","msg":"Connected to Proxmox 9.0.11"}
+{"level":30,"time":1767821108778,"pid":6100,"hostname":"troner14","module":"Provider:proxmox","msg":"Successfully connected to proxmox"}
+{"level":30,"time":1767821108778,"pid":6100,"hostname":"troner14","msg":"Connected to panel test (proxmox)"}
+{"level":30,"time":1767821144017,"pid":6100,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767821144597,"pid":6100,"hostname":"troner14","module":"Provider:proxmox","msg":"Connecting to proxmox at https://192.168.1.30:8006"}
+{"level":30,"time":1767821144614,"pid":6100,"hostname":"troner14","module":"Provider:proxmox","msg":"Connected to Proxmox 9.0.11"}
+{"level":30,"time":1767821144614,"pid":6100,"hostname":"troner14","module":"Provider:proxmox","msg":"Successfully connected to proxmox"}
+{"level":30,"time":1767821144614,"pid":6100,"hostname":"troner14","msg":"Connected to panel test (proxmox)"}
+{"level":30,"time":1767821165162,"pid":6100,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767821165603,"pid":6100,"hostname":"troner14","module":"Provider:proxmox","msg":"Connecting to proxmox at https://192.168.1.30:8006"}
+{"level":30,"time":1767821165619,"pid":6100,"hostname":"troner14","module":"Provider:proxmox","msg":"Connected to Proxmox 9.0.11"}
+{"level":30,"time":1767821165619,"pid":6100,"hostname":"troner14","module":"Provider:proxmox","msg":"Successfully connected to proxmox"}
+{"level":30,"time":1767821165619,"pid":6100,"hostname":"troner14","msg":"Connected to panel test (proxmox)"}
+{"level":30,"time":1767821210108,"pid":6100,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767821210599,"pid":6100,"hostname":"troner14","module":"Provider:proxmox","msg":"Connecting to proxmox at https://192.168.1.30:8006"}
+{"level":30,"time":1767821210616,"pid":6100,"hostname":"troner14","module":"Provider:proxmox","msg":"Connected to Proxmox 9.0.11"}
+{"level":30,"time":1767821210616,"pid":6100,"hostname":"troner14","module":"Provider:proxmox","msg":"Successfully connected to proxmox"}
+{"level":30,"time":1767821210616,"pid":6100,"hostname":"troner14","msg":"Connected to panel test (proxmox)"}
+{"level":30,"time":1767821219363,"pid":6100,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767821219597,"pid":6100,"hostname":"troner14","module":"Provider:proxmox","msg":"Connecting to proxmox at https://192.168.1.30:8006"}
+{"level":30,"time":1767821219615,"pid":6100,"hostname":"troner14","module":"Provider:proxmox","msg":"Connected to Proxmox 9.0.11"}
+{"level":30,"time":1767821219615,"pid":6100,"hostname":"troner14","module":"Provider:proxmox","msg":"Successfully connected to proxmox"}
+{"level":30,"time":1767821219615,"pid":6100,"hostname":"troner14","msg":"Connected to panel test (proxmox)"}
+{"level":30,"time":1767821233161,"pid":6100,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767821233992,"pid":6100,"hostname":"troner14","module":"Provider:proxmox","msg":"Connecting to proxmox at https://192.168.1.30:8006"}
+{"level":30,"time":1767821234010,"pid":6100,"hostname":"troner14","module":"Provider:proxmox","msg":"Connected to Proxmox 9.0.11"}
+{"level":30,"time":1767821234010,"pid":6100,"hostname":"troner14","module":"Provider:proxmox","msg":"Successfully connected to proxmox"}
+{"level":30,"time":1767821234010,"pid":6100,"hostname":"troner14","msg":"Connected to panel test (proxmox)"}
+{"level":30,"time":1767821241609,"pid":6100,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767821242995,"pid":6100,"hostname":"troner14","module":"Provider:proxmox","msg":"Connecting to proxmox at https://192.168.1.30:8006"}
+{"level":30,"time":1767821243013,"pid":6100,"hostname":"troner14","module":"Provider:proxmox","msg":"Connected to Proxmox 9.0.11"}
+{"level":30,"time":1767821243013,"pid":6100,"hostname":"troner14","module":"Provider:proxmox","msg":"Successfully connected to proxmox"}
+{"level":30,"time":1767821243013,"pid":6100,"hostname":"troner14","msg":"Connected to panel test (proxmox)"}
+{"level":30,"time":1767821281778,"pid":6100,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767821281997,"pid":6100,"hostname":"troner14","module":"Provider:proxmox","msg":"Connecting to proxmox at https://192.168.1.30:8006"}
+{"level":30,"time":1767821282014,"pid":6100,"hostname":"troner14","module":"Provider:proxmox","msg":"Connected to Proxmox 9.0.11"}
+{"level":30,"time":1767821282014,"pid":6100,"hostname":"troner14","module":"Provider:proxmox","msg":"Successfully connected to proxmox"}
+{"level":30,"time":1767821282014,"pid":6100,"hostname":"troner14","msg":"Connected to panel test (proxmox)"}
+{"level":30,"time":1767861054128,"pid":25532,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767861201216,"pid":25532,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767861207363,"pid":25532,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767861449879,"pid":25532,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767861456052,"pid":25532,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767861476658,"pid":25532,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767861499707,"pid":25532,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767861506848,"pid":25532,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767861654981,"pid":25532,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767861725153,"pid":16000,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767861727742,"pid":27904,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767862346457,"pid":27904,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767862386306,"pid":27904,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767863031366,"pid":14828,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767863044410,"pid":4324,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767864483650,"pid":4324,"hostname":"troner14","module":"Provider:proxmox","msg":"Connecting to proxmox at https://192.168.1.30:8006/"}
+{"level":50,"time":1767864483650,"pid":4324,"hostname":"troner14","module":"Provider:proxmox","error":{"code":"AUTH_FAILED","name":"AuthenticationError"},"msg":"Failed to connect to Proxmox"}
+{"level":50,"time":1767864483650,"pid":4324,"hostname":"troner14","module":"Provider:proxmox","error":{"code":"AUTH_FAILED","name":"AuthenticationError"},"msg":"Error connecting to proxmox"}
+{"level":50,"time":1767864483650,"pid":4324,"hostname":"troner14","error":{"code":"AUTH_FAILED","name":"AuthenticationError"},"type":"proxmox","apiUrl":"https://192.168.1.30:8006/","msg":"Failed to validate credentials"}
+{"level":30,"time":1767864646142,"pid":4324,"hostname":"troner14","module":"Provider:proxmox","msg":"Connecting to proxmox at https://192.168.1.30:8006/"}
+{"level":50,"time":1767864646151,"pid":4324,"hostname":"troner14","module":"Provider:proxmox","err":{"type":"ConnectionError","message":"HTTP 500: no such file '/json/version'\n","stack":"ConnectionError: HTTP 500: no such file '/json/version'\n\n    at ProxmoxProvider.makeRequest (file:///E:/newBot/apps/dasboard/.nuxt/dev/index.mjs:3035:15)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async ProxmoxProvider.testTokenAuth (file:///E:/newBot/apps/dasboard/.nuxt/dev/index.mjs:3110:24)\n    at async ProxmoxProvider.performConnect (file:///E:/newBot/apps/dasboard/.nuxt/dev/index.mjs:3097:16)\n    at async ProxmoxProvider.connect (file:///E:/newBot/apps/dasboard/.nuxt/dev/index.mjs:2932:23)\n    at async VirtualizationManager.validatePanelCredentials (file:///E:/newBot/apps/dasboard/.nuxt/dev/index.mjs:4298:25)\n    at async VirtualizationManager.addPanel (file:///E:/newBot/apps/dasboard/.nuxt/dev/index.mjs:3666:26)\n    at async Object.handler (file:///E:/newBot/apps/dasboard/.nuxt/dev/index.mjs:5767:20)\n    at async file:///E:/newBot/node_modules/.bun/h3@1.15.4/node_modules/h3/dist/index.mjs:2004:19\n    at async Object.callAsync (file:///E:/newBot/node_modules/.bun/unctx@2.5.0/node_modules/unctx/dist/index.mjs:72:16)","code":"CONNECTION_FAILED","details":{"status":500},"name":"ConnectionError"},"msg":"Token authentication failed"}
+{"level":50,"time":1767864646151,"pid":4324,"hostname":"troner14","module":"Provider:proxmox","error":{"code":"CONNECTION_FAILED","details":{"status":500},"name":"ConnectionError"},"msg":"Failed to connect to Proxmox"}
+{"level":50,"time":1767864646151,"pid":4324,"hostname":"troner14","module":"Provider:proxmox","error":{"code":"CONNECTION_FAILED","details":{"status":500},"name":"ConnectionError"},"msg":"Error connecting to proxmox"}
+{"level":50,"time":1767864646151,"pid":4324,"hostname":"troner14","error":{"code":"CONNECTION_FAILED","details":{"status":500},"name":"ConnectionError"},"type":"proxmox","apiUrl":"https://192.168.1.30:8006/","msg":"Failed to validate credentials"}
+{"level":30,"time":1767864652395,"pid":4324,"hostname":"troner14","module":"Provider:proxmox","msg":"Connecting to proxmox at https://192.168.1.30:8006"}
+{"level":30,"time":1767864652402,"pid":4324,"hostname":"troner14","module":"Provider:proxmox","msg":"Connected to Proxmox 9.0.11"}
+{"level":30,"time":1767864652402,"pid":4324,"hostname":"troner14","module":"Provider:proxmox","msg":"Successfully connected to proxmox"}
+{"level":30,"time":1767864652402,"pid":4324,"hostname":"troner14","module":"Provider:proxmox","msg":"Disconnected from proxmox"}
+{"level":30,"time":1767864652414,"pid":4324,"hostname":"troner14","guildId":"1084112028131667998","name":"local","type":"proxmox","apiUrl":"https://192.168.1.30:8006","msg":"Added new virtualization panel"}
+{"level":30,"time":1767864652418,"pid":4324,"hostname":"troner14","module":"Provider:proxmox","msg":"Connecting to proxmox at https://192.168.1.30:8006"}
+{"level":30,"time":1767864652419,"pid":4324,"hostname":"troner14","module":"Provider:proxmox","msg":"Connected to Proxmox 9.0.11"}
+{"level":30,"time":1767864652419,"pid":4324,"hostname":"troner14","module":"Provider:proxmox","msg":"Successfully connected to proxmox"}
+{"level":30,"time":1767864652419,"pid":4324,"hostname":"troner14","msg":"Connected to panel local (proxmox)"}
+{"level":30,"time":1767864802728,"pid":4324,"hostname":"troner14","module":"Provider:proxmox","msg":"Disconnected from proxmox"}
+{"level":30,"time":1767864802728,"pid":4324,"hostname":"troner14","msg":"Disconnected from panel 1"}
+{"level":30,"time":1767864802728,"pid":4324,"hostname":"troner14","panelId":1,"active":false,"msg":"Panel deactivated"}
+{"level":30,"time":1767864804142,"pid":4324,"hostname":"troner14","panelId":1,"active":true,"msg":"Panel activated"}
+{"level":30,"time":1767865548613,"pid":4324,"hostname":"troner14","panelId":1,"active":false,"msg":"Panel deactivated"}
+{"level":30,"time":1767865549427,"pid":4324,"hostname":"troner14","panelId":1,"active":true,"msg":"Panel activated"}
+{"level":30,"time":1767865551817,"pid":4324,"hostname":"troner14","module":"Provider:proxmox","msg":"Connecting to proxmox at https://192.168.1.30:8006"}
+{"level":30,"time":1767865551824,"pid":4324,"hostname":"troner14","module":"Provider:proxmox","msg":"Connected to Proxmox 9.0.11"}
+{"level":30,"time":1767865551824,"pid":4324,"hostname":"troner14","module":"Provider:proxmox","msg":"Successfully connected to proxmox"}
+{"level":30,"time":1767865551824,"pid":4324,"hostname":"troner14","msg":"Connected to panel local (proxmox)"}
+{"level":30,"time":1767865578551,"pid":4324,"hostname":"troner14","module":"Provider:proxmox","vmId":"100","node":"pve","port":"5900","vmType":"lxc","websocketUrl":"wss://192.168.1.30:8006/api2/json/nodes/pve/lxc/100/vncwebsocket?port=5900&vncticket=PVEVNC%3A695F7CE4%3A%3AkwENcJLAMC63BtmcFHklfG8B3PfdsXTb46R5WNi%2BU%2BTmtg21L%2B12cOIoj7mIAqJRttU9LGpG0%2FxkF65exUn1IYw2%2FqmxZYVqU2ZuKx1LgyL0Tu4gYWL5ffaxUTQ5LnUO8or5c%2BGNA8NY19FF3KaeNhEnjGY94gHZvi1ArJLFe7g4CuBM9URqjNyeSP%2Ft0K6FOjQwcp6ICcCJJH3sy75QzOoKIBiG10dau%2Bu2CK%2FXmGTC22U%2FHW81aAEvVyIMTp%2Fq73WLSqu27gWYXxxaKQacZ9MtHgshRLSuJbsC%2Fk0sgMk9SlxW5SFQ4AWfn7wXskwLIvFAeMjd4j3IqkmeVHHb9A%3D%3D","msg":"Generated VNC WebSocket URL"}
+{"level":30,"time":1767865578561,"pid":4324,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767865578563,"pid":4324,"hostname":"troner14","module":"Provider:proxmox","msg":"Connecting to proxmox at https://192.168.1.30:8006"}
+{"level":30,"time":1767865578568,"pid":4324,"hostname":"troner14","module":"Provider:proxmox","msg":"Connected to Proxmox 9.0.11"}
+{"level":30,"time":1767865578568,"pid":4324,"hostname":"troner14","module":"Provider:proxmox","msg":"Successfully connected to proxmox"}
+{"level":30,"time":1767865578568,"pid":4324,"hostname":"troner14","msg":"Connected to panel local (proxmox)"}
+{"level":30,"time":1767865670091,"pid":4324,"hostname":"troner14","module":"Provider:proxmox","vmId":"110","node":"pve","port":"5900","vmType":"qemu","websocketUrl":"wss://192.168.1.30:8006/api2/json/nodes/pve/qemu/110/vncwebsocket?port=5900&vncticket=PVEVNC%3A695F7D40%3A%3AaGh30pm3He0zsLo8W%2FzdgiRCM0XNSdyFB111zIOW0TF3kIkWCDm%2Fbc%2Bx5wP%2F8Lu7m7ZG6A9jYOOohmGZb7EYM3hpNgd2BP4gJKL%2F87lq80D2vOkX86v3nIYYdkHXmaSW02EoAoxQqyndyE1vW9As2dIik9qryHd9%2F3N1PrQYfjMD3yhPMaKMTGQg%2FwJvTsOUr1sTTklieIUDjNTldno7fAFGoTgwlM%2FrjRZV8fc3GkFfJAc0Sxr%2B0zWLG9RjYNQ5Qyn08rv7kjTuWiF7CtCLlNgl%2BDGAYQ5QptORegahqyjwiQU5Zc%2F%2BC%2BFm0EQ6k31EkAdKB60erJOCZtpt7ZiEcg%3D%3D","msg":"Generated VNC WebSocket URL"}
+{"level":30,"time":1767865670097,"pid":4324,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767865670100,"pid":4324,"hostname":"troner14","module":"Provider:proxmox","msg":"Connecting to proxmox at https://192.168.1.30:8006"}
+{"level":30,"time":1767865670106,"pid":4324,"hostname":"troner14","module":"Provider:proxmox","msg":"Connected to Proxmox 9.0.11"}
+{"level":30,"time":1767865670106,"pid":4324,"hostname":"troner14","module":"Provider:proxmox","msg":"Successfully connected to proxmox"}
+{"level":30,"time":1767865670106,"pid":4324,"hostname":"troner14","msg":"Connected to panel local (proxmox)"}
+{"level":30,"time":1767871628575,"pid":13396,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767871635100,"pid":9256,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767871657380,"pid":9256,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767871667148,"pid":9256,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767871673072,"pid":9256,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767871703073,"pid":9256,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767872086030,"pid":27096,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767872101473,"pid":7892,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767872139779,"pid":7892,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767872156102,"pid":7892,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767872171862,"pid":7892,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767872176513,"pid":7892,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767872184878,"pid":7892,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767872195016,"pid":7892,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767872230443,"pid":7892,"hostname":"troner14","panelId":1,"active":false,"msg":"Panel deactivated"}
+{"level":30,"time":1767872237448,"pid":7892,"hostname":"troner14","panelId":1,"active":true,"msg":"Panel activated"}
+{"level":30,"time":1767872376637,"pid":7892,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767872379811,"pid":7892,"hostname":"troner14","module":"Provider:proxmox","msg":"Connecting to proxmox at https://192.168.1.30:8006"}
+{"level":30,"time":1767872379831,"pid":7892,"hostname":"troner14","module":"Provider:proxmox","msg":"Connected to Proxmox 9.0.11"}
+{"level":30,"time":1767872379831,"pid":7892,"hostname":"troner14","module":"Provider:proxmox","msg":"Successfully connected to proxmox"}
+{"level":30,"time":1767872379831,"pid":7892,"hostname":"troner14","msg":"Connected to panel local (proxmox)"}
+{"level":30,"time":1767872386894,"pid":7892,"hostname":"troner14","module":"Provider:proxmox","vmId":"110","node":"pve","port":"5900","vmType":"qemu","websocketUrl":"wss://192.168.1.30:8006/api2/json/nodes/pve/qemu/110/vncwebsocket?port=5900&vncticket=PVEVNC%3A695F977D%3A%3AEE7GNqZJh%2BdBz%2FEqGEx98ueEkiwxo79vAWxpIXiS5JZyZ9xLia3qiVowcGlZbrc3xcI0Wt8StJILfnyqBflLlOMKoxa2ZHmfTE9q35FsyPlFtKtcRNzOGzM%2FC8ygO9Wqg8RS3uHz95ryL7hLJycv2nsVwYJ26zakJrXO3tyiNCqA7cpPVqawvIBW6dwvHZV4%2FCNHcacJxMSesJn2Z1BDaubHJoLssZ4WWOIFyw%2FkAwUB7QE6lCtpGfSGiYy%2BRO2Jwg6EQOKIra7lxj4RMi1S7mHArrollxbGaeyOZDeUNgPQGTbpXi%2Bosps%2FFwGTOWnBJhVxGuufke%2BxOdZPuAMobA%3D%3D","msg":"Generated VNC WebSocket URL"}
+{"level":30,"time":1767872616946,"pid":7892,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767872621674,"pid":7892,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767872626170,"pid":7892,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767872673190,"pid":7892,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767872729382,"pid":7892,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767872738069,"pid":7892,"hostname":"troner14","module":"Provider:proxmox","msg":"Connecting to proxmox at https://192.168.1.30:8006"}
+{"level":30,"time":1767872738096,"pid":7892,"hostname":"troner14","module":"Provider:proxmox","msg":"Connected to Proxmox 9.0.11"}
+{"level":30,"time":1767872738096,"pid":7892,"hostname":"troner14","module":"Provider:proxmox","msg":"Successfully connected to proxmox"}
+{"level":30,"time":1767872738096,"pid":7892,"hostname":"troner14","msg":"Connected to panel local (proxmox)"}
+{"level":30,"time":1767872738519,"pid":7892,"hostname":"troner14","module":"Provider:proxmox","vmId":"110","node":"pve","port":"5900","vmType":"qemu","websocketUrl":"wss://192.168.1.30:8006/api2/json/nodes/pve/qemu/110/vncwebsocket?port=5900&vncticket=PVEVNC%3A695F98DC%3A%3AGqnt1JbqzR7MgR5bdmwuKGyTCVuWta9prckUpmodfl03NVtkRWQT5RT8aDVoAclPpTpk8zJNTsNYk3MYvmj151ivJSwUMmP6PQCAJ%2BX5b2hleySRvK%2FuawmOmxA4ZLQ1bibZXzHJwi5HD%2FfH5p9pOGHG7A0dvqL8tNBeGTGD0VhoftvZwbVPZgrmPXr4JTdHt9JVg9dO1BAB%2BrN%2BPArtKS%2B53LrtQLyv93X%2BV5Gw0u65faSEm7JfU4C5gYyr5VJgpjO%2FAoeSdH5Z7Bj5MXoNvAgD76MQpCsQv2vT9uO3ZwM8VD6Gl6w2U4%2BlypUfSv5cqZ%2BSq09Zd%2FeEHXbxwo8dfw%3D%3D","msg":"Generated VNC WebSocket URL"}
+{"level":30,"time":1767872837286,"pid":7892,"hostname":"troner14","module":"Provider:proxmox","msg":"Disconnected from proxmox"}
+{"level":30,"time":1767872837286,"pid":7892,"hostname":"troner14","msg":"Disconnected from panel 1"}
+{"level":30,"time":1767872837286,"pid":7892,"hostname":"troner14","panelId":1,"active":false,"msg":"Panel deactivated"}
+{"level":30,"time":1767872838186,"pid":7892,"hostname":"troner14","panelId":1,"active":true,"msg":"Panel activated"}
+{"level":30,"time":1767873553800,"pid":7892,"hostname":"troner14","panelId":1,"active":false,"msg":"Panel deactivated"}
+{"level":30,"time":1767873557039,"pid":7892,"hostname":"troner14","panelId":1,"active":true,"msg":"Panel activated"}
+{"level":30,"time":1767873558059,"pid":7892,"hostname":"troner14","module":"Provider:proxmox","msg":"Connecting to proxmox at https://192.168.1.30:8006"}
+{"level":30,"time":1767873558066,"pid":7892,"hostname":"troner14","module":"Provider:proxmox","msg":"Connected to Proxmox 9.0.11"}
+{"level":30,"time":1767873558066,"pid":7892,"hostname":"troner14","module":"Provider:proxmox","msg":"Successfully connected to proxmox"}
+{"level":30,"time":1767873558066,"pid":7892,"hostname":"troner14","msg":"Connected to panel local (proxmox)"}
+{"level":30,"time":1767873764053,"pid":7892,"hostname":"troner14","module":"Provider:proxmox","vmId":"110","node":"pve","port":"5900","vmType":"qemu","websocketUrl":"wss://192.168.1.30:8006/api2/json/nodes/pve/qemu/110/vncwebsocket?port=5900&vncticket=PVEVNC%3A695F9CDE%3A%3AQkyHRmSvsrVJyQJahnFZUBcV2%2F0Y1wGjyDp3a9YAY%2FnV4Xdp9b830JC9pNNMXiYMCyFe4SLf7pFe5teiyGAdPoGD6XMqrQvn%2FSIkbB8K2kJgMLXZB99qPxK735nC85YPxAybvQT%2BpoiZUC1vUBrav7uCt2jxcdgB3pkScZgzZ3%2Bsfc7HyfoD%2FuY14CWVIU5y%2F2xCXeY8yleflxLdJQcc29HdGqDF2Fnz93bTPXEvojuvbRJOSLCQtcELBP8%2BHEwida8PHayhSJkI1lIv0FTN%2FO348XyZgr8oGqZMjp%2BKTMogmTowcX9ZuU%2BSyFOPHnph4ASmTDKgVFO6ofGnKlc31A%3D%3D","msg":"Generated VNC WebSocket URL"}
+{"level":30,"time":1767873797057,"pid":7892,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767873797553,"pid":7892,"hostname":"troner14","module":"Provider:proxmox","msg":"Connecting to proxmox at https://192.168.1.30:8006"}
+{"level":30,"time":1767873797578,"pid":7892,"hostname":"troner14","module":"Provider:proxmox","msg":"Connected to Proxmox 9.0.11"}
+{"level":30,"time":1767873797578,"pid":7892,"hostname":"troner14","module":"Provider:proxmox","msg":"Successfully connected to proxmox"}
+{"level":30,"time":1767873797578,"pid":7892,"hostname":"troner14","msg":"Connected to panel local (proxmox)"}
+{"level":30,"time":1767873802880,"pid":7892,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767873803536,"pid":7892,"hostname":"troner14","module":"Provider:proxmox","msg":"Connecting to proxmox at https://192.168.1.30:8006"}
+{"level":30,"time":1767873803555,"pid":7892,"hostname":"troner14","module":"Provider:proxmox","msg":"Connected to Proxmox 9.0.11"}
+{"level":30,"time":1767873803555,"pid":7892,"hostname":"troner14","module":"Provider:proxmox","msg":"Successfully connected to proxmox"}
+{"level":30,"time":1767873803555,"pid":7892,"hostname":"troner14","msg":"Connected to panel local (proxmox)"}
+{"level":50,"time":1767873809138,"pid":7892,"hostname":"troner14","err":{"type":"PrismaClientValidationError","message":"\nInvalid `prisma.vm_action_logs.create()` invocation:\n\n{\n  data: {\n    userId: \"495874245516066816\",\n    action: \"stop\",\n    status: \"error\",\n    error: \"Permission denied\",\n    details: undefined,\n+   vmId: String\n  }\n}\n\nArgument `vmId` is missing.","stack":"PrismaClientValidationError: \nInvalid `prisma.vm_action_logs.create()` invocation:\n\n{\n  data: {\n    userId: \"495874245516066816\",\n    action: \"stop\",\n    status: \"error\",\n    error: \"Permission denied\",\n    details: undefined,\n+   vmId: String\n  }\n}\n\nArgument `vmId` is missing.\n    at tr (E:\\newBot\\node_modules\\.bun\\@prisma+client@7.2.0+c596f6c2c9dae5f0\\node_modules\\@prisma\\client\\runtime\\client.js:10:1379)\n    at qr.handleRequestError (E:\\newBot\\node_modules\\.bun\\@prisma+client@7.2.0+c596f6c2c9dae5f0\\node_modules\\@prisma\\client\\runtime\\client.js:65:7815)\n    at qr.handleAndLogRequestError (E:\\newBot\\node_modules\\.bun\\@prisma+client@7.2.0+c596f6c2c9dae5f0\\node_modules\\@prisma\\client\\runtime\\client.js:65:7467)\n    at qr.request (E:\\newBot\\node_modules\\.bun\\@prisma+client@7.2.0+c596f6c2c9dae5f0\\node_modules\\@prisma\\client\\runtime\\client.js:65:7174)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async a (E:\\newBot\\node_modules\\.bun\\@prisma+client@7.2.0+c596f6c2c9dae5f0\\node_modules\\@prisma\\client\\runtime\\client.js:75:5816)\n    at async VirtualizationManager.logVMAction (file:///E:/newBot/apps/dasboard/.nuxt/dev/index.mjs:3975:7)\n    at async VirtualizationManager.executeVMAction (file:///E:/newBot/apps/dasboard/.nuxt/dev/index.mjs:3889:7)\n    at async Object.handler (file:///E:/newBot/apps/dasboard/.nuxt/dev/index.mjs:5394:18)\n    at async file:///E:/newBot/node_modules/.bun/h3@1.15.4/node_modules/h3/dist/index.mjs:2004:19","name":"PrismaClientValidationError","clientVersion":"7.2.0"},"msg":"Failed to log VM action"}
+{"level":30,"time":1767873869456,"pid":7892,"hostname":"troner14","module":"Provider:proxmox","vmId":"110","node":"pve","port":"5900","vmType":"qemu","websocketUrl":"wss://192.168.1.30:8006/api2/json/nodes/pve/qemu/110/vncwebsocket?port=5900&vncticket=PVEVNC%3A695F9D47%3A%3AA8s3LYeCCy0h7N5MoeGxLoQmiowRdAvQcg2xrNvIexKIvXIie69k%2Bkh%2F2spuz4WbwEPxoIOAY%2BTASkTSLi%2FrLfiA9M1MNeFdHJUwNLcwlQsrmTt5mEkR7arPQTcj1AYAhlucBiRVhV5%2FzADVbc%2B8fqbQNrr6a2yykPzqSgFglXXi34SeSnpSmJeg23lwGVPZsn9VxP68DLYTFciiWKj50bWdRcA4lP3ic4rImRWMwzrI5eZPa5%2BkrdtC%2Fnk2RI1q3yE1m%2FK2ZrAmTC9n8nThz99hajOO%2FPMyibUxrHZSoQK1O7DkGsao1EVB1B0RQBKZMqhGguO89MkvgwNTx07Bmw%3D%3D","msg":"Generated VNC WebSocket URL"}
+{"level":30,"time":1767873937416,"pid":7892,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767873938282,"pid":7892,"hostname":"troner14","module":"Provider:proxmox","msg":"Connecting to proxmox at https://192.168.1.30:8006"}
+{"level":30,"time":1767873938301,"pid":7892,"hostname":"troner14","module":"Provider:proxmox","msg":"Connected to Proxmox 9.0.11"}
+{"level":30,"time":1767873938301,"pid":7892,"hostname":"troner14","module":"Provider:proxmox","msg":"Successfully connected to proxmox"}
+{"level":30,"time":1767873938301,"pid":7892,"hostname":"troner14","msg":"Connected to panel local (proxmox)"}
+{"level":30,"time":1767873940187,"pid":7892,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767873941286,"pid":7892,"hostname":"troner14","module":"Provider:proxmox","msg":"Connecting to proxmox at https://192.168.1.30:8006"}
+{"level":30,"time":1767873941306,"pid":7892,"hostname":"troner14","module":"Provider:proxmox","msg":"Connected to Proxmox 9.0.11"}
+{"level":30,"time":1767873941306,"pid":7892,"hostname":"troner14","module":"Provider:proxmox","msg":"Successfully connected to proxmox"}
+{"level":30,"time":1767873941306,"pid":7892,"hostname":"troner14","msg":"Connected to panel local (proxmox)"}
+{"level":30,"time":1767873981787,"pid":7892,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767873983283,"pid":7892,"hostname":"troner14","module":"Provider:proxmox","msg":"Connecting to proxmox at https://192.168.1.30:8006"}
+{"level":30,"time":1767873983302,"pid":7892,"hostname":"troner14","module":"Provider:proxmox","msg":"Connected to Proxmox 9.0.11"}
+{"level":30,"time":1767873983302,"pid":7892,"hostname":"troner14","module":"Provider:proxmox","msg":"Successfully connected to proxmox"}
+{"level":30,"time":1767873983302,"pid":7892,"hostname":"troner14","msg":"Connected to panel local (proxmox)"}
+{"level":50,"time":1767873994321,"pid":7892,"hostname":"troner14","error":{"name":"PrismaClientValidationError","clientVersion":"7.2.0"},"msg":"Failed to get panel"}
+{"level":30,"time":1767874040927,"pid":7892,"hostname":"troner14","module":"Provider:proxmox","vmId":"110","node":"pve","port":"5900","vmType":"qemu","websocketUrl":"wss://192.168.1.30:8006/api2/json/nodes/pve/qemu/110/vncwebsocket?port=5900&vncticket=PVEVNC%3A695F9DF3%3A%3AESfVodeTfnUScuTmVUe45g%2BrN12HnDCpW2FzN%2FTCZfvD6HVC9ymfBhTKdILKsBb6OvcTiasXs8aYaPCe4JEfv0D9ztMhoWc1Y1rq1l54JZn82upYYo9SpIcHrxuysL2FW4hEVUcgilhc659aVm6NKq14TfBcy8vt3tFpcidOW3HTHVMWkW5%2B%2F%2Fr15f7owZTDK6xszBLFPzJsCiBFs2EfrQUdh6fDsQ6SBYsx7AlS9mbVHr4khxrRZPeZGqUnw1cssFXaUUdzk4WAsmHLwFED3Dgx5VwwJyNd230DF0%2Fs6UuHbVqyWbbQBSggHn0EjKN0X2HTmTFW56S%2FSg9Cx1SKrw%3D%3D","msg":"Generated VNC WebSocket URL"}
+{"level":30,"time":1767874070502,"pid":7892,"hostname":"troner14","panelId":1,"vmId":"110","action":"stop","userId":"495874245516066816","msg":"Executing VM action"}
+{"level":30,"time":1767874152110,"pid":7892,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767874152392,"pid":7892,"hostname":"troner14","module":"Provider:proxmox","msg":"Connecting to proxmox at https://192.168.1.30:8006"}
+{"level":30,"time":1767874152414,"pid":7892,"hostname":"troner14","module":"Provider:proxmox","msg":"Connected to Proxmox 9.0.11"}
+{"level":30,"time":1767874152414,"pid":7892,"hostname":"troner14","module":"Provider:proxmox","msg":"Successfully connected to proxmox"}
+{"level":30,"time":1767874152414,"pid":7892,"hostname":"troner14","msg":"Connected to panel local (proxmox)"}
+{"level":30,"time":1767874164300,"pid":7892,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767874174263,"pid":7892,"hostname":"troner14","module":"Provider:proxmox","msg":"Connecting to proxmox at https://192.168.1.30:8006"}
+{"level":30,"time":1767874174290,"pid":7892,"hostname":"troner14","module":"Provider:proxmox","msg":"Connected to Proxmox 9.0.11"}
+{"level":30,"time":1767874174290,"pid":7892,"hostname":"troner14","module":"Provider:proxmox","msg":"Successfully connected to proxmox"}
+{"level":30,"time":1767874174290,"pid":7892,"hostname":"troner14","msg":"Connected to panel local (proxmox)"}
+{"level":30,"time":1767874179743,"pid":7892,"hostname":"troner14","panelId":1,"vmId":"110","action":"start","userId":"495874245516066816","msg":"Executing VM action"}
+{"level":30,"time":1767874213870,"pid":7892,"hostname":"troner14","module":"Provider:proxmox","vmId":"110","node":"pve","port":"5900","vmType":"qemu","websocketUrl":"wss://192.168.1.30:8006/api2/json/nodes/pve/qemu/110/vncwebsocket?port=5900&vncticket=PVEVNC%3A695F9EA0%3A%3AVER3B2JRi01Rc85ZBmngPgF2WmokhPWm2yfWJ8vNnIr4MgAYVxTagJxjaafwzpydLyOqvnYVnfiXJkNoiCslbEzu7R%2FXGKLFOP1exNdNEwvblU%2BhE2RyikIhpi4m6Kj0VUNYE43lZSrUVdPrttuz3xy0Lr5%2FEEkbDJ%2BznX2ZxzR%2ByLAPHXi%2F41QU2H7HeVziw3ajOSg7Rs7%2BOjtAh9O%2F3ORTcMUzq7gjW8UgefS8VoUeJAt9SZw%2FPnXv2nwLIeeronpGMOQUS3dpUMmZmoLIUolCdrhatfr4JuUhU%2FrCYQdxMkwXzqfLCWCAKgPRsV5bsXr5VaLyCjLkSYKb9TxTog%3D%3D","msg":"Generated VNC WebSocket URL"}
+{"level":30,"time":1767874242773,"pid":7892,"hostname":"troner14","panelId":1,"vmId":"110","action":"stop","userId":"495874245516066816","msg":"Executing VM action"}
+{"level":30,"time":1767907786678,"pid":31492,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767907789578,"pid":31488,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767907795750,"pid":31488,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}
+{"level":30,"time":1767907802461,"pid":31488,"hostname":"troner14","msg":"Initialized 1 virtualization providers"}

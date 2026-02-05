@@ -1,0 +1,33 @@
+{"level":30,"time":1767379223957,"pid":18352,"hostname":"troner14","module":"VirtualizationMonitor","msg":"Starting Virtualization Monitor loop"}
+{"level":30,"time":1767379223983,"pid":18352,"hostname":"troner14","module":"Commands","msg":"Loaded 7 commands in 43.01ms"}
+{"level":30,"time":1767379223995,"pid":18352,"hostname":"troner14","module":"Events","msg":"Loaded 4 events in 8.57ms"}
+{"level":30,"time":1767379224014,"pid":18352,"hostname":"troner14","module":"Components","msg":"Loaded 13 components in 18.11ms"}
+{"level":30,"time":1767379224014,"pid":18352,"hostname":"troner14","module":"ExtendedClient","msg":"bot started in 820ms"}
+{"level":30,"time":1767861725844,"pid":16000,"hostname":"troner14","module":"VirtualizationMonitor","msg":"Starting Virtualization Monitor loop"}
+{"level":30,"time":1767861726011,"pid":16000,"hostname":"troner14","module":"Commands","msg":"Loaded 7 commands in 183.54ms"}
+{"level":30,"time":1767861726080,"pid":16000,"hostname":"troner14","module":"Events","msg":"Loaded 4 events in 65.74ms"}
+{"level":30,"time":1767861726234,"pid":16000,"hostname":"troner14","module":"Components","msg":"Loaded 13 components in 153.97ms"}
+{"level":30,"time":1767861726234,"pid":16000,"hostname":"troner14","module":"ExtendedClient","msg":"bot started in 2046ms"}
+{"level":50,"time":1767861765193,"pid":16000,"hostname":"troner14","module":"ExtendedClient","err":{"type":"PrismaClientKnownRequestError","message":"\nInvalid `client.prisma.guilds.delete()` invocation in\nE:\\newBot\\apps\\bot\\src\\events\\guilds\\guildDelete.ts:12:36\n\n   9 try {\n  10     client.logger.debug(`Bot fue removido del servidor: ${guild.name} (${guild.id})`);\n  11 \n→ 12     await client.prisma.guilds.delete(\nAn operation failed because it depends on one or more records that were required but not found. No record was found for a delete.","stack":"PrismaClientKnownRequestError: \nInvalid `client.prisma.guilds.delete()` invocation in\nE:\\newBot\\apps\\bot\\src\\events\\guilds\\guildDelete.ts:12:36\n\n   9 try {\n  10     client.logger.debug(`Bot fue removido del servidor: ${guild.name} (${guild.id})`);\n  11 \n→ 12     await client.prisma.guilds.delete(\nAn operation failed because it depends on one or more records that were required but not found. No record was found for a delete.\n    at handleRequestError (E:\\newBot\\node_modules\\.bun\\@prisma+client@7.2.0+c596f6c2c9dae5f0\\node_modules\\@prisma\\client\\runtime\\client.js:65:8178)\n    at handleAndLogRequestError (E:\\newBot\\node_modules\\.bun\\@prisma+client@7.2.0+c596f6c2c9dae5f0\\node_modules\\@prisma\\client\\runtime\\client.js:65:7467)\n    at request (E:\\newBot\\node_modules\\.bun\\@prisma+client@7.2.0+c596f6c2c9dae5f0\\node_modules\\@prisma\\client\\runtime\\client.js:65:7174)\n    at processTicksAndRejections (native:7:39)","code":"P2025","meta":{"modelName":"guilds","operation":"a delete"},"clientVersion":"7.2.0","name":"PrismaClientKnownRequestError"},"msg":"Error al manejar la eliminación del guild PROYECTO VIDA"}
+{"level":30,"time":1767862116514,"pid":16000,"hostname":"troner14","module":"ExtendedClient","msg":"Guild PROYECTO VIDA guardado en la base de datos"}
+{"level":30,"time":1767862116567,"pid":16000,"hostname":"troner14","module":"ExtendedClient","msg":"Configuración inicial completada para el servidor: PROYECTO VIDA"}
+{"level":30,"time":1767863032182,"pid":14828,"hostname":"troner14","module":"VirtualizationMonitor","msg":"Starting Virtualization Monitor loop"}
+{"level":30,"time":1767863032200,"pid":14828,"hostname":"troner14","module":"Commands","msg":"Loaded 7 commands in 32.27ms"}
+{"level":30,"time":1767863032210,"pid":14828,"hostname":"troner14","module":"Events","msg":"Loaded 4 events in 6.49ms"}
+{"level":30,"time":1767863032221,"pid":14828,"hostname":"troner14","module":"Components","msg":"Loaded 13 components in 10.29ms"}
+{"level":30,"time":1767863032221,"pid":14828,"hostname":"troner14","module":"ExtendedClient","msg":"bot started in 886ms"}
+{"level":30,"time":1767871629514,"pid":13396,"hostname":"troner14","module":"VirtualizationMonitor","msg":"Starting Virtualization Monitor loop"}
+{"level":30,"time":1767871629629,"pid":13396,"hostname":"troner14","module":"Commands","msg":"Loaded 7 commands in 124.13ms"}
+{"level":30,"time":1767871629676,"pid":13396,"hostname":"troner14","module":"Events","msg":"Loaded 4 events in 42.26ms"}
+{"level":30,"time":1767871629777,"pid":13396,"hostname":"troner14","module":"Components","msg":"Loaded 13 components in 101.24ms"}
+{"level":30,"time":1767871629777,"pid":13396,"hostname":"troner14","module":"ExtendedClient","msg":"bot started in 1558ms"}
+{"level":30,"time":1767872086762,"pid":27096,"hostname":"troner14","module":"VirtualizationMonitor","msg":"Starting Virtualization Monitor loop"}
+{"level":30,"time":1767872086782,"pid":27096,"hostname":"troner14","module":"Commands","msg":"Loaded 7 commands in 32.50ms"}
+{"level":30,"time":1767872086790,"pid":27096,"hostname":"troner14","module":"Events","msg":"Loaded 4 events in 5.35ms"}
+{"level":30,"time":1767872086800,"pid":27096,"hostname":"troner14","module":"Components","msg":"Loaded 13 components in 10.46ms"}
+{"level":30,"time":1767872086800,"pid":27096,"hostname":"troner14","module":"ExtendedClient","msg":"bot started in 800ms"}
+{"level":30,"time":1767907788946,"pid":31492,"hostname":"troner14","module":"VirtualizationMonitor","msg":"Starting Virtualization Monitor loop"}
+{"level":30,"time":1767907789147,"pid":31492,"hostname":"troner14","module":"Commands","msg":"Loaded 7 commands in 221.43ms"}
+{"level":30,"time":1767907789235,"pid":31492,"hostname":"troner14","module":"Events","msg":"Loaded 4 events in 83.41ms"}
+{"level":30,"time":1767907789414,"pid":31492,"hostname":"troner14","module":"Components","msg":"Loaded 13 components in 179.24ms"}
+{"level":30,"time":1767907789414,"pid":31492,"hostname":"troner14","module":"ExtendedClient","msg":"bot started in 3811ms"}
