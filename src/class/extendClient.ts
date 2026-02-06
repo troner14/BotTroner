@@ -1,5 +1,5 @@
 import logger from "@src/utils/logger";
-import { Client } from "discord.js";
+import { Client, GatewayIntentBits } from "discord.js";
 import { prisma } from "@class/prismaClient";
 import { CommandsLoader } from "./loaders/Commands";
 import { EventsLoader } from "./loaders/events";
@@ -7,6 +7,8 @@ import { ComponentsLoader } from "./loaders/components";
 import { VirtualizationManager } from "./virtualization/VirtualizationManager";
 import { VirtualizationMonitor } from "./virtualization/VirtualizationMonitor";
 import Tickets from "./tickets/tickets";
+import type { Announcement } from "@src/types/announcements";
+import { loadTranslations } from "@src/utils/translate";
 
 
 export class ExtendedClient extends Client {
@@ -18,10 +20,23 @@ export class ExtendedClient extends Client {
     private componentsLoader: ComponentsLoader;
     private virtualizationManager: VirtualizationManager;
     private ticketSystem: Tickets;
-    private pendingAnnouncements: Map<string, { channelId: string; title: string; message: string; userId: string, fields?: any[], imatge?: string }>;
+    private pendingAnnouncements: Map<string, Announcement>;
 
     constructor() {
-        super({ intents: 3276799 });
+        super({
+            intents: [
+                GatewayIntentBits.Guilds,
+                GatewayIntentBits.GuildMessages,
+                GatewayIntentBits.MessageContent,
+                GatewayIntentBits.GuildMembers,
+                GatewayIntentBits.GuildVoiceStates,
+                GatewayIntentBits.GuildPresences,
+                GatewayIntentBits.GuildInvites,
+                GatewayIntentBits.GuildIntegrations,
+                GatewayIntentBits.GuildModeration,
+                GatewayIntentBits.DirectMessages,
+            ]
+        });
         this.#prisma = prisma;
 
         this.commandsLoader = new CommandsLoader(this);
@@ -86,6 +101,7 @@ export class ExtendedClient extends Client {
     }
 
     async prepare() {
+        await loadTranslations();
         await this.commandsLoader.load();
         await Promise.all(
             this.guilds.cache.map(guild => {
