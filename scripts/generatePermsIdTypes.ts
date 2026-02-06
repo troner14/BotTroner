@@ -1,12 +1,10 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { exit } from 'process';
-import { PrismaClient } from "@prismaClient"
+import { prisma } from "../src/class/prismaClient";
 
 async function generateTranslationTypes() {
-    const prisma = new PrismaClient();
     const allperms = await prisma.permisos.findMany();
-    // const allperms = await Permisos.getAllPerms();
 
     const keys: string[] = [];
 

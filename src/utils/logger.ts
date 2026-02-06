@@ -1,5 +1,4 @@
-import {pino} from "pino";
-
+import { pino } from "pino";
 
 export const logger = pino({
     level: process.env.LOG_LEVEL || "debug",
@@ -23,7 +22,7 @@ export const logger = pino({
                 options: { destination: './logs/error-logs.log' },
                 level: 'error'
             }
-        ]      
+        ]
     },
 });
 
