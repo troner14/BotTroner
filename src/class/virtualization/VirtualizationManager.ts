@@ -13,6 +13,7 @@ import type {
 import { ProxmoxProvider } from "./providers/ProxmoxProvider";
 import { VirtualizationError, VirtualizationErrorCode } from "./errors";
 import type { VirtualizationMonitor } from "./VirtualizationMonitor";
+import { encrypt, decrypt } from "@utils/crypto";
 
 /**
  * Manager principal para gestión de virtualización
@@ -58,16 +59,31 @@ export class VirtualizationManager {
             });
 
             // Mapear a la estructura genérica (temporal hasta migrar BD)
-            const mappedPanels: PanelDBConfig[] = panels.map(panel => ({
-                id: panel.id,
-                guildId: panel.guildId,
-                name: panel.name || `Proxmox-${panel.id}`,
-                type: 'proxmox',
-                apiUrl: panel.apiUrl,
-                credentials: panel.credentials as unknown as PanelCredentials,
-                active: true,
-                isDefault: panel.isDefault
-            }));
+            const mappedPanels: PanelDBConfig[] = panels.map(panel => {
+                let credentials = panel.credentials as unknown as PanelCredentials;
+                // Intentar desencriptar si es un string (formato nuevo)
+                if (typeof panel.credentials === 'string') {
+                    try {
+                        const decrypted = decrypt(panel.credentials);
+                        credentials = JSON.parse(decrypted);
+                    } catch (e) {
+                        // Si falla, asumir que es un string no encriptado o error, 
+                        // pero mantenemos el valor original por si acaso o loggeamos?
+                        // Si es JSON stringify plano (legacy string?), no debería pasar si antes era Objeto
+                    }
+                }
+
+                return {
+                    id: panel.id,
+                    guildId: panel.guildId,
+                    name: panel.name || `Proxmox-${panel.id}`,
+                    type: 'proxmox',
+                    apiUrl: panel.apiUrl,
+                    credentials: credentials,
+                    active: true,
+                    isDefault: panel.isDefault
+                };
+            });
 
             return {
                 success: true,
@@ -132,7 +148,7 @@ export class VirtualizationManager {
                     name,
                     type,
                     apiUrl,
-                    credentials: credentials as unknown as Prisma.JsonObject,
+                    credentials: encrypt(JSON.stringify(credentials)) as unknown as Prisma.JsonObject,
                     isDefault: setAsDefault
                 }
             });
@@ -206,13 +222,22 @@ export class VirtualizationManager {
                 };
             }
 
+            let credentials = panel.credentials as unknown as PanelCredentials;
+            if (typeof panel.credentials === 'string') {
+                try {
+                    credentials = JSON.parse(decrypt(panel.credentials));
+                } catch (e) {
+                    this.logger.warn({ error: e, panelId }, "Failed to decrypt credentials, using raw value");
+                }
+            }
+
             const mappedPanel: PanelDBConfig = {
                 id: panel.id,
                 guildId: panel.guildId,
                 name: panel.name || `Proxmox-${panel.id}`,
                 type: panel.type,
                 apiUrl: panel.apiUrl,
-                credentials: panel.credentials as unknown as PanelCredentials,
+                credentials: credentials,
                 active: true,
                 isDefault: panel.isDefault
             };
