@@ -10,7 +10,7 @@
 
 **BotTroner** es un bot de Discord sofisticado y modular, desarrollado con tecnologías web modernas. Diseñado para la escalabilidad y el alto rendimiento, aprovecha la velocidad del runtime **Bun** y la seguridad de tipos de **TypeScript**.
 
-Este proyecto demuestra patrones de backend avanzados, como inyección de dependencias, arquitectura dirigida por eventos y gestión robusta de bases de datos con **Prisma**, lo que lo convierte en una solución sólida para la gestión de comunidades y la automatización de servidores.
+Este bot fue creado para solucionar el problema de poder dar una gestion de maquinas virtuales de forma comoda para pequeñas empresas de hosting desde el propio discord. tambien agrega un sistema de tickets para gestionar incidencias. 
 
 ---
 
