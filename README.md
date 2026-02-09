@@ -16,8 +16,6 @@ Este proyecto demuestra patrones de backend avanzados, como inyección de depend
 
 ## Video Demostrativo
 
-> **[Nota para Reclutadores]**: Mira el video a continuación para ver a BotTroner en acción, gestionando máquinas virtuales y resolviendo tickets de soporte en tiempo real.
-
 <!-- 
     👇 PEGA TU ENLACE DE YOUTUBE/VIDEO AQUÍ 
     Ejemplo: [![Ver video](https://img.youtube.com/vi/TU_ID_DE_VIDEO/maxresdefault.jpg)](https://youtu.be/TU_ID_DE_VIDEO)
