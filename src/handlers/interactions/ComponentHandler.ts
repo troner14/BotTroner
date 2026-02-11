@@ -30,14 +30,14 @@ export class ComponentHandler<T extends Interaction = Interaction> extends BaseH
         }
         
         let customId = interaction.customId;
-        let optionalParams: { [key: string]: any } = {};
-        let queryParams: any[] = [];
+        let optionalParams: Record<string, unknown> = {};
+        let queryParams: string[] = [];
         if (typeof customId === "string" && customId.includes("_")) {
             const optParams = customId.split("_");
             customId = optParams.shift() ?? "";
             queryParams = optParams;
         }
-        const collection = client[this.clientKey] as Map<string, any> | undefined;
+        const collection = client[this.clientKey] as Map<string, unknown> | undefined;
         const component = collection?.get(customId);
         if (component?.optionalParams && queryParams.length > 0) {
             const optionalParamsKeys = Object.keys(component.optionalParams);
