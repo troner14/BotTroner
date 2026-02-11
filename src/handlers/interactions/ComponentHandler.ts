@@ -1,15 +1,18 @@
-import type { Interaction } from "discord.js";
+import type { Interaction, ButtonInteraction, ModalSubmitInteraction, StringSelectMenuInteraction } from "discord.js";
 import { BaseHandler, type HandlerContext } from "@handlers/core/BaseHandler";
+import type { ExtendedClient } from "@class/extendClient";
 
 type ComponentType = "button" | "modal" | "selectmenu";
 
+type ComponentInteraction = ButtonInteraction | ModalSubmitInteraction | StringSelectMenuInteraction;
+
 interface ComponentHandlerOptions {
     type: ComponentType;
-    clientKey: keyof any;
+    clientKey: keyof ExtendedClient;
 }
 
 export class ComponentHandler<T extends Interaction = Interaction> extends BaseHandler<T> {
-    private readonly clientKey: keyof any;
+    private readonly clientKey: keyof ExtendedClient;
     private readonly type: ComponentType;
 
     constructor(options: ComponentHandlerOptions) {
@@ -20,7 +23,12 @@ export class ComponentHandler<T extends Interaction = Interaction> extends BaseH
 
     async handle(context: HandlerContext<T>): Promise<void> {
         const { interaction, client } = context;
-        // @ts-ignore
+        
+        // Type guard to ensure interaction has customId
+        if (!('customId' in interaction)) {
+            throw new Error(`Interaction does not have customId property`);
+        }
+        
         let customId = interaction.customId;
         let optionalParams: { [key: string]: any } = {};
         let queryParams: any[] = [];
@@ -29,7 +37,7 @@ export class ComponentHandler<T extends Interaction = Interaction> extends BaseH
             customId = optParams.shift() ?? "";
             queryParams = optParams;
         }
-        const collection = client[this.clientKey as unknown as keyof typeof client] as Map<string, any> | undefined;
+        const collection = client[this.clientKey] as Map<string, any> | undefined;
         const component = collection?.get(customId);
         if (component?.optionalParams && queryParams.length > 0) {
             const optionalParamsKeys = Object.keys(component.optionalParams);

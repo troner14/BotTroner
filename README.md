@@ -46,6 +46,8 @@ Sistema modular para difundir actualizaciones en múltiples canales o servidores
 - **Entrega Específica**: Selecciona canales específicos para las actualizaciones.
 
 ### Ingeniería y Arquitectura
+- **Arquitectura en Capas**: Separación clara de responsabilidades con capa de presentación, aplicación, negocio y datos. [Ver documentación detallada](docs/ARCHITECTURE.md)
+- **Patrones de Diseño**: Implementa Singleton, Template Method, Strategy, Facade, Builder y más.
 - **Tipado Seguro**: Código 100% TypeScript usando modo estricto.
 - **Loaders Modulares**: Carga automatizada de comandos, eventos y componentes.
 - **ORM de Base de Datos**: Integración con Prisma para consultas seguras (MariaDB/MySQL).

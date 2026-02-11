@@ -4,19 +4,19 @@ import logger from "@src/utils/logger";
 export abstract class BaseLoader {
     public logger: Logger;
     #cache: Map<string, string> = new Map();
-    protected static singleTone: any;
+    protected static singleTone: BaseLoader | undefined;
 
     constructor(loaderName: string = "BaseLoader") {
         this.logger = logger.child({module: loaderName});
     }
 
 
-    public static getInstance(): BaseLoader {
+    public static getInstance<T extends BaseLoader>(this: new (...args: any[]) => T): T {
         if (!this.singleTone) {
             throw new Error("getInstance() must be implemented in the derived class.");
         }
-        return this.singleTone;
-    };
+        return this.singleTone as T;
+    }
 
     protected clearCache() {
         this.#cache.forEach((file, name) => {
