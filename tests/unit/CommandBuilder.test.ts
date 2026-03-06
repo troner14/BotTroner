@@ -1,6 +1,6 @@
 import { test, expect, describe, beforeEach } from "bun:test";
 import { CommandBuilder } from "@src/class/builders/CommandBuilder";
-import type { ChatInputCommandInteraction, AutocompleteInteraction } from "discord.js";
+import type { RunOptions, autocomplete_type } from "@src/types/commands";
 
 describe("CommandBuilder", () => {
     let commandBuilder: CommandBuilder;
@@ -37,8 +37,8 @@ describe("CommandBuilder", () => {
 
     describe("runner property", () => {
         test("should set and get runner function", () => {
-            const mockRunner = async (interaction: ChatInputCommandInteraction) => {
-                await interaction.reply("Test");
+            const mockRunner = async (options: RunOptions) => {
+                await options.interaction.reply("Test");
             };
 
             commandBuilder.runner = mockRunner;
@@ -50,8 +50,8 @@ describe("CommandBuilder", () => {
         });
 
         test("should not throw when runner is set", () => {
-            const mockRunner = async (interaction: ChatInputCommandInteraction) => {
-                await interaction.reply("Test");
+            const mockRunner = async (options: RunOptions) => {
+                await options.interaction.reply("Test");
             };
 
             commandBuilder.runner = mockRunner;
@@ -61,8 +61,8 @@ describe("CommandBuilder", () => {
 
     describe("autocomplete property", () => {
         test("should set and get autocomplete function", () => {
-            const mockAutocomplete = async (interaction: AutocompleteInteraction) => {
-                await interaction.respond([]);
+            const mockAutocomplete = async (options: autocomplete_type) => {
+                await options.interaction.respond([]);
             };
 
             commandBuilder.autocomplete = mockAutocomplete;
@@ -74,8 +74,8 @@ describe("CommandBuilder", () => {
         });
 
         test("should not throw when autocomplete is set", () => {
-            const mockAutocomplete = async (interaction: AutocompleteInteraction) => {
-                await interaction.respond([]);
+            const mockAutocomplete = async (options: autocomplete_type) => {
+                await options.interaction.respond([]);
             };
 
             commandBuilder.autocomplete = mockAutocomplete;
@@ -85,8 +85,8 @@ describe("CommandBuilder", () => {
 
     describe("Integration with SlashCommandBuilder", () => {
         test("should build valid command data", () => {
-            const mockRunner = async (interaction: ChatInputCommandInteraction) => {
-                await interaction.reply("Test");
+            const mockRunner = async (options: RunOptions) => {
+                await options.interaction.reply("Test");
             };
 
             commandBuilder
@@ -115,25 +115,25 @@ describe("CommandBuilder", () => {
             const commandData = commandBuilder.toJSON();
             
             expect(commandData.options).toHaveLength(1);
-            expect(commandData.options![0].name).toBe("input");
-            expect(commandData.options![0].description).toBe("Test input");
-            expect(commandData.options![0].required).toBe(true);
+            expect(commandData.options?.[0]?.name).toBe("input");
+            expect(commandData.options?.[0]?.description).toBe("Test input");
+            expect(commandData.options?.[0]?.required).toBe(true);
         });
     });
 
     describe("Complete command example", () => {
         test("should create a fully functional command", () => {
-            const mockRunner = async (interaction: ChatInputCommandInteraction) => {
-                const input = interaction.options.getString("input");
-                await interaction.reply(`Hello ${input}!`);
+            const mockRunner = async (options: RunOptions) => {
+                const input = options.interaction.options.getString("input");
+                await options.interaction.reply(`Hello ${input}!`);
             };
 
-            const mockAutocomplete = async (interaction: AutocompleteInteraction) => {
-                const focusedValue = interaction.options.getFocused();
+            const mockAutocomplete = async (options: autocomplete_type) => {
+                const focusedValue = options.interaction.options.getFocused();
                 const choices = ["world", "universe", "everyone"]
                     .filter(choice => choice.startsWith(focusedValue));
                 
-                await interaction.respond(
+                await options.interaction.respond(
                     choices.map(choice => ({ name: choice, value: choice }))
                 );
             };
