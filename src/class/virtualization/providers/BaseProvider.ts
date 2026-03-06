@@ -140,6 +140,7 @@ export abstract class BaseVirtualizationProvider implements IVirtualizationProvi
     abstract listVMs(): Promise<VMStatus[]>;
     abstract getVM(vmId: string): Promise<VMStatus | null>;
     abstract executeAction(action: VMAction): Promise<VMActionResult>;
+    abstract resetVMPassword(vmId: string, username: string, password: string): Promise<VMActionResult>;
     abstract getSystemInfo(): Promise<any>;
     abstract getVMSpecs(vmId: string): Promise<VMSpecs | null>;
     abstract updateVMSpecs(vmId: string, specs: Partial<VMSpecs>): Promise<VMActionResult>;

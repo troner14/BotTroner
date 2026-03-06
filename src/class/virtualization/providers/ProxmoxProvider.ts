@@ -321,6 +321,70 @@ export class ProxmoxProvider extends BaseVirtualizationProvider {
         }
     }
 
+    async resetVMPassword(vmId: string, username: string, password: string): Promise<VMActionResult> {
+        this.validateConnection();
+        this.validateVMId(vmId);
+
+        if (!username || !username.trim()) {
+            return {
+                success: false,
+                message: "Username is required",
+                error: "INVALID_USERNAME",
+                errorCode: VirtualizationErrorCode.VALIDATION_FAILED
+            };
+        }
+
+        if (!password || !password.trim()) {
+            return {
+                success: false,
+                message: "Password is required",
+                error: "INVALID_PASSWORD",
+                errorCode: VirtualizationErrorCode.VALIDATION_FAILED
+            };
+        }
+
+        try {
+            const node = await this.findVMNode(vmId);
+            if (!node) {
+                return {
+                    success: false,
+                    message: `VM ${vmId} not found`,
+                    error: "VM_NOT_FOUND",
+                    errorCode: VirtualizationErrorCode.VM_NOT_FOUND
+                };
+            }
+
+            const endpoint = `/api2/json/nodes/${node}/qemu/${vmId}/agent/set-user-password`;
+            const body = new URLSearchParams({ username, password });
+
+            await this.makeRequest<{ data: string | null }>(
+                'POST',
+                endpoint,
+                body,
+                {
+                    ["Content-Type"]: "application/x-www-form-urlencoded"
+                }
+            );
+
+            return {
+                success: true,
+                message: `Password reset requested successfully for user ${username} on VM ${vmId}`,
+                metadata: { node, username }
+            };
+        } catch (error) {
+            this.logger.error({ err: error, vmId, username }, "Failed to reset VM password");
+
+            const errorCode = error instanceof VirtualizationError ? error.code : VirtualizationErrorCode.ACTION_FAILED;
+
+            return {
+                success: false,
+                message: `Failed to reset password for user ${username} on VM ${vmId}`,
+                error: (error as Error).message,
+                errorCode
+            };
+        }
+    }
+
     async getSystemInfo(): Promise<any> {
         this.validateConnection();
 

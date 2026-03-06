@@ -1,5 +1,6 @@
 import { CommandBuilder } from "@class/builders/CommandBuilder";
 import { virtualizationHandler } from "@handlers/virtualization";
+import { ChannelType } from "discord.js";
 
 const command = new CommandBuilder();
 
@@ -161,6 +162,22 @@ command.setName("vm")
                 .setDescription("ID del panel a eliminar")
                 .setRequired(true)
                 .setAutocomplete(true)
+            )
+        )
+        .addSubcommand(subcommand => subcommand
+            .setName("setupstatus")
+            .setDescription("Ver el estado de la configuración de un panel")
+            .addIntegerOption(option => option
+                .setName("panel")
+                .setDescription("ID del panel a consultar")
+                .setRequired(true)
+                .setAutocomplete(true)
+            )
+            .addChannelOption(option => option
+                .setName("channel")
+                .setDescription("Canal donde se enviará el panel")
+                .setRequired(true)
+                .addChannelTypes(ChannelType.GuildText)
             )
         )
     );

@@ -4,6 +4,7 @@ import type { Logger } from "pino";
 import logger from "@utils/logger";
 import { VirtualizationManager } from "./VirtualizationManager";
 import { VmEmbedGenerator } from "./utils/embedGenerator";
+import type { VMStatus } from "./interfaces/IVirtualizationProvider";
 
 interface MonitorEntry {
     guildId: string;
@@ -137,6 +138,23 @@ export class VirtualizationMonitor {
         }
     }
 
+    public async stopMonitorForVMAndUser(vmId: string, userId: string) {
+        for (const [msgId, entry] of this.monitors.entries()) {
+            if (entry.vmId === vmId && entry.userId === userId) {
+                this.monitors.delete(msgId);
+                try {
+                    const channel = await this.client.channels.fetch(entry.channelId) as TextChannel;
+                    if (channel) {
+                        const msg = await channel.messages.fetch(msgId);
+                        if (msg) await msg.delete();
+                    }
+                } catch {
+                    // Ignore errors if message/channel is unavailable
+                }
+            }
+        }
+    }
+
     /**
      * Main loop to process updates
      * Optimized to batch requests per panel if possible in future
@@ -151,17 +169,17 @@ export class VirtualizationMonitor {
             const updatePromise = (async () => {
                 try {
                     // Fetch current VM Status
-                    const result = await this.manager.getVM(entry.panelId, entry.vmId);
-
-                    if (!result.success || !result.data) {
-                        // If VM is gone or error, maybe stop monitoring after X failures?
-                        // For now just log and skip
-                        return;
+                    let vmStatus: VMStatus | undefined, panelInfo;
+                    if (entry.vmId === "PANEL_STATUS") {
+                        const infoResult = await this.manager.getSystemInfo(entry.panelId);
+                        if (!infoResult.success || !infoResult.data) return;
+                        panelInfo = infoResult.data;
+                    } else {
+                        const result = await this.manager.getVM(entry.panelId, entry.vmId);
+                        if (!result.success || !result.data) return;
+                        vmStatus = result.data;
                     }
 
-                    const vmStatus = result.data;
-
-                    // Fetch Discord Message
                     const channel = await this.client.channels.fetch(entry.channelId) as TextChannel;
                     if (!channel) {
                         this.removeMonitor(messageId);
@@ -175,13 +193,22 @@ export class VirtualizationMonitor {
                             return;
                         }
 
-                        // Generate new Embed
-                        const embed = VmEmbedGenerator.generateStatusEmbed(vmStatus);
-                        const components = VmEmbedGenerator.generateControlButtons(vmStatus);
+                        let embed;
+                        let components: any[] = [];
+                        if (entry.vmId === "PANEL_STATUS" && panelInfo) {
+                            embed = VmEmbedGenerator.generatePanelStatusEmbed(panelInfo, entry.panelId);
+                        } else if (vmStatus) {
+                            embed = VmEmbedGenerator.generateStatusEmbed(vmStatus);
+                            const allowedActions = await this.client.permissions.getVMPermissionsForUser(
+                                entry.userId,
+                                [],
+                                entry.vmId
+                            );
+                            components = VmEmbedGenerator.generateControlButtons(vmStatus, allowedActions);
+                        }
 
-                        // Update Message
-                        // Only update if something changed? Or always to show "alive"? 
-                        // Discord ignores edit if payload is identical, so it's safe to call.
+                        if (!embed) return;
+
                         await message.edit({
                             embeds: [embed],
                             components: components

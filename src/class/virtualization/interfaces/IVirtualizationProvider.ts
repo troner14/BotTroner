@@ -92,6 +92,7 @@ export interface IVirtualizationProvider {
     listVMs(): Promise<VMStatus[]>;
     getVM(vmId: string): Promise<VMStatus | null>;
     executeAction(action: VMAction): Promise<VMActionResult>;
+    resetVMPassword(vmId: string, username: string, password: string): Promise<VMActionResult>;
 
     // Información del sistema
     getSystemInfo(): Promise<{

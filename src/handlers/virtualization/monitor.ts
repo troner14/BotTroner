@@ -1,6 +1,5 @@
 import { BaseHandler, type HandlerContext } from "@handlers/core/BaseHandler";
-import { VmEmbedGenerator } from "@src/class/virtualization/utils/embedGenerator";
-import { MessageFlags, type ChatInputCommandInteraction } from "discord.js";
+import { ActionRowBuilder, MessageFlags, StringSelectMenuBuilder, type ChatInputCommandInteraction } from "discord.js";
 
 export class MonitorHandler extends BaseHandler<ChatInputCommandInteraction> {
     constructor() {
@@ -30,45 +29,45 @@ export class MonitorHandler extends BaseHandler<ChatInputCommandInteraction> {
 
             const vmStatus = vmResult.data;
 
-            // 2. Create DM Channel
-            try {
-                const dmChannel = await targetUser.createDM();
+            const selector = new StringSelectMenuBuilder()
+                .setCustomId(`vm-subuser-perms_${panelId}_${vmId}_${targetUser.id}_${interaction.user.id}`)
+                .setPlaceholder("Selecciona los permisos de control para el subuser")
+                .setMinValues(1)
+                .setMaxValues(5)
+                .addOptions(
+                    {
+                        label: "Iniciar VPS",
+                        value: "start",
+                        description: "Permite arrancar la VPS"
+                    },
+                    {
+                        label: "Apagar VPS",
+                        value: "stop",
+                        description: "Permite detener la VPS"
+                    },
+                    {
+                        label: "Reiniciar VPS",
+                        value: "restart",
+                        description: "Permite reiniciar la VPS"
+                    },
+                    {
+                        label: "Reset Password",
+                        value: "resetpass",
+                        description: "Permite resetear contraseña de la VPS"
+                    },
+                    {
+                        label: "Gestionar subusers",
+                        value: "subusers",
+                        description: "Permite crear/eliminar subusers"
+                    }
+                );
 
-                // 3. Generate initial message
-                const embed = VmEmbedGenerator.generateStatusEmbed(vmStatus);
-                const components = VmEmbedGenerator.generateControlButtons(vmStatus);
+            const row = new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(selector);
 
-                const message = await dmChannel.send({
-                    embeds: [embed],
-                    components: components
-                });
-
-                // 4. Register monitor
-                if (vmManager.monitor) {
-                    vmManager.monitor.addMonitor({
-                        guildId: interaction.guildId || "dm",
-                        channelId: dmChannel.id,
-                        messageId: message.id,
-                        panelId: panelId,
-                        vmId: vmId,
-                        userId: targetUser.id,
-                        lastUpdate: Date.now()
-                    });
-
-                    await interaction.editReply({
-                        content: `✅ Panel de monitoreo enviado a ${targetUser.toString()} para la VM **${vmStatus.name}** (${vmId}).`
-                    });
-                } else {
-                    await interaction.editReply({
-                        content: `⚠️ El sistema de monitoreo no está activo en este momento.`
-                    });
-                }
-
-            } catch (error) {
-                await interaction.editReply({
-                    content: `❌ No se pudo enviar el DM al usuario. Asegúrate de que tenga los DMs abiertos.`
-                });
-            }
+            await interaction.editReply({
+                content: `Configura los permisos del subuser ${targetUser.toString()} para la VM **${vmStatus.name}** (${vmId}).`,
+                components: [row]
+            });
 
         } else if (subcommand === "stop") {
             const vmId = interaction.options.getString("vm-id", true);

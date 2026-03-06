@@ -479,9 +479,84 @@ export class VirtualizationManager {
     }
 
     /**
+     * Resetea la contraseña de un usuario dentro de la VM (requiere QEMU guest agent).
+     */
+    async resetVMPassword(
+        panelId: number,
+        vmId: string,
+        username: string,
+        password: string,
+        userId: string,
+        guildId?: string
+    ): Promise<ManagerResult<VMActionResult>> {
+        const hasPermission = await this.checkVMPermission(userId, vmId, "resetpass", guildId);
+        if (!hasPermission) {
+            await this.logVMAction({
+                vmId,
+                userId,
+                action: "resetpass",
+                status: "error",
+                error: "Permission denied"
+            });
+            return {
+                success: false,
+                error: "No tienes permiso para resetear la contraseña de esta VM.",
+                errorCode: VirtualizationErrorCode.AUTHENTICATION_FAILED
+            };
+        }
+
+        try {
+            const connectionResult = await this.connectToPanel(panelId);
+            if (!connectionResult.success || !connectionResult.data) {
+                return { success: false, error: connectionResult.error };
+            }
+
+            const provider = connectionResult.data;
+
+            this.logger.info({ panelId, vmId, username, userId }, "Resetting VM user password");
+
+            const result = await provider.resetVMPassword(vmId, username, password);
+
+            await this.logVMAction({
+                vmId,
+                userId,
+                action: "resetpass",
+                status: result.success ? "success" : "error",
+                error: result.error,
+                details: result.success ? { username } : undefined
+            });
+
+            return {
+                success: result.success,
+                data: result,
+                provider: connectionResult.provider,
+                error: result.success ? undefined : result.error,
+                errorCode: result.errorCode
+            };
+        } catch (error: any) {
+            this.logger.error({ error, panelId, vmId, username, userId }, "Failed to reset VM password");
+            const errorCode = error instanceof VirtualizationError ? error.code : VirtualizationErrorCode.ACTION_FAILED;
+
+            await this.logVMAction({
+                vmId,
+                userId,
+                action: "resetpass",
+                status: "error",
+                error: error.message || String(error)
+            });
+
+            return {
+                success: false,
+                error: (error as Error).message,
+                errorCode
+            };
+        }
+    }
+
+    /**
      * Check if a user has permission to perform an action on a VM.
      */
-    async checkVMPermission(userId: string, vmId: string, action: string, guildId?: string): Promise<boolean> {
+    async checkVMPermission(userId: string, vmId: string, action: string, _guildId?: string): Promise<boolean> {
         try {
             // Fetch permissions for this User+VM
             const perms = await this.prisma.vm_permissions.findMany({

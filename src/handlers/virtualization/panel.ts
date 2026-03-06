@@ -50,7 +50,7 @@ export class PanelHandler extends BaseHandler<ChatInputCommandInteraction> {
                         const uptimeSeconds = resources.uptime % 60;
                         resources.uptime = `${uptimeDays}d ${uptimeHours}h ${uptimeMinutes}m ${uptimeSeconds}s`;
                         embed.addFields(
-                            { name: `Nodo: ${node.name}`, value: `CPU: ${resources.cpu.used.toFixed(3)} de ${resources.cpu.total} Cores\nMemoria: ${(resources.memory.used/1024).toFixed(2)}/${(resources.memory.total/1024).toFixed(2)} GB\nUpTime: ${resources.uptime}`, inline: false }
+                            { name: `Nodo: ${node.name}`, value: `CPU: ${resources.cpu.used.toFixed(3)} de ${resources.cpu.total} Cores\nMemoria: ${(resources.memory.used / 1024).toFixed(2)}/${(resources.memory.total / 1024).toFixed(2)} GB\nUpTime: ${resources.uptime}`, inline: false }
                         );
                     }
                     await interaction.reply({
@@ -97,6 +97,63 @@ export class PanelHandler extends BaseHandler<ChatInputCommandInteraction> {
                     await interaction.reply({
                         content: `❌ Error al eliminar el panel: ${deleteResult.error || 'Error desconocido'}`,
                         flags: MessageFlags.Ephemeral
+                    });
+                }
+                break;
+            case "setupstatus":
+                const panelId_status = args.getInteger("panel", true);
+                const targetChannel = args.getChannel("channel") || interaction.channel;
+
+                // Basic check for text-based channel capability
+                if (!targetChannel || !('send' in targetChannel)) {
+                    await interaction.reply({
+                        content: "❌ El canal seleccionado no es válido (debe ser un canal de texto)",
+                        flags: MessageFlags.Ephemeral
+                    });
+                    return;
+                }
+
+                const channel = targetChannel as import("discord.js").TextBasedChannel;
+
+                await interaction.deferReply({ flags: MessageFlags.Ephemeral });
+
+                const infoResultStatus = await vmManager.getSystemInfo(panelId_status);
+                if (infoResultStatus.success && infoResultStatus.data) {
+                    const { VmEmbedGenerator } = await import("@src/class/virtualization/utils/embedGenerator");
+                    const embed = VmEmbedGenerator.generatePanelStatusEmbed(infoResultStatus.data, panelId_status);
+
+                    try {
+                        const message = await channel.send({ embeds: [embed] });
+
+                        // Register panel monitor
+                        if (vmManager.monitor) {
+                            vmManager.monitor.addMonitor({
+                                guildId: interaction.guildId!,
+                                channelId: channel.id,
+                                messageId: message.id,
+                                panelId: panelId_status,
+                                vmId: "PANEL_STATUS", // Special ID for panel monitoring
+                                userId: interaction.user.id,
+                                lastUpdate: Date.now()
+                            });
+
+                            await interaction.editReply({
+                                content: `✅ Panel de estado configurado en ${channel.toString()}. Se actualizará automáticamente.`
+                            });
+                        } else {
+                            await interaction.editReply({
+                                content: `⚠️ Panel enviado, pero el sistema de monitoreo no está activo.`
+                            });
+                        }
+                    } catch (error) {
+                        await interaction.editReply({
+                            content: `❌ Error al enviar el panel al canal: ${error}`
+                        });
+                    }
+
+                } else {
+                    await interaction.editReply({
+                        content: `❌ Error al obtener la información del panel: ${infoResultStatus.error || 'Error desconocido'}`
                     });
                 }
                 break;

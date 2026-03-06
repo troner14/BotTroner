@@ -3,6 +3,21 @@ import type { VMStatus } from "../interfaces/IVirtualizationProvider";
 
 export class VmEmbedGenerator {
 
+    private static canUseAction(action: "start" | "stop" | "restart", allowedActions?: string[]) {
+        if (!allowedActions || allowedActions.length === 0) return true;
+        return allowedActions.includes("*") || allowedActions.includes(action);
+    }
+
+    private static canManageSubusers(allowedActions?: string[]) {
+        if (!allowedActions || allowedActions.length === 0) return false;
+        return allowedActions.includes("*") || allowedActions.includes("subusers");
+    }
+
+    private static canResetPassword(allowedActions?: string[]) {
+        if (!allowedActions || allowedActions.length === 0) return false;
+        return allowedActions.includes("*") || allowedActions.includes("resetpass");
+    }
+
     static generateStatusEmbed(vm: VMStatus, imageUrl?: string) {
         const status = vm.status === "running" ? "iniciada" : "apagada";
         const cpuUsage = vm.cpu_usage ? vm.cpu_usage.toFixed(2) : "0";
@@ -27,37 +42,110 @@ export class VmEmbedGenerator {
         return embed;
     }
 
-    static generateControlButtons(vm: VMStatus) {
-        const startBtn = new ButtonBuilder()
-            .setCustomId(`vm-start_${vm.id}`)
-            .setLabel("Iniciar")
-            .setEmoji("🟢")
-            .setStyle(ButtonStyle.Success)
-            .setDisabled(vm.status === "running");
+    static generateControlButtons(vm: VMStatus, allowedActions?: string[]) {
+        const controls: ButtonBuilder[] = [];
 
-        const stopBtn = new ButtonBuilder()
-            .setCustomId(`vm-stop_${vm.id}`)
-            .setLabel("Apagar")
-            .setEmoji("🔴")
-            .setStyle(ButtonStyle.Danger)
-            .setDisabled(vm.status === "stopped");
+        if (this.canUseAction("start", allowedActions)) {
+            controls.push(
+                new ButtonBuilder()
+                    .setCustomId(`vm-start_${vm.id}`)
+                    .setLabel("Iniciar")
+                    .setEmoji("🟢")
+                    .setStyle(ButtonStyle.Success)
+                    .setDisabled(vm.status === "running")
+            );
+        }
 
-        const restartBtn = new ButtonBuilder()
-            .setCustomId(`vm-restart_${vm.id}`)
-            .setLabel("Reiniciar")
-            .setEmoji("🔄")
-            .setStyle(ButtonStyle.Primary)
-            .setDisabled(vm.status === "stopped");
+        if (this.canUseAction("stop", allowedActions)) {
+            controls.push(
+                new ButtonBuilder()
+                    .setCustomId(`vm-stop_${vm.id}`)
+                    .setLabel("Apagar")
+                    .setEmoji("🔴")
+                    .setStyle(ButtonStyle.Danger)
+                    .setDisabled(vm.status === "stopped")
+            );
+        }
+
+        if (this.canUseAction("restart", allowedActions)) {
+            controls.push(
+                new ButtonBuilder()
+                    .setCustomId(`vm-restart_${vm.id}`)
+                    .setLabel("Reiniciar")
+                    .setEmoji("🔄")
+                    .setStyle(ButtonStyle.Primary)
+                    .setDisabled(vm.status === "stopped")
+            );
+        }
 
         const stopMonitorBtn = new ButtonBuilder()
             .setCustomId(`vm-monitor-stop_${vm.id}`)
             .setLabel("Cerrar Panel")
             .setStyle(ButtonStyle.Secondary);
 
-        const row = new ActionRowBuilder<ButtonBuilder>()
-            .addComponents(startBtn, stopBtn, restartBtn, stopMonitorBtn);
+        const resetPasswordBtn = this.canResetPassword(allowedActions)
+            ? new ButtonBuilder()
+                .setCustomId(`vm-resetpass_${vm.id}`)
+                .setLabel("Reset Password")
+                .setStyle(ButtonStyle.Secondary)
+            : null;
 
-        return [row];
+        const manageSubusersBtn = this.canManageSubusers(allowedActions)
+            ? new ButtonBuilder()
+                .setCustomId(`vm-manage-subusers_${vm.id}`)
+                .setLabel("Gestionar subusers")
+                .setStyle(ButtonStyle.Secondary)
+            : null;
+
+        const allButtons: ButtonBuilder[] = [
+            ...controls,
+            ...(resetPasswordBtn ? [resetPasswordBtn] : []),
+            ...(manageSubusersBtn ? [manageSubusersBtn] : []),
+            stopMonitorBtn
+        ];
+
+        const rows: ActionRowBuilder<ButtonBuilder>[] = [];
+        for (let i = 0; i < allButtons.length; i += 5) {
+            rows.push(
+                new ActionRowBuilder<ButtonBuilder>().addComponents(...allButtons.slice(i, i + 5))
+            );
+        }
+
+        return rows;
+    }
+
+    static generatePanelStatusEmbed(info: any, panelId: number) {
+        const embed = new EmbedBuilder()
+            .setTitle(`Información del Panel ID ${panelId}`)
+            .setDescription(`**Version**: ${info.version}`)
+            .setFooter({ text: "Auto-actualizado cada 5s" })
+            .setTimestamp();
+
+        for (const node of info.nodes) {
+            const resources = node.resources;
+
+            // Format uptime if not already formatted (assuming it comes as seconds from API?)
+            // Based on panel.ts it seemed to manipulate it. 
+            // We should use our formatUptime helper if raw seconds, or use as is if string.
+            // Looking at panel.ts, it calculates it manually. Let's use our helper if number.
+
+            let uptimeStr = "";
+            if (typeof resources.uptime === 'number') {
+                uptimeStr = this.formatUptime(resources.uptime);
+            } else {
+                uptimeStr = resources.uptime;
+            }
+
+            embed.addFields(
+                {
+                    name: `Nodo: ${node.name}`,
+                    value: `CPU: ${resources.cpu.used.toFixed(3)} / ${resources.cpu.total} Cores\nMemoria: ${(resources.memory.used / 1024).toFixed(2)} / ${(resources.memory.total / 1024).toFixed(2)} GB\nUpTime: ${uptimeStr}`,
+                    inline: false
+                }
+            );
+        }
+
+        return embed;
     }
 
     private static formatUptime(seconds: number): string {
