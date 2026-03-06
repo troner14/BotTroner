@@ -136,6 +136,14 @@ export class VirtualizationMonitor {
                 }
             }
         }
+        // Clean matching DB records
+        try {
+            await this.client.prisma.vm_monitors.deleteMany({
+                where: { vmId }
+            });
+        } catch (error) {
+            this.logger.error({ error, vmId }, "Failed to delete vm_monitors from DB for VM");
+        }
     }
 
     public async stopMonitorForVMAndUser(vmId: string, userId: string) {
@@ -152,6 +160,14 @@ export class VirtualizationMonitor {
                     // Ignore errors if message/channel is unavailable
                 }
             }
+        }
+        // Clean matching DB records
+        try {
+            await this.client.prisma.vm_monitors.deleteMany({
+                where: { vmId, userId }
+            });
+        } catch (error) {
+            this.logger.error({ error, vmId, userId }, "Failed to delete vm_monitors from DB for VM+User");
         }
     }
 
