@@ -19,10 +19,12 @@ export class PermissionCheckMiddleware implements IMiddleware {
     private readonly permission: AllPerms | null;
     private readonly permissionMap: Map<string, AllPerms> | null;
     private readonly denyMessage: string;
+    private readonly denyByDefault: boolean;
 
     constructor(
         config: AllPerms | Record<string, AllPerms>,
-        denyMessage: string = "❌ No tens permisos per executar aquesta acció."
+        denyMessage: string = "❌ No tens permisos per executar aquesta acció.",
+        denyByDefault: boolean = true
     ) {
         if (typeof config === "string") {
             this.permission = config;
@@ -32,6 +34,7 @@ export class PermissionCheckMiddleware implements IMiddleware {
             this.permissionMap = new Map(Object.entries(config));
         }
         this.denyMessage = denyMessage;
+        this.denyByDefault = denyByDefault;
     }
 
     async execute(context: HandlerContext): Promise<HandlerResult | void> {
@@ -63,10 +66,20 @@ export class PermissionCheckMiddleware implements IMiddleware {
                 }
             }
 
-            if (!requiredPerm) return { success: true };
+            if (!requiredPerm) {
+                if (this.denyByDefault) {
+                    return { success: false, error: new Error("No permission mapping found — denied by default") };
+                }
+                return { success: true };
+            }
         }
 
-        if (!requiredPerm) return { success: true };
+        if (!requiredPerm) {
+            if (this.denyByDefault) {
+                return { success: false, error: new Error("No permission mapping found — denied by default") };
+            }
+            return { success: true };
+        }
 
         const member = interaction.member;
         const roleIds = "cache" in member.roles
