@@ -2,34 +2,13 @@ import type { ExtendedClient } from "@src/class/extendClient";
 import type { AllPerms } from "@src/types/permsTypes";
 import type { User } from "discord.js";
 
+/**
+ * Comprova si un usuari té un permís.
+ * Delega al PermissionService centralitzat.
+ * @deprecated Prefereix client.permissions.hasPermission() directament
+ */
 export const HavePerms = async (client: ExtendedClient, guildid: string, user: User, permid: AllPerms) => {
-    const perfils_id = await client.prisma.perfils.findMany({
-        select: {
-            roleId: true
-        },
-        where: {
-            perfil_permisos: {
-                some: {
-                    permisos: {
-                        name: permid
-                    }
-                }
-            }
-        }
-    })
     const member = await (await client.guilds.fetch(guildid)).members.fetch(user.id);
-    let havePerms = false;
-
-    for (const role of member.roles.cache.values()) {
-        if (havePerms) break;
-        for (const r of perfils_id) {
-            if (role.id === r.roleId) {
-                havePerms = true;
-                break;
-            }
-        }
-    }
-
-    return havePerms
-
+    const userRoleIds = member.roles.cache.map(r => r.id);
+    return client.permissions.hasPermission(guildid, user.id, userRoleIds, permid);
 }

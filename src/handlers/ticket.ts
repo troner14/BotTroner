@@ -1,15 +1,27 @@
 import type { ExtendedClient } from "@src/class/extendClient";
 import type { Interaction } from "discord.js";
-import {CategoryHandler} from "./tickets/category";
-import {ConfigHandler} from "./tickets/config";
-import {UserHandler} from "./tickets/user";
-import {TicketsHandler} from "./tickets/ticket";
+import { CategoryHandler } from "./tickets/category";
+import { ConfigHandler } from "./tickets/config";
+import { UserHandler } from "./tickets/user";
+import { TicketsHandler } from "./tickets/ticket";
 import { AutocompleteHandler } from "./tickets/autocomplete";
+import { PermissionCheckMiddleware } from "./middlewares/permission.check";
 
-const categoryHandler = new CategoryHandler();
-const configHandler = new ConfigHandler();
+const categoryHandler = new CategoryHandler()
+    .use(new PermissionCheckMiddleware({
+        "category:new": "ticket:category:new",
+        "category:set": "ticket:category:set",
+    }));
+const configHandler = new ConfigHandler()
+    .use(new PermissionCheckMiddleware({
+        "config:transcript": "ticket:config:transcript",
+        "config:opinions": "ticket:config:opinions",
+    }));
 const userHandler = new UserHandler();
-const ticketsHandler = new TicketsHandler();
+const ticketsHandler = new TicketsHandler()
+    .use(new PermissionCheckMiddleware({
+        "setup": "ticket:setup",
+    }));
 
 const autocompleteHandler = new AutocompleteHandler();
 

@@ -7,6 +7,7 @@ import { ComponentsLoader } from "./loaders/components";
 import { VirtualizationManager } from "./virtualization/VirtualizationManager";
 import { VirtualizationMonitor } from "./virtualization/VirtualizationMonitor";
 import Tickets from "./tickets/tickets";
+import { PermissionService } from "./permissions/PermissionService";
 import type { Announcement } from "@src/types/announcements";
 import { loadTranslations } from "@src/utils/translate";
 
@@ -20,6 +21,7 @@ export class ExtendedClient extends Client {
     private componentsLoader: ComponentsLoader;
     private virtualizationManager: VirtualizationManager;
     private ticketSystem: Tickets;
+    private permissionService: PermissionService;
     private pendingAnnouncements: Map<string, Announcement>;
 
     constructor() {
@@ -47,6 +49,7 @@ export class ExtendedClient extends Client {
         this.virtualizationManager.monitor = new VirtualizationMonitor(this, this.virtualizationManager);
 
         this.ticketSystem = new Tickets(this);
+        this.permissionService = new PermissionService(this.#prisma);
         this.pendingAnnouncements = new Map();
     }
 
@@ -56,6 +59,10 @@ export class ExtendedClient extends Client {
 
     get ticket() {
         return this.ticketSystem;
+    }
+
+    get permissions() {
+        return this.permissionService;
     }
 
     async start() {

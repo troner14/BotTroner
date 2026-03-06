@@ -65,10 +65,28 @@ model perfils {
 }
 
 model permisos {
-  id              Int               @id @default(autoincrement())
-  name            String            @db.VarChar(50)
-  Descripcion     String?           @db.VarChar(255)
-  perfil_permisos perfil_permisos[]
+  id               Int                @id @default(autoincrement())
+  name             String             @db.VarChar(50)
+  Descripcion      String?            @db.VarChar(255)
+  perfil_permisos  perfil_permisos[]
+  user_permissions user_permissions[]
+}
+
+// Permisos directes per a usuaris (sense necessitat de rol)
+model user_permissions {
+  id        Int       @id @default(autoincrement())
+  guildId   String    @db.VarChar(25)
+  userId    String    @db.VarChar(25)
+  permId    Int
+  grantedBy String    @db.VarChar(25)
+  grantedAt DateTime  @default(now())
+  expiresAt DateTime?
+
+  permisos permisos @relation(fields: [permId], references: [id], onDelete: Cascade)
+
+  @@unique([guildId, userId, permId])
+  @@index([guildId, userId])
+  @@index([expiresAt])
 }
 
 // Panel genérico para soportar diferentes tipos de virtualizadores
