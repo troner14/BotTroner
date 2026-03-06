@@ -77,6 +77,23 @@ export const run: selMenuType["run"] = async ({ interaction, client }) => {
             return;
         }
 
+        // Revalidate that the assigning user still has subusers permission
+        const assignerMember = await (await client.guilds.fetch(interaction.guildId)).members.fetch(assignedById);
+        const assignerRoleIds = assignerMember.roles.cache.map(r => r.id);
+        const hasSubusersPerm = await client.permissions.hasVMPermission(
+            assignedById,
+            assignerRoleIds,
+            vmId,
+            "subusers"
+        );
+        if (!hasSubusersPerm) {
+            await interaction.editReply({
+                content: "❌ Ya no tienes permiso de 'subusers' para esta VM.",
+                components: []
+            });
+            return;
+        }
+
         await client.permissions.setVMUserPermissions(
             vmId,
             targetUserId,
