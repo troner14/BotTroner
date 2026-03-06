@@ -1,4 +1,4 @@
-import type { EmbedField } from "discord.js";
+import type { APIEmbedField } from "discord.js";
 
 export interface Announcement {
     channelId: string

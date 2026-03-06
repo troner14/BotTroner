@@ -1,5 +1,5 @@
 import { BaseHandler, type HandlerContext } from "@handlers/core/BaseHandler";
-import { EmbedBuilder, MessageFlags, type ChatInputCommandInteraction } from "discord.js";
+import { EmbedBuilder, MessageFlags, TextChannel, type ChatInputCommandInteraction } from "discord.js";
 
 
 export class PanelHandler extends BaseHandler<ChatInputCommandInteraction> {
@@ -113,7 +113,7 @@ export class PanelHandler extends BaseHandler<ChatInputCommandInteraction> {
                     return;
                 }
 
-                const channel = targetChannel as import("discord.js").TextBasedChannel;
+                const channel = targetChannel as TextChannel;
 
                 await interaction.deferReply({ flags: MessageFlags.Ephemeral });
 

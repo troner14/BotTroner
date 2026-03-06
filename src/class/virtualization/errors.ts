@@ -12,7 +12,7 @@ export enum VirtualizationErrorCode {
 
 export class VirtualizationError extends Error {
     constructor(
-        public message: string,
+        public override message: string,
         public code: VirtualizationErrorCode,
         public originalError?: unknown,
         public details?: Record<string, any>

@@ -1,4 +1,4 @@
-import { GuildMember, MessageFlags, type ChatInputCommandInteraction } from "discord.js";
+import { MessageFlags, type ChatInputCommandInteraction } from "discord.js";
 import { BaseHandler } from "../core/BaseHandler";
 import type { ExtendedClient } from "@src/class/extendClient";
 

@@ -1,6 +1,5 @@
 import { ActionRowBuilder, ChannelType, ModalBuilder, TextInputBuilder, TextInputStyle } from "discord.js";
 import { CommandBuilder } from "@class/builders/CommandBuilder";
-import { _U, getGuildLang } from "@src/utils/translate";
 
 const command = new CommandBuilder();
 
@@ -12,8 +11,7 @@ command.setName("announce")
             .setRequired(true)
             .addChannelTypes(ChannelType.GuildText, ChannelType.GuildAnnouncement))
 
-command.runner = async ({client, interaction}) => {
-    // const guildLang = getGuildLang(interaction.guildId!, client);
+command.runner = async ({interaction}) => {
     const channel = interaction.options.getChannel("channel", true);
     
     // Crear el modal para el anuncio

@@ -71,12 +71,9 @@ export class GracefulShutdown {
 
     private static setupWindowsHandling() {
         // Windows Ctrl+C handling
-        let isRawMode = false;
-        
         try {
             if (process.stdin.isTTY) {
                 process.stdin.setRawMode(true);
-                isRawMode = true;
                 process.stdin.resume();
                 process.stdin.setEncoding("utf8");
                 
