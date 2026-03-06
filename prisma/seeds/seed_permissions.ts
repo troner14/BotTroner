@@ -94,8 +94,26 @@ async function main() {
         await prisma.$transaction(operations);
     }
 
+    // Detect stale permissions (in DB but not in ALL_PERMISSIONS)
+    const allDbPerms = await prisma.permisos.findMany({ select: { id: true, name: true } });
+    const definedNames = new Set(dedupedPermissions.map((p) => p.name));
+    const stalePerms = allDbPerms.filter((p) => !definedNames.has(p.name));
+
+    if (stalePerms.length > 0) {
+        console.warn(`⚠️  Stale permissions in DB (${stalePerms.length}): ${stalePerms.map((p) => p.name).join(", ")}`);
+
+        if (process.argv.includes("--prune")) {
+            await prisma.permisos.deleteMany({
+                where: { id: { in: stalePerms.map((p) => p.id) } }
+            });
+            console.log(`🗑️  Pruned ${stalePerms.length} stale permissions.`);
+        } else {
+            console.log(`   Run with --prune to delete them.`);
+        }
+    }
+
     const unchangedCount = dedupedPermissions.length - toCreate.length - toUpdate.length;
-    console.log(`✅ Done. Total: ${dedupedPermissions.length} | Created: ${toCreate.length} | Updated: ${toUpdate.length} | Unchanged: ${unchangedCount}`);
+    console.log(`✅ Done. Total: ${dedupedPermissions.length} | Created: ${toCreate.length} | Updated: ${toUpdate.length} | Unchanged: ${unchangedCount}${stalePerms.length > 0 ? ` | Stale: ${stalePerms.length}` : ""}`);
 }
 
 main()
