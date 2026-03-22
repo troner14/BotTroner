@@ -119,11 +119,13 @@ export class VirtualizationMonitor {
         return this.monitors.get(messageId);
     }
 
-    public async stopMonitorForVM(vmId: string) {
+    public async stopMonitorForVM(vmId: string, userId: string) {
         for (const [msgId, entry] of this.monitors.entries()) {
-            if (entry.vmId === vmId) {
+            if (entry.vmId === vmId && entry.userId === userId) {
                 this.monitors.delete(msgId);
-                // Try to delete message
+
+                this.removeMonitor(msgId);
+
                 try {
                     const channel = await this.client.channels.fetch(entry.channelId) as TextChannel;
                     if (channel) {
