@@ -1,5 +1,5 @@
 import type { Buttons } from "@src/types/components";
-import { MessageFlags, type ButtonInteraction } from "discord.js";
+import { MessageFlags } from "discord.js";
 import { findPanel } from "@src/class/virtualization/utils/vmUtils";
 
 export const data: Buttons["data"] = {
@@ -16,10 +16,10 @@ export const run: Buttons["run"] = async ({ interaction, client, optionalParams 
     const id = optionalParams?.["id"] as string;
     const vmManager = client.virtualization;
 
-    await (interaction as ButtonInteraction).deferUpdate();
+    await interaction.deferUpdate();
 
     try {
-        const panelId = await findPanel(vmManager, interaction as ButtonInteraction, id);
+        const panelId = await findPanel(vmManager, interaction, id);
 
         if (!panelId) {
             await interaction.followUp({

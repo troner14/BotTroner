@@ -1,5 +1,4 @@
 import type { Buttons } from "@src/types/components";
-import type { ButtonInteraction } from "discord.js";
 
 export const data: Buttons["data"] = {
     name: "vm-monitor-stop"
@@ -15,13 +14,13 @@ export const run: Buttons["run"] = async ({ interaction, client, optionalParams 
     const id = optionalParams?.["id"] as string;
     const vmManager = client.virtualization;
 
-    await (interaction as ButtonInteraction).deferUpdate();
+    await interaction.deferUpdate();
 
     try {
         if (vmManager.monitor) {
-            await vmManager.monitor.stopMonitorForVM(id);
+            await vmManager.monitor.stopMonitorForVM(id, interaction.user.id);
             // Try to delete the message since the session is over
-            await (interaction as ButtonInteraction).deleteReply().catch(() => { });
+            await interaction.deleteReply().catch(() => { });
         }
     } catch (error) {
         client.logger.error({ error }, "Error in VM monitor stop handler");
