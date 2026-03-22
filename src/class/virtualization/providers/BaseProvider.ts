@@ -39,7 +39,7 @@ export abstract class BaseVirtualizationProvider implements IVirtualizationProvi
         public readonly version?: string
     ) {
         this.logger = logger.child({
-            module: `${this.constructor.name}`,
+            module: `VirtualizationProvider`,
             provider: this.type
         });
         this.cache = new VirtualizationCache();
